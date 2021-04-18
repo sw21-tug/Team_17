@@ -1,5 +1,6 @@
 package com.example.loginsesame
 
+import androidx.test.espresso.Espresso
 import androidx.test.espresso.Espresso.closeSoftKeyboard
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions
@@ -27,7 +28,7 @@ class TestApplicationLogin {
 
     @Rule
     @JvmField
-    val rule: ActivityTestRule<MainActivity> = ActivityTestRule(MainActivity::class.java)
+    val rule: ActivityTestRule<LoginActivity> = ActivityTestRule(LoginActivity::class.java)
 
 
     @Test
@@ -50,6 +51,18 @@ class TestApplicationLogin {
         onView(withId(R.id.btnInputPasswordCancel)).perform(ViewActions.click())
 
         val assertArr = arrayOf("btnInputPasswordCancel")
+        logAssert.assertLogsExist(assertArr)
+
+    }
+
+    @Test
+    fun userPressesBackButton() {
+
+        val logAssert = LogAssert()
+
+        Espresso.pressBack()
+
+        val assertArr = arrayOf("Back-Button Pressed With No Action")
         logAssert.assertLogsExist(assertArr)
 
     }
