@@ -35,7 +35,7 @@ class TestApplicationLogin {
     fun userEntersPasswordBtnOk() {
 
         val logAssert = LogAssert()
-        onView(withId(R.id.etInputPassword)).perform(ViewActions.typeText("Daniel"))
+        onView(withId(R.id.etInputPassword)).perform(ViewActions.typeText("randomPassword1"))
         onView(withId(R.id.btnInputPasswordOK)).perform(ViewActions.click())
 
         val assertArr = arrayOf("btnInputPasswordOK")
@@ -47,7 +47,7 @@ class TestApplicationLogin {
     fun userEntersPasswordBtnCancel() {
 
         val logAssert = LogAssert()
-        onView(withId(R.id.etInputPassword)).perform(ViewActions.typeText("Daniel"))
+        onView(withId(R.id.etInputPassword)).perform(ViewActions.typeText("randomPassword1"))
         onView(withId(R.id.btnInputPasswordCancel)).perform(ViewActions.click())
 
         val assertArr = arrayOf("btnInputPasswordCancel")
