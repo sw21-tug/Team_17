@@ -44,7 +44,6 @@ class TestApplicationLogin {
 
     @Test
     fun userEntersPasswordBtnCancel() {
-        // Context of the app under test.
 
         val logAssert = LogAssert()
         onView(withId(R.id.etInputPassword)).perform(ViewActions.typeText("Daniel"))
