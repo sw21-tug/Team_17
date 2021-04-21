@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">Login Sesame</string>
+    <string name="username"></string>
+    <string name="choose_username">Choose Username</string>
+    <string name="password"></string>
+    <string name="choose_password">Choose Password</string>
+    <string name="email"></string>
+    <string name="enter_your_email">Enter your E-mail</string>
 </resources>
