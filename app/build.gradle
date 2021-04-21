@@ -54,4 +54,6 @@ dependencies {
 
     // optional - Test helpers
     testImplementation "androidx.room:room-testing:$room_version"
+
+    androidTestImplementation 'androidx.test:rules:1.1.0'
 }
