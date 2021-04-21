@@ -13,10 +13,13 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         openCreateActivity()
         //call Login Activity on Startup
-        openLoginActivity()
+        // openLoginActivity()
     }
 
-    private fun openCreateActivity() {
+    // Account creation
+    // TODO: If question account is created
+    private fun openCreateActivity()
+    {
         val intentCreateStartUp = Intent(this@MainActivity, CreateStartUp::class.java)
         this@MainActivity.startActivity(intentCreateStartUp)
     }

@@ -14,7 +14,6 @@
         android:ems="10"
         android:hint="@string/choose_username"
         android:inputType="textPersonName"
-        android:text="@string/choose_username"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintStart_toStartOf="parent"
@@ -25,15 +24,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
+        android:autofillHints=""
         android:ems="10"
         android:hint="@string/choose_password"
         android:inputType="textPersonName"
-        android:text="@string/choose_password"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/username"
-        android:autofillHints="" />
+        app:layout_constraintTop_toBottomOf="@+id/username" />
 
     <EditText
         android:id="@+id/email"
@@ -43,7 +41,6 @@
         android:ems="10"
         android:hint="@string/enter_your_email"
         android:inputType="textEmailAddress"
-        android:text="@string/enter_your_email"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintStart_toStartOf="parent"
