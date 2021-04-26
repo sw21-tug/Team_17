@@ -9,6 +9,8 @@ import com.example.loginsesame.data.User
 import com.example.loginsesame.data.UserDao
 import com.example.loginsesame.data.UserDatabase
 import com.example.loginsesame.helper.LogTag
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 
 class MainActivity : AppCompatActivity() {
@@ -24,29 +26,26 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         isLoggedIn = intent.getBooleanExtra("isLoggedIn", false)
 
-        // TODO: LS-001-C set up DB.
-        // Since DB is missing we use for LS-007-B we created an in-memory DB.
-        db = Room.databaseBuilder(
-                this, UserDatabase::class.java, "usernames").allowMainThreadQueries().build()
+        db = UserDatabase.initDb(this)
         userDao = db.getUserDao()
 
 
+        var userExists = false
 
-        // TODO: LS-001-C check if DB is set up and empty, if empty open create activity else login activity
+        GlobalScope.launch {
+            if(userDao.getAllUsers().isNotEmpty())
+            {
+                userExists = true
+            }
+        }
 
-        val userExists = true
         //check if user exists
         //yes -> open Login Activity
         //no -> open create activity
 
         Log.d(logTag.LOG_MAIN, "is Logged in = " + isLoggedIn)
         if(!isLoggedIn && userExists){
-
-            //TODO: LS-001-C dummy user needs to be removed
-            userDao.deleteAllUsers()
-            val user = User(1, "Max Musterman", "test@mail.com", "123456789")
-            userDao.insertUser(user)
-
+            
             openLoginActivity()
         }
 

@@ -10,7 +10,6 @@ import com.example.loginsesame.helper.LogTag
 
 
 class CreateStartUp : AppCompatActivity() {
-    val logTag = LogTag()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
