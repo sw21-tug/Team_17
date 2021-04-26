@@ -32,11 +32,9 @@ class MainActivity : AppCompatActivity() {
 
         var userExists = false
 
-        GlobalScope.launch {
-            if(userDao.getAllUsers().isNotEmpty())
-            {
-                userExists = true
-            }
+        if(userDao.getAllUsers().isNotEmpty())
+        {
+            userExists = true
         }
 
         //check if user exists
@@ -45,7 +43,6 @@ class MainActivity : AppCompatActivity() {
 
         Log.d(logTag.LOG_MAIN, "is Logged in = " + isLoggedIn)
         if(!isLoggedIn && userExists){
-            
             openLoginActivity()
         }
 
