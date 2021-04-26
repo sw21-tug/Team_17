@@ -20,7 +20,7 @@ class RecyclerAdapter
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AccountsViewHolder {
         return AccountsViewHolder(
                 LayoutInflater.from(parent.context).inflate(
-                        R.layout.activity_password_overview,
+                        R.layout.item_password_overview,
                         parent,
                         false
                 )
@@ -36,6 +36,8 @@ class RecyclerAdapter
 
     override fun onBindViewHolder(holder: AccountsViewHolder, position: Int) {
         val curAccount = account_list[position]
+
+
 
         holder.itemView.apply {
             tv_account_name.text = curAccount.account_name
