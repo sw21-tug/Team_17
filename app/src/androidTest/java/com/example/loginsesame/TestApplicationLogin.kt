@@ -1,22 +1,31 @@
 package com.example.loginsesame
 
+import android.content.Context
+import android.service.autofill.Validators.not
+import androidx.room.Room
+import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.Espresso
-import androidx.test.espresso.Espresso.closeSoftKeyboard
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions
-import androidx.test.espresso.action.ViewActions.click
-import androidx.test.espresso.action.ViewActions.typeText
-import androidx.test.espresso.matcher.ViewMatchers.withId
-import androidx.test.platform.app.InstrumentationRegistry
+import androidx.test.espresso.assertion.ViewAssertions.matches
+import androidx.test.espresso.intent.Intents
+import androidx.test.espresso.intent.Intents.intended
+import androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent
+import androidx.test.espresso.matcher.RootMatchers.withDecorView
+import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.rule.ActivityTestRule
+import com.example.loginsesame.data.User
+import com.example.loginsesame.data.UserDao
+import com.example.loginsesame.data.UserDatabase
 import com.example.loginsesame.helper.LogAssert
-
+import org.junit.After
+import org.junit.Assert.*
+import org.junit.Before
+import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-
-import org.junit.Assert.*
-import org.junit.Rule
+import java.io.IOException
 
 /**
  * Instrumented test, which will execute on an Android device.
@@ -30,21 +39,38 @@ class TestApplicationLogin {
     @JvmField
     val rule: ActivityTestRule<LoginActivity> = ActivityTestRule(LoginActivity::class.java)
 
+    @Before
+    fun initIntend() {
+        Intents.init()
+    }
 
-    @Test
-    fun userEntersPasswordBtnOk() {
-
-        val logAssert = LogAssert()
-        onView(withId(R.id.etInputPassword)).perform(ViewActions.typeText("randomPassword1"))
-        onView(withId(R.id.btnInputPasswordOK)).perform(ViewActions.click())
-
-        val assertArr = arrayOf("btnInputPasswordOK")
-        logAssert.assertLogsExist(assertArr)
-
+    @After
+    fun cleanUp() {
+        Intents.release()
     }
 
     @Test
-    fun userEntersPasswordBtnCancel() {
+    fun userEntersCorrectPasswordClicksOk() {
+
+        onView(withId(R.id.etInputPassword)).perform(ViewActions.typeText("123456789"))
+        onView(withId(R.id.btnInputPasswordOK)).perform(ViewActions.click())
+
+        intended(hasComponent(MainActivity::class.java.name))
+    }
+
+    @Test
+    fun userEntersIncorrectPasswordClicksOk() {
+
+
+        onView(withId(R.id.etInputPassword)).perform(ViewActions.typeText("randomPassword1"))
+        onView(withId(R.id.btnInputPasswordOK)).perform(ViewActions.click())
+
+        onView(withText("Incorrect Password")).check(matches(isDisplayed()))
+    }
+
+
+    @Test
+    fun userEntersIncorrectPasswordClicksCancel() {
 
         val logAssert = LogAssert()
         onView(withId(R.id.etInputPassword)).perform(ViewActions.typeText("randomPassword1"))
@@ -56,7 +82,7 @@ class TestApplicationLogin {
     }
 
     @Test
-    fun userPressesBackButton() {
+    fun userClicksBackButton() {
 
         val logAssert = LogAssert()
 

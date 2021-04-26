@@ -1,9 +1,11 @@
 package com.example.loginsesame
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
+import android.widget.Toast
 import com.example.loginsesame.helper.LogTag
 
 class LoginActivity : AppCompatActivity() {
@@ -21,13 +23,16 @@ class LoginActivity : AppCompatActivity() {
         btnInputPasswordOK.setOnClickListener {
             // TODO: LS-007-A This is a stub implementation
             Log.d(logTag.LOG_LOGIN, "btnInputPasswordOK")
-            //Toast.makeText(this@MainActivity, "You clicked Ok.", Toast.LENGTH_SHORT).show()
+            //Toast.makeText(this@LoginActivity, "Incorrect Password", Toast.LENGTH_SHORT).show()
+
+            //check if password is in database
+                // if yes, open main activity
+                // if no toast, clear field
         }
 
         btnInputPasswordCancel.setOnClickListener {
             // TODO: LS-007-A This is a stub implementation
             Log.d(logTag.LOG_LOGIN, "btnInputPasswordCancel")
-            //Toast.makeText(this@MainActivity, "You clicked Cancel.", Toast.LENGTH_SHORT).show()
         }
     }
 
