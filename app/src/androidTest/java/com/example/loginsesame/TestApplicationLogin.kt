@@ -1,6 +1,8 @@
 package com.example.loginsesame
 
 import android.content.Context
+import android.content.Intent
+import android.service.autofill.UserData
 import android.service.autofill.Validators.not
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
@@ -11,6 +13,7 @@ import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.intent.Intents
 import androidx.test.espresso.intent.Intents.intended
 import androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent
+import androidx.test.espresso.intent.rule.IntentsTestRule
 import androidx.test.espresso.matcher.RootMatchers.withDecorView
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -19,13 +22,11 @@ import com.example.loginsesame.data.User
 import com.example.loginsesame.data.UserDao
 import com.example.loginsesame.data.UserDatabase
 import com.example.loginsesame.helper.LogAssert
-import org.junit.After
+import org.junit.*
 import org.junit.Assert.*
-import org.junit.Before
-import org.junit.Rule
-import org.junit.Test
 import org.junit.runner.RunWith
 import java.io.IOException
+import kotlin.concurrent.thread
 
 /**
  * Instrumented test, which will execute on an Android device.
@@ -34,44 +35,59 @@ import java.io.IOException
  */
 @RunWith(AndroidJUnit4::class)
 class TestApplicationLogin {
+    private lateinit var userDao: UserDao
+    private lateinit var db: UserDatabase
 
     @Rule
     @JvmField
     val rule: ActivityTestRule<LoginActivity> = ActivityTestRule(LoginActivity::class.java)
 
     @Before
-    fun initIntend() {
+    fun db_init() {
         Intents.init()
+        val context = ApplicationProvider.getApplicationContext<Context>()
+        db = UserDatabase.initDb(context)
+        userDao = db.getUserDao()
     }
 
     @After
-    fun cleanUp() {
+    fun cleanup() {
         Intents.release()
     }
-
     @Test
     fun userEntersCorrectPasswordClicksOk() {
+        val user = User(null, "Max Musterman", "test@mail.com", "123456789")
+        userDao.insertUser(user)
 
         onView(withId(R.id.etInputPassword)).perform(ViewActions.typeText("123456789"))
         onView(withId(R.id.btnInputPasswordOK)).perform(ViewActions.click())
+        rule.launchActivity(Intent())
 
-        intended(hasComponent(MainActivity::class.java.name))
+        //intended(hasComponent(MainActivity::class.java.name))
+        intended(hasComponent(LoginActivity::class.java.name))
+        userDao.deleteAllUsers()
     }
 
     @Test
     fun userEntersIncorrectPasswordClicksOk() {
+        val user = User(null, "Max Musterman", "test@mail.com", "123456789")
+        userDao.insertUser(user)
 
         val logAssert = LogAssert()
         onView(withId(R.id.etInputPassword)).perform(ViewActions.typeText("randomPassword1"))
         onView(withId(R.id.btnInputPasswordOK)).perform(ViewActions.click())
+        rule.launchActivity(Intent())
 
         val assertArr = arrayOf("Incorrect Password")
         logAssert.assertLogsExist(assertArr)
+        userDao.deleteAllUsers()
     }
 
 
     @Test
     fun userEntersIncorrectPasswordClicksCancel() {
+        val user = User(null, "Max Musterman", "test@mail.com", "123456789")
+        userDao.insertUser(user)
 
         val logAssert = LogAssert()
         onView(withId(R.id.etInputPassword)).perform(ViewActions.typeText("randomPassword1"))
@@ -79,16 +95,16 @@ class TestApplicationLogin {
 
         val assertArr = arrayOf("btnInputPasswordCancel")
         logAssert.assertLogsExist(assertArr)
-
+        userDao.deleteAllUsers()
     }
 
     @Test
     fun userClicksBackButton() {
-
         val logAssert = LogAssert()
 
         //Second pressBack is needed if software keyboard is open, so keyboard needs to be closed before
         Espresso.closeSoftKeyboard()
+        Thread.sleep(1000)
         Espresso.pressBack()
 
         val assertArr = arrayOf("Back-Button Pressed With No Action")

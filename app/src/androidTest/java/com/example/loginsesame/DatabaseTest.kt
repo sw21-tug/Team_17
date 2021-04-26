@@ -7,24 +7,23 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.example.loginsesame.data.User
 import com.example.loginsesame.data.UserDao
 import com.example.loginsesame.data.UserDatabase
-import org.junit.After
-import org.junit.Assert
-import org.junit.Before
-import org.junit.Test
 import org.junit.runner.RunWith
 import java.io.IOException
-import kotlin.jvm.Throws
+import kotlin.Throws
+import androidx.test.rule.ActivityTestRule
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.runBlocking
+import org.junit.*
 
 @RunWith(AndroidJUnit4::class)
-class SimpleEntityReadWriteTest {
+class DatabaseTest {
     private lateinit var userDao: UserDao
     private lateinit var db: UserDatabase
 
     @Before
     fun createDb() {
         val context = ApplicationProvider.getApplicationContext<Context>()
-        db = Room.inMemoryDatabaseBuilder(
-                context, UserDatabase::class.java).build()
+        db = UserDatabase.initDb(context)
         userDao = db.getUserDao()
     }
 
@@ -37,6 +36,7 @@ class SimpleEntityReadWriteTest {
     @Test
     @Throws(Exception::class)
     fun writeUserAndReadInList() {
+        userDao.deleteAllUsers()
         val user = User(1, "Max Musterman", "test@mail.com", "123456789")
         val rowid = userDao.insertUser(user)
         Assert.assertNotNull(rowid)
