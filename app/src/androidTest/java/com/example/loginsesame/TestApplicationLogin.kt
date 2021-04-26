@@ -53,6 +53,9 @@ class TestApplicationLogin {
     fun userEntersCorrectPasswordClicksOk() {
 
         onView(withId(R.id.etInputPassword)).perform(ViewActions.typeText("123456789"))
+
+        Espresso.closeSoftKeyboard()
+
         onView(withId(R.id.btnInputPasswordOK)).perform(ViewActions.click())
 
         intended(hasComponent(MainActivity::class.java.name))
@@ -63,6 +66,9 @@ class TestApplicationLogin {
 
         val logAssert = LogAssert()
         onView(withId(R.id.etInputPassword)).perform(ViewActions.typeText("randomPassword1"))
+
+        Espresso.closeSoftKeyboard()
+
         onView(withId(R.id.btnInputPasswordOK)).perform(ViewActions.click())
 
         val assertArr = arrayOf("Incorrect Password")
@@ -75,7 +81,12 @@ class TestApplicationLogin {
 
         val logAssert = LogAssert()
         onView(withId(R.id.etInputPassword)).perform(ViewActions.typeText("randomPassword1"))
+
+        Espresso.closeSoftKeyboard()
+
         onView(withId(R.id.btnInputPasswordCancel)).perform(ViewActions.click())
+
+
 
         val assertArr = arrayOf("btnInputPasswordCancel")
         logAssert.assertLogsExist(assertArr)
