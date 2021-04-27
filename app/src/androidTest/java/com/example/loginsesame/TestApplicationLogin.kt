@@ -98,6 +98,8 @@ class TestApplicationLogin {
 
         val logAssert = LogAssert()
 
+        //Second pressBack is needed if software keyboard is open, so keyboard needs to be closed before
+        Espresso.closeSoftKeyboard()
         Espresso.pressBack()
 
         val assertArr = arrayOf("Back-Button Pressed With No Action")
