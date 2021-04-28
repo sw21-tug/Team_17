@@ -60,6 +60,9 @@ class TestApplicationLogin {
         userDao.insertUser(user)
 
         onView(withId(R.id.etInputPassword)).perform(ViewActions.typeText("123456789"))
+
+        Espresso.closeSoftKeyboard()
+
         onView(withId(R.id.btnInputPasswordOK)).perform(ViewActions.click())
         rule.launchActivity(Intent())
 
@@ -75,6 +78,9 @@ class TestApplicationLogin {
 
         val logAssert = LogAssert()
         onView(withId(R.id.etInputPassword)).perform(ViewActions.typeText("randomPassword1"))
+
+        Espresso.closeSoftKeyboard()
+
         onView(withId(R.id.btnInputPasswordOK)).perform(ViewActions.click())
         rule.launchActivity(Intent())
 
@@ -91,7 +97,12 @@ class TestApplicationLogin {
 
         val logAssert = LogAssert()
         onView(withId(R.id.etInputPassword)).perform(ViewActions.typeText("randomPassword1"))
+
+        Espresso.closeSoftKeyboard()
+
         onView(withId(R.id.btnInputPasswordCancel)).perform(ViewActions.click())
+
+
 
         val assertArr = arrayOf("btnInputPasswordCancel")
         logAssert.assertLogsExist(assertArr)
