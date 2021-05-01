@@ -23,7 +23,7 @@ import org.junit.Ignore
 import org.junit.Rule
 
 @RunWith(AndroidJUnit4::class)
-class TestCreateStartup {
+class TestCreateAccount {
 
     @Rule
     @JvmField

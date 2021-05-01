@@ -22,7 +22,7 @@ import kotlin.jvm.Throws
  * See [testing documentation](http://d.android.com/tools/testing).
  */
 @RunWith(AndroidJUnit4::class)
-class Test_Account_View {
+class TestAccountView {
 
     @get:Rule
     var activityRule = ActivityTestRule(AccountList::class.java)
