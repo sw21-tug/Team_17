@@ -38,6 +38,7 @@ class CreateStartUp : AppCompatActivity() {
             Log.d(logTag.LOG_STARTUP, "randomEmail")
 
             val intentMain = Intent(this@CreateStartUp, MainActivity::class.java)
+            intentMain.putExtra("isLoggedIn", true)
             startActivity(intentMain)
         }
 
