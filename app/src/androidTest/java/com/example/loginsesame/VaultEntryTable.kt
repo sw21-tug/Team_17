@@ -5,6 +5,8 @@ import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import com.example.loginsesame.data.UserDao
 import com.example.loginsesame.data.UserDatabase
+import com.example.loginsesame.data.VaultEntry
+import com.example.loginsesame.data.VaultEntryDao
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
@@ -12,6 +14,8 @@ import java.io.IOException
 import kotlin.jvm.Throws
 
 class VaultEntryTable {
+
+    private lateinit var vaultEntryDao: VaultEntryDao
     private lateinit var userDao: UserDao
     private lateinit var db: UserDatabase
 
@@ -21,6 +25,7 @@ class VaultEntryTable {
         db = Room.inMemoryDatabaseBuilder(
                 context, UserDatabase::class.java).build()
         userDao = db.getUserDao()
+        vaultEntryDao = db.getVaultEntryDao()
     }
 
     @After
@@ -32,14 +37,14 @@ class VaultEntryTable {
 
     @Test
     fun addEntity(){
-        val entity = Entity(2, "accout_x", "user_x", "password")
-        db.add(entity)
-        assert(db.AllUsers().at(1) == entity)
+        val entity = VaultEntry(1, "accout_x", "user_x", "password")
+        vaultEntryDao.add(entity)
+        assert(vaultEntryDao.allEntrys().get(0) == entity)
     }
 
     @Test
     fun vaultEntry(){
-        assert(db.getEntity("accout_x") == db.AllUsers().at(1))
+        assert(vaultEntryDao.getEntity("accout_x") == db.AllUsers().at(1))
     }
 
     @Test
