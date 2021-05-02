@@ -29,8 +29,7 @@ class LoginActivity : AppCompatActivity() {
         val logTag = LogTag()
 
 
-        db = Room.databaseBuilder(
-                this, UserDatabase::class.java, "usernames").allowMainThreadQueries().build()
+        db = UserDatabase.initDb(this)
         userDao = db.getUserDao()
 
         btnInputPasswordOK.setOnClickListener {
