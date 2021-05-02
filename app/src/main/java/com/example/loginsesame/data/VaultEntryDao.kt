@@ -1,9 +1,6 @@
 package com.example.loginsesame.data
 
-import androidx.room.Dao
-import androidx.room.Delete
-import androidx.room.Insert
-import androidx.room.Query
+import androidx.room.*
 
 @Dao
 interface VaultEntryDao {
@@ -19,5 +16,11 @@ interface VaultEntryDao {
     @Query("SELECT * FROM VaultEntry")
     fun allEntrys(): List<VaultEntry>
 
-    @Query("SELECT * FROM VaultEntry WHERE ")
+    @Query("SELECT * FROM VaultEntry WHERE name = :asked_name")
+    fun getEntity(asked_name : String): VaultEntry
+
+    @Update
+    fun updateVaultEntry(vararg updated_entity: VaultEntry)
+
+
 }

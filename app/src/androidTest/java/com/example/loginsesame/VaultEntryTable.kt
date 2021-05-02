@@ -26,6 +26,8 @@ class VaultEntryTable {
                 context, UserDatabase::class.java).build()
         userDao = db.getUserDao()
         vaultEntryDao = db.getVaultEntryDao()
+        val entity = VaultEntry(1, "account_x", "user_x", "password")
+        vaultEntryDao.add(entity)
     }
 
     @After
@@ -37,27 +39,28 @@ class VaultEntryTable {
 
     @Test
     fun addEntity(){
-        val entity = VaultEntry(1, "accout_x", "user_x", "password")
+        val entity = VaultEntry(2, "account_z", "user_z", "password")
         vaultEntryDao.add(entity)
-        assert(vaultEntryDao.allEntrys().get(0) == entity)
+        assert(vaultEntryDao.allEntrys().get(1) == entity)
     }
 
     @Test
     fun vaultEntry(){
-        assert(vaultEntryDao.getEntity("accout_x") == db.AllUsers().at(1))
+        assert(vaultEntryDao.getEntity("account_x") == vaultEntryDao.allEntrys().get(0))
     }
 
     @Test
     fun removeEntity(){
-        db.remove("accout_x")
-        assert(db.getEntity("accout_x") == null)
-
+        vaultEntryDao.deleteVaultEntry(vaultEntryDao.allEntrys().get(0))
+        assert(vaultEntryDao.getEntity("account_x") == null)
     }
 
     @Test
     fun editEntity(){
-        val entity = Entity(2, "accout_y", "user_y", "password_y")
-        db.edit(entity)
-        assert(db.AllUsers().at(1) == entity)
+        val entity_b = VaultEntry(3, "account_b", "user_b", "password")
+        vaultEntryDao.add(entity_b)
+        val entity = VaultEntry(3, "account_y", "user_y", "password_y")
+        vaultEntryDao.updateVaultEntry(entity)
+        assert(vaultEntryDao.getEntity("account_y") == entity)
     }
 }
