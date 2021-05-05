@@ -6,7 +6,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 
 
-@Database(version = 2, entities = [User::class, VaultEntry::class])
+@Database(version = 3, entities = [User::class, VaultEntry::class])
 
 abstract class UserDatabase : RoomDatabase() {
 

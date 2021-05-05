@@ -26,7 +26,9 @@ class VaultEntryTable {
                 context, UserDatabase::class.java).build()
         userDao = db.getUserDao()
         vaultEntryDao = db.getVaultEntryDao()
+
         val entity = VaultEntry(1, "account_x", "url", "user_x", "password")
+
         vaultEntryDao.add(entity)
     }
 
@@ -57,9 +59,9 @@ class VaultEntryTable {
 
     @Test
     fun editEntity(){
-        val entity_b = VaultEntry(3, "account_b", "url","user_b", "password")
+        val entity_b = VaultEntry(3, "account_b", "url", "user_b", "password")
         vaultEntryDao.add(entity_b)
-        val entity = VaultEntry(3, "account_y", "url","user_y", "password_y")
+        val entity = VaultEntry(3, "account_y", "url", "user_y", "password_y")
         vaultEntryDao.updateVaultEntry(entity)
         assert(vaultEntryDao.getEntity("account_y") == entity)
     }
