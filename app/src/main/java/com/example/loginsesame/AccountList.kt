@@ -1,9 +1,11 @@
 package com.example.loginsesame
 
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.loginsesame.RecyclerViewAdapter.RecyclerAdapter
+import com.example.loginsesame.helper.LogTag
 import kotlinx.android.synthetic.main.activity_password_overview.*
 
 lateinit var accountAdapter : RecyclerAdapter
@@ -25,6 +27,10 @@ class AccountList : AppCompatActivity() {
         val new_account = account("test@mail.com", "Max Musterman")
         accountAdapter.addAccount(new_account)
 
+        btnAddAccount.setOnClickListener{
+            val logTag  = LogTag()
+            Log.d(logTag.LOG_OVERVIEW, "btnAddAccountOK")
+        }
     }
 
 

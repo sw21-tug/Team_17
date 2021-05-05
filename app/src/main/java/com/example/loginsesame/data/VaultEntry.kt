@@ -12,9 +12,10 @@ import androidx.room.PrimaryKey
 @Entity
 data class VaultEntry(
     @PrimaryKey(autoGenerate = true) val Id : Int,
-    val Name : String,
+    val name: String,
+    val url: String,
     val username: String,
-    val Password: String
+    val password: String
     //@Ignore val UserID: Int
 )
 

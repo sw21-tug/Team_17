@@ -72,7 +72,7 @@ class TestAccountView {
         val logAssert = LogAssert()
 
         onView(ViewMatchers.withId(R.id.btnAddAccount)).perform(ViewActions.click())
-        val assertArr = arrayOf("addAccount")
+        val assertArr = arrayOf("btnAddAccountOK")
 
         logAssert.assertLogsExist(assertArr)
     }
