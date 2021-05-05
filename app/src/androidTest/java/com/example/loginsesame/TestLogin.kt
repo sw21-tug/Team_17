@@ -34,7 +34,7 @@ import kotlin.concurrent.thread
  * See [testing documentation](http://d.android.com/tools/testing).
  */
 @RunWith(AndroidJUnit4::class)
-class TestApplicationLogin {
+class TestLogin {
     private lateinit var userDao: UserDao
     private lateinit var db: UserDatabase
 
@@ -48,33 +48,33 @@ class TestApplicationLogin {
         val context = ApplicationProvider.getApplicationContext<Context>()
         db = UserDatabase.initDb(context)
         userDao = db.getUserDao()
+
+        val user = User(null, "Max Musterman", "test@mail.com", "123456789")
+        userDao.deleteAllUsers()
+        userDao.insertUser(user)
     }
 
     @After
     fun cleanup() {
+        userDao.deleteAllUsers()
         Intents.release()
     }
+
     @Test
     fun userEntersCorrectPasswordClicksOk() {
-        val user = User(null, "Max Musterman", "test@mail.com", "123456789")
-        userDao.insertUser(user)
-
         onView(withId(R.id.etInputPassword)).perform(ViewActions.typeText("123456789"))
 
         Espresso.closeSoftKeyboard()
 
         onView(withId(R.id.btnInputPasswordOK)).perform(ViewActions.click())
-        rule.launchActivity(Intent())
+        //rule.launchActivity(Intent())
 
         //intended(hasComponent(MainActivity::class.java.name))
-        intended(hasComponent(LoginActivity::class.java.name))
-        userDao.deleteAllUsers()
+        intended(hasComponent(MainActivity::class.java.name))
     }
 
     @Test
     fun userEntersIncorrectPasswordClicksOk() {
-        val user = User(null, "Max Musterman", "test@mail.com", "123456789")
-        userDao.insertUser(user)
 
         val logAssert = LogAssert()
         onView(withId(R.id.etInputPassword)).perform(ViewActions.typeText("randomPassword1"))
@@ -82,19 +82,15 @@ class TestApplicationLogin {
         Espresso.closeSoftKeyboard()
 
         onView(withId(R.id.btnInputPasswordOK)).perform(ViewActions.click())
-        rule.launchActivity(Intent())
+        //rule.launchActivity(Intent())
 
         val assertArr = arrayOf("Incorrect Password")
         logAssert.assertLogsExist(assertArr)
-        userDao.deleteAllUsers()
     }
 
 
     @Test
     fun userEntersIncorrectPasswordClicksCancel() {
-        val user = User(null, "Max Musterman", "test@mail.com", "123456789")
-        userDao.insertUser(user)
-
         val logAssert = LogAssert()
         onView(withId(R.id.etInputPassword)).perform(ViewActions.typeText("randomPassword1"))
 
@@ -102,11 +98,8 @@ class TestApplicationLogin {
 
         onView(withId(R.id.btnInputPasswordCancel)).perform(ViewActions.click())
 
-
-
         val assertArr = arrayOf("btnInputPasswordCancel")
         logAssert.assertLogsExist(assertArr)
-        userDao.deleteAllUsers()
     }
 
     @Test
