@@ -21,7 +21,7 @@ import kotlin.jvm.Throws
  *
  * See [testing documentation](http://d.android.com/tools/testing).
  */
-
+//---------------------------Run CreateTestDB before!!! ----------------------------------
 @RunWith(AndroidJUnit4::class)
 class TestAccountView {
 

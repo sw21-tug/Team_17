@@ -24,7 +24,7 @@ import org.hamcrest.Matchers
 import org.junit.*
 import java.time.Instant
 
-//Run CreateTestDB before!!!
+//---------------------------Run CreateTestDB before!!! ----------------------------------
 @RunWith(AndroidJUnit4::class)
 class TestShowPasswordList {
     // View is tested in TestAccountView.kt
