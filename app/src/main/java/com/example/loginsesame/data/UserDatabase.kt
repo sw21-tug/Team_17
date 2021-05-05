@@ -5,10 +5,14 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 
-@Database(version = 2, entities = [User::class])
+
+@Database(version = 2, entities = [User::class, VaultEntry::class])
+
 abstract class UserDatabase : RoomDatabase() {
 
     abstract fun getUserDao(): UserDao
+
+    abstract fun getVaultEntryDao(): VaultEntryDao
 
     companion object{
         @Volatile private var INSTANCE: UserDatabase? = null

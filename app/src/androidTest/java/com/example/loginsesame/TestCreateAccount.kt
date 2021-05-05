@@ -23,7 +23,7 @@ import org.junit.Ignore
 import org.junit.Rule
 
 @RunWith(AndroidJUnit4::class)
-class TestCreateStartup {
+class TestCreateAccount {
 
     @Rule
     @JvmField
@@ -35,10 +35,14 @@ class TestCreateStartup {
         val logAssert = LogAssert()
         onView(withId(R.id.username)).perform(ViewActions.typeText("randomUsername"))
         onView(withId(R.id.password)).perform(ViewActions.typeText("randomPassword"))
+        // for mobile phones like Galaxy Nexus (small screen)
+        Espresso.closeSoftKeyboard()
         onView(withId(R.id.email)).perform(ViewActions.typeText("randomE-Mail"))
+
 
         //closing keyboard to press ok Button
         Espresso.closeSoftKeyboard()
+        Thread.sleep(1000)
 
         onView(withId(R.id.okButton)).perform(ViewActions.click())
 

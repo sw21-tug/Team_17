@@ -39,7 +39,7 @@ class LoginActivity : AppCompatActivity() {
             val createdUsers = userDao.getAllUsers()
             if (createdUsers.size != 1) {
                 Log.e(logTag.LOG_LOGIN, "Invalid number of Users in Database " + createdUsers.size)
-                Toast.makeText(this@LoginActivity, "Too many Users in Database, check Support for help", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@LoginActivity, getText(R.string.too_many_users), Toast.LENGTH_SHORT).show()
             } else {
                 val mainUser = createdUsers[0]
                 Log.d(logTag.LOG_LOGIN, mainUser.Password)
@@ -50,7 +50,7 @@ class LoginActivity : AppCompatActivity() {
                     openAccontList()
                 } else {
                     Log.d(logTag.LOG_LOGIN, "Incorrect Password")
-                    Toast.makeText(this@LoginActivity, "Incorrect Password", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@LoginActivity, getText(R.string.incorrect_pwd), Toast.LENGTH_SHORT).show()
                     etInputPassword.text.clear()
                 }
             }
