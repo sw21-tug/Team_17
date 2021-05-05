@@ -1,6 +1,5 @@
 package com.example.loginsesame.RecyclerViewAdapter
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -33,6 +32,13 @@ class RecyclerAdapter
         notifyItemInserted(account_list.size -1)
     }
 
+    fun listAccounts(AccountList: List<account>){
+        for(account in AccountList)
+        {
+            addAccount(account)
+        }
+
+    }
 
     override fun onBindViewHolder(holder: AccountsViewHolder, position: Int) {
         val curAccount = account_list[position]

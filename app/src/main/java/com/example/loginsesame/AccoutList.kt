@@ -1,33 +1,43 @@
 package com.example.loginsesame
 
+import android.accounts.Account
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.loginsesame.RecyclerViewAdapter.RecyclerAdapter
+import com.example.loginsesame.data.UserDatabase
+import com.example.loginsesame.data.VaultEntryDao
 import kotlinx.android.synthetic.main.activity_password_overview.*
 
 lateinit var accountAdapter : RecyclerAdapter
 
+
 class AccountList : AppCompatActivity() {
 
+    private lateinit var vaultEntryDao: VaultEntryDao
+    private lateinit var db: UserDatabase
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_password_overview)
 
+        db = UserDatabase.initDb(this)
+        vaultEntryDao = db.getVaultEntryDao()
+
         accountAdapter = RecyclerAdapter(mutableListOf())
+
 
         rvAccounts.adapter = accountAdapter
         rvAccounts.layoutManager = LinearLayoutManager(this)
 
 
         // Inserts Test Values
-        val new_account = account("test@mail.com", "Max Musterman")
-        accountAdapter.addAccount(new_account)
-
+        var accList: List<account> = emptyList()
+        for(entry in vaultEntryDao.allEntrys())
+        {
+            var acc = account(entry.Name, entry.username)
+            accountAdapter.addAccount(acc)
+        }
     }
-
-
-
-
 }

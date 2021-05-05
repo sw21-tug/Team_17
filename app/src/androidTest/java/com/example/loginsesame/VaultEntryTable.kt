@@ -36,7 +36,6 @@ class VaultEntryTable {
         db.close()
     }
 
-
     @Test
     fun addEntity(){
         val entity = VaultEntry(2, "account_z", "user_z", "password")
