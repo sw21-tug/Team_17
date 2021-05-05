@@ -4,16 +4,19 @@ package com.example.loginsesame
 import android.util.Log
 import androidx.recyclerview.widget.RecyclerView
 import androidx.test.espresso.Espresso
+import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.action.ViewActions
 import androidx.test.espresso.assertion.ViewAssertions
 import androidx.test.espresso.matcher.RootMatchers
 import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.rule.ActivityTestRule
+import com.example.loginsesame.helper.LogAssert
 import org.hamcrest.Matchers
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import kotlin.jvm.Throws
+import kotlin.Throws
 
 
 /**
@@ -36,7 +39,7 @@ class Test_Account_View {
         recyclerView.adapter?.itemCount
 
         Thread.sleep(1000)
-        Espresso.onView(ViewMatchers.withId(R.id.rvAccounts))
+        onView(ViewMatchers.withId(R.id.rvAccounts))
             .inRoot(
                 RootMatchers.withDecorView(
                     Matchers.`is`(
@@ -61,5 +64,16 @@ class Test_Account_View {
 
         assert(recyclerView.adapter?.itemCount != 0)
 
+    }
+
+    @Test
+    @Throws(InterruptedException::class)
+    fun clickAddAccount() {
+        val logAssert = LogAssert()
+
+        onView(ViewMatchers.withId(R.id.btnAddAccount)).perform(ViewActions.click())
+        val assertArr = arrayOf("addAccount")
+
+        logAssert.assertLogsExist(assertArr)
     }
 }
