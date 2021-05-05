@@ -1,5 +1,6 @@
 package com.example.loginsesame
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
@@ -30,6 +31,9 @@ class AccountList : AppCompatActivity() {
         btnAddAccount.setOnClickListener{
             val logTag  = LogTag()
             Log.d(logTag.LOG_OVERVIEW, "btnAddAccountOK")
+
+            val intentCreateVaultEntry = Intent(this@AccountList, CreateVaultEntry::class.java)
+            startActivity(intentCreateVaultEntry)
         }
     }
 
