@@ -33,7 +33,6 @@ class AccountList : AppCompatActivity() {
 
 
         // Inserts Test Values
-        var accList: List<account> = emptyList()
         for(entry in vaultEntryDao.allEntrys())
         {
             var acc = account(entry.Name, entry.username)
