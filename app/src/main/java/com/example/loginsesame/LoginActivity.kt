@@ -45,9 +45,9 @@ class LoginActivity : AppCompatActivity() {
                 Log.d(logTag.LOG_LOGIN, mainUser.Password)
                 if (etInputPassword.text.toString() == mainUser.Password) {
                     Log.d(logTag.LOG_LOGIN, "Password Correct")
-                    //open Main activity
+                    //open account list
 
-                    openMainActivity()
+                    openAccontList()
                 } else {
                     Log.d(logTag.LOG_LOGIN, "Incorrect Password")
                     Toast.makeText(this@LoginActivity, getText(R.string.incorrect_pwd), Toast.LENGTH_SHORT).show()
@@ -64,7 +64,12 @@ class LoginActivity : AppCompatActivity() {
 
     private fun openMainActivity() {
         val i = Intent(this@LoginActivity, MainActivity::class.java)
-        i.putExtra("isLoggedIn", true);
+        i.putExtra("isLoggedIn", true)
+        this@LoginActivity.startActivity(i)
+    }
+
+    private fun openAccontList(){
+        val i = Intent(this@LoginActivity, AccountList::class.java)
         this@LoginActivity.startActivity(i)
     }
 
