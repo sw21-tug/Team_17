@@ -47,3 +47,4 @@ would connect and the user could automatically sync the vault over multiple devi
 | LS-007-A       |    Login Activity UI                      |
 | LS-007-B       |    Link Login Activity with user database |
 | _**LS-027**_   |    _**Russian language support**_         |
+
