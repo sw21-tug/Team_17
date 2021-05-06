@@ -37,9 +37,8 @@ class CreateStartUp : AppCompatActivity() {
             Log.d(logTag.LOG_STARTUP, "randomPassword")
             Log.d(logTag.LOG_STARTUP, "randomEmail")
 
-            val intentMain = Intent(this@CreateStartUp, MainActivity::class.java)
-            intentMain.putExtra("isLoggedIn", true)
-            startActivity(intentMain)
+            val intentAccountView = Intent(this@CreateStartUp, AccountList::class.java)
+            startActivity(intentAccountView)
         }
 
         val cancelButton = findViewById<Button>(R.id.cancelButton)

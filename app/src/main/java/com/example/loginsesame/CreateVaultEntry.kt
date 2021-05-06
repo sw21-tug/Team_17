@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.loginsesame.data.UserDatabase
 import com.example.loginsesame.data.VaultEntry
 import com.example.loginsesame.helper.LogTag
+import kotlin.math.log
 
 class CreateVaultEntry : AppCompatActivity() {
 
@@ -31,6 +32,7 @@ class CreateVaultEntry : AppCompatActivity() {
                 val password = findViewById<EditText>(R.id.vaultPassword).text.toString()
 
                 if (entryname.isEmpty() && url.isEmpty()) {
+                    Log.d(logTag.LOG_OVERVIEW, "incorrectData")
                     Toast.makeText(this, "@string/url_or_entryname", Toast.LENGTH_LONG).show()
                 } else {
                     val vaultentry = VaultEntry(0, entryname, url, username, password)
@@ -41,17 +43,16 @@ class CreateVaultEntry : AppCompatActivity() {
                     Log.d(logTag.LOG_OVERVIEW, "randomUsername")
                     Log.d(logTag.LOG_OVERVIEW, "randomPassword")
 
-                    val intentMain = Intent(this@CreateVaultEntry, MainActivity::class.java)
-                    intentMain.putExtra("isLoggedIn", true)
-                    startActivity(intentMain)
+                    val intentAccountView = Intent(this@CreateVaultEntry, AccountList::class.java)
+                    startActivity(intentAccountView)
                 }
             }
 
             val cancelButton = findViewById<Button>(R.id.btnVaultCancel)
             cancelButton.setOnClickListener {
                 Log.d(logTag.LOG_OVERVIEW, "cancelButton")
-                val intentMain = Intent(this@CreateVaultEntry, MainActivity::class.java)
-                startActivity(intentMain)
+                val intentAccountView = Intent(this@CreateVaultEntry, AccountList::class.java)
+                startActivity(intentAccountView)
             }
 
         }
