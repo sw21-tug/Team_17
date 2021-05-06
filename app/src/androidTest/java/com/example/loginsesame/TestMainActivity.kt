@@ -15,6 +15,7 @@ import com.example.loginsesame.data.UserDao
 import com.example.loginsesame.data.UserDatabase
 import org.junit.*
 import java.io.IOException
+import kotlin.jvm.Throws
 
 
 class TestMainActivity {
@@ -31,6 +32,7 @@ class TestMainActivity {
     @After
     @Throws(IOException::class)
     fun cleanup() {
+        userDao.deleteAllUsers()
         Intents.release()
     }
 

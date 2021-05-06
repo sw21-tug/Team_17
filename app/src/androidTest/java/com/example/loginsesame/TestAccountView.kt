@@ -1,15 +1,21 @@
 package com.example.loginsesame
 
 
+import android.content.Context
 import android.util.Log
 import androidx.recyclerview.widget.RecyclerView
+import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.Espresso
 import androidx.test.espresso.assertion.ViewAssertions
+import androidx.test.espresso.intent.Intents
 import androidx.test.espresso.matcher.RootMatchers
 import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.rule.ActivityTestRule
+import com.example.loginsesame.data.UserDao
+import com.example.loginsesame.data.UserDatabase
 import org.hamcrest.Matchers
+import org.junit.After
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -24,8 +30,20 @@ import kotlin.jvm.Throws
 @RunWith(AndroidJUnit4::class)
 class TestAccountView {
 
+    private lateinit var userDao: UserDao
+    private lateinit var db: UserDatabase
+
     @get:Rule
     var activityRule = ActivityTestRule(AccountList::class.java)
+
+    @After
+    fun cleanup() {
+        val context = ApplicationProvider.getApplicationContext<Context>()
+        db = UserDatabase.initDb(context)
+        userDao = db.getUserDao()
+        userDao.deleteAllUsers()
+        Intents.release()
+    }
 
     @Test
     @Throws(InterruptedException::class)

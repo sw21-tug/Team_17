@@ -30,7 +30,8 @@ class DatabaseTest {
     @After
     @Throws(IOException::class)
     fun closeDb() {
-        db.close()
+        userDao.deleteAllUsers()
+
     }
 
     @Test
