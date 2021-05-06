@@ -24,13 +24,14 @@ class CreateVaultEntry : AppCompatActivity() {
 
             val btnVaultSave = findViewById<Button>(R.id.btnVaultSave)
             btnVaultSave.setOnClickListener {
+                Log.d(logTag.LOG_OVERVIEW, "createButtonClicked")
                 val entryname = findViewById<EditText>(R.id.vaultnameEntry).text.toString()
                 val url = findViewById<EditText>(R.id.vaultURL).text.toString()
                 val username = findViewById<EditText>(R.id.vaultUsername).text.toString()
                 val password = findViewById<EditText>(R.id.vaultPassword).text.toString()
 
                 if (entryname.isEmpty() && url.isEmpty()) {
-                    Toast.makeText(this, "@string/url_or_entryname", Toast.LENGTH_LONG)
+                    Toast.makeText(this, "@string/url_or_entryname", Toast.LENGTH_LONG).show()
                 } else {
                     val vaultentry = VaultEntry(0, entryname, url, username, password)
                     vaultEntryDao.add(vaultentry)
