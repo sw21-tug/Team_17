@@ -33,6 +33,17 @@ would connect and the user could automatically sync the vault over multiple devi
 | **Developer**    | Thomas Reith          |
 
 ## Implemented features
-| Ticket #     | Feature name| 
-| :---         |    :----:   |
-| LS-000       |    Feature  |
+| Ticket #       | Name                                      | 
+| :---           |    :----:                                 |
+| _**LS-026**_   |    _**Basic Application**_                |
+| _**LS-001**_   |    _**Account Creation**_                 |
+| LS-001-A       |    Create Startup Activity                |
+| LS-001-B       |    Basic Database                         |
+| LS-001-C       |    Linking UI and Database                |
+| _**LS-002**_   |    _**Passwords Overview**_               |
+| LS-002-A       |    Passwords Overview UI                  |
+| LS-002-B       |    Vault entry Database interface         |
+| _**LS-007**_   |    _**Application Login**_                |
+| LS-007-A       |    Login Activity UI                      |
+| LS-007-B       |    Link Login Activity with user database |
+| _**LS-027**_   |    _**Russian language support**_         |
