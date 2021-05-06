@@ -80,7 +80,7 @@ class TestLogin {
         onView(withId(R.id.etInputPassword)).perform(ViewActions.typeText("randomPassword1"))
 
         Espresso.closeSoftKeyboard()
-
+        Thread.sleep(1000)
         onView(withId(R.id.btnInputPasswordOK)).perform(ViewActions.click())
         //rule.launchActivity(Intent())
 
@@ -95,7 +95,7 @@ class TestLogin {
         onView(withId(R.id.etInputPassword)).perform(ViewActions.typeText("randomPassword1"))
 
         Espresso.closeSoftKeyboard()
-
+        Thread.sleep(1000)
         onView(withId(R.id.btnInputPasswordCancel)).perform(ViewActions.click())
 
         val assertArr = arrayOf("btnInputPasswordCancel")
