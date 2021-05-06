@@ -16,4 +16,6 @@
     <string name="language_chooser_title">Сука Блядь</string>
     <string name="too_many_users">Слишком много пользователей в базе данных, обратитесь за помощью в службу поддержки</string>
     <string name="incorrect_pwd">Неверный пароль</string>
+    <string name="showAllSavedAccount">Показать все сохраненные учетные записи</string>
+    <string name="back_to_main">Показать все сохраненные аккаунты</string>
 </resources>

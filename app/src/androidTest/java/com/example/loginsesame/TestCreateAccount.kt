@@ -46,12 +46,12 @@ class TestCreateAccount {
 
         onView(withId(R.id.okButton)).perform(ViewActions.click())
 
-        val assertArr1 = arrayOf("randomUsername")
-        val assertArr2 = arrayOf("randomPassword")
-        val assertArr3 = arrayOf("randomE-Mail")
-        logAssert.assertLogsExist(assertArr1)
-        logAssert.assertLogsExist(assertArr2)
-        logAssert.assertLogsExist(assertArr3)
+        val assertArr1okbuttonTest = arrayOf("randomUsername")
+        val assertArr2okbuttonTest = arrayOf("randomPassword")
+        val assertArr3okbuttonTest = arrayOf("randomE-Mail")
+        logAssert.assertLogsExist(assertArr1okbuttonTest)
+        logAssert.assertLogsExist(assertArr2okbuttonTest)
+        logAssert.assertLogsExist(assertArr3okbuttonTest)
 
     }
 

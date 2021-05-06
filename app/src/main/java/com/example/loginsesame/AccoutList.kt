@@ -1,8 +1,10 @@
 package com.example.loginsesame
 
 import android.accounts.Account
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.loginsesame.RecyclerViewAdapter.RecyclerAdapter
@@ -33,10 +35,19 @@ class AccountList : AppCompatActivity() {
 
 
         // Inserts Test Values
-        for(entry in vaultEntryDao.allEntrys())
-        {
+        for (entry in vaultEntryDao.allEntrys()) {
             var acc = account(entry.Name, entry.username)
             accountAdapter.addAccount(acc)
         }
+
+        val showAllSavedAccounts = findViewById<Button>(R.id.showAllSavedAccounts)
+        showAllSavedAccounts.setOnClickListener {
+            showAllSavedAccounts
+        }
+    }
+
+    private fun openShowAccountList() {
+        val intentAccountList = Intent(this@AccountList, AccountList::class.java)
+        this@AccountList.startActivity(intentAccountList)
     }
 }

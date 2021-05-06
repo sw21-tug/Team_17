@@ -9,6 +9,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import androidx.room.Room
 import com.example.loginsesame.data.User
@@ -59,6 +60,16 @@ class MainActivity : AppCompatActivity() {
             openCreateActivity()
         }
 
+        val showAllSavedAccounts = findViewById<Button>(R.id.showAllSavedAccounts)
+        showAllSavedAccounts.setOnClickListener {
+            openShowAccountList()
+        }
+
+    }
+    private fun openShowAccountList()
+    {
+        val intenAccountList = Intent(this@MainActivity, AccountList::class.java)
+        this@MainActivity.startActivity(intenAccountList)
     }
 
     // Account creation
