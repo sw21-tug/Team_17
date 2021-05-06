@@ -10,7 +10,7 @@ interface VaultEntryDao {
     @Delete
     fun deleteVaultEntry(vaultEntry: VaultEntry)
 
-    @Query ("DELETE FROM VaultEntry WHERE id = 1 ")
+    @Query ("DELETE FROM VaultEntry")
     fun deleteAllEntrys()
 
     @Query("SELECT * FROM VaultEntry")

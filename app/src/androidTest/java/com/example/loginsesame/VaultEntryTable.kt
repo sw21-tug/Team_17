@@ -22,10 +22,11 @@ class VaultEntryTable {
     @Before
     fun createDb() {
         val context = ApplicationProvider.getApplicationContext<Context>()
-        db = Room.inMemoryDatabaseBuilder(
-                context, UserDatabase::class.java).build()
+        db = UserDatabase.initDb(context)
         userDao = db.getUserDao()
+        userDao.deleteAllUsers()
         vaultEntryDao = db.getVaultEntryDao()
+        vaultEntryDao.deleteAllEntrys()
         val entity = VaultEntry(1, "account_x", "user_x", "password")
         vaultEntryDao.add(entity)
     }
@@ -33,7 +34,9 @@ class VaultEntryTable {
     @After
     @Throws(IOException::class)
     fun closeDb() {
-        db.close()
+        userDao.deleteAllUsers()
+        vaultEntryDao.deleteAllEntrys()
+        //db.close()
     }
 
 

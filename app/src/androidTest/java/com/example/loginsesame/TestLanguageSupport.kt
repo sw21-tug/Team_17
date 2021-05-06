@@ -1,6 +1,7 @@
 package com.example.loginsesame
 
 import android.content.Context
+import androidx.room.Room
 import androidx.test.core.app.ActivityScenario
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.Espresso
@@ -77,6 +78,7 @@ class TestLanguageSupport {
         openActionBarOverflowOrOptionsMenu(getInstrumentation().targetContext)
         //assert if text is russian
         Espresso.onView(withText(R.string.setLanguage)).check(matches(withText("Set App Language")))
+
     }
 
     @Test
@@ -99,6 +101,7 @@ class TestLanguageSupport {
         openActionBarOverflowOrOptionsMenu(getInstrumentation().targetContext)
         //assert if text is russian
         Espresso.onView(withText(R.string.setLanguage)).check(matches(withText("Установите язык на русский")))
+
     }
 
 }
