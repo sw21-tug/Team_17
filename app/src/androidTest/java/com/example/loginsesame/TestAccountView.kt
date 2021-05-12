@@ -34,7 +34,7 @@ class TestAccountView {
     private lateinit var db: UserDatabase
 
     @get:Rule
-    var activityRule = ActivityTestRule(AccountList::class.java)
+    var activityRule = ActivityTestRule(MainActivity::class.java)
 
     @After
     fun cleanup() {
