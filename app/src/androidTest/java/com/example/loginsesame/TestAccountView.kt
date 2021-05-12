@@ -44,9 +44,6 @@ class TestAccountView {
 
     @After
     fun cleanup() {
-        val context = ApplicationProvider.getApplicationContext<Context>()
-        db = UserDatabase.initDb(context)
-        userDao = db.getUserDao()
         userDao.deleteAllUsers()
         vaultEntryDao.deleteAllEntrys()
         Intents.release()

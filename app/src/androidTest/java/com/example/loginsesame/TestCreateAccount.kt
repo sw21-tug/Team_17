@@ -18,14 +18,11 @@ import androidx.test.rule.ActivityTestRule
 import com.example.loginsesame.data.UserDao
 import com.example.loginsesame.data.UserDatabase
 import com.example.loginsesame.helper.LogAssert
-import org.junit.After
+import org.junit.*
 
-import org.junit.Test
 import org.junit.runner.RunWith
 
 import org.junit.Assert.*
-import org.junit.Ignore
-import org.junit.Rule
 
 @RunWith(AndroidJUnit4::class)
 class TestCreateAccount {
@@ -36,6 +33,15 @@ class TestCreateAccount {
     @Rule
     @JvmField
     val rule: ActivityTestRule<CreateStartUp> = ActivityTestRule(CreateStartUp::class.java)
+
+    @Before
+    fun deleteDB(){
+        val context = ApplicationProvider.getApplicationContext<Context>()
+        db = UserDatabase.initDb(context)
+        userDao = db.getUserDao()
+        userDao.deleteAllUsers()
+        Intents.release()
+    }
 
     @After
     fun cleanup() {

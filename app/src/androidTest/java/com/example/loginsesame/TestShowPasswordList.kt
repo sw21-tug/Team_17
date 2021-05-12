@@ -29,6 +29,7 @@ import kotlin.jvm.Throws
 
 @RunWith(AndroidJUnit4::class)
 class TestShowPasswordList {
+
     // View is tested in TestAccountView.kt
     private lateinit var vaultEntryDao: VaultEntryDao
     private lateinit var userDao: UserDao
@@ -43,6 +44,7 @@ class TestShowPasswordList {
         val context = ApplicationProvider.getApplicationContext<Context>()
         db = UserDatabase.initDb(context)
         userDao = db.getUserDao()
+
         vaultEntryDao = db.getVaultEntryDao()
         val entity1 = VaultEntry(1, "account_a", "user_a", "password")
         vaultEntryDao.add(entity1)
@@ -63,7 +65,6 @@ class TestShowPasswordList {
     fun closeDb() {
         vaultEntryDao.deleteAllEntrys()
         userDao.deleteAllUsers()
-        //db.close()
     }
 
     @Test
