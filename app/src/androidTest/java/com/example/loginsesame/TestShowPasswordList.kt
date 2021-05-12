@@ -63,7 +63,7 @@ class TestShowPasswordList {
     fun closeDb() {
         vaultEntryDao.deleteAllEntrys()
         userDao.deleteAllUsers()
-        db.close()
+        //db.close()
     }
 
     @Test
