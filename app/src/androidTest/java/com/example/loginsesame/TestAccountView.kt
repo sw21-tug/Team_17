@@ -6,6 +6,7 @@ import android.util.Log
 import androidx.recyclerview.widget.RecyclerView
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.Espresso
+import androidx.test.espresso.action.ViewActions
 import androidx.test.espresso.assertion.ViewAssertions
 import androidx.test.espresso.intent.Intents
 import androidx.test.espresso.matcher.RootMatchers
@@ -14,6 +15,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.rule.ActivityTestRule
 import com.example.loginsesame.data.UserDao
 import com.example.loginsesame.data.UserDatabase
+import com.example.loginsesame.helper.LogAssert
 import org.hamcrest.Matchers
 import org.junit.After
 import org.junit.Rule
@@ -48,6 +50,27 @@ class TestAccountView {
     @Test
     @Throws(InterruptedException::class)
     fun testVisibilityRecyclerView() {
+
+        val logAssert = LogAssert()
+        Espresso.onView(ViewMatchers.withId(R.id.username)).perform(ViewActions.typeText("randomUsername"))
+        Espresso.onView(ViewMatchers.withId(R.id.password)).perform(ViewActions.typeText("randomPassword"))
+        // for mobile phones like Galaxy Nexus (small screen)
+        Espresso.closeSoftKeyboard()
+        Espresso.onView(ViewMatchers.withId(R.id.email)).perform(ViewActions.typeText("randomE-Mail"))
+
+
+        //closing keyboard to press ok Button
+        Espresso.closeSoftKeyboard()
+        Thread.sleep(1000)
+
+        Espresso.onView(ViewMatchers.withId(R.id.okButton)).perform(ViewActions.click())
+
+        val assertArr1 = arrayOf("randomUsername")
+        val assertArr2 = arrayOf("randomPassword")
+        val assertArr3 = arrayOf("randomE-Mail")
+        logAssert.assertLogsExist(assertArr1)
+        logAssert.assertLogsExist(assertArr2)
+        logAssert.assertLogsExist(assertArr3)
 
         val recyclerView = activityRule.activity.findViewById<RecyclerView>(R.id.rvAccounts)
 
