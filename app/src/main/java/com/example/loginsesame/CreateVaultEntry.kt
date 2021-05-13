@@ -33,7 +33,7 @@ class CreateVaultEntry : AppCompatActivity() {
 
                 if (entryname.isEmpty() && url.isEmpty()) {
                     Log.d(logTag.LOG_CREATE_VAULT_ENTRY, "incorrectData")
-                    Toast.makeText(this, "@string/url_or_entryname", Toast.LENGTH_LONG).show()
+                    Toast.makeText(this, "Either Entry name or URL must be filled in!", Toast.LENGTH_LONG).show()
                 } else {
                     val vaultentry = VaultEntry(0, entryname, url, username, password)
                     vaultEntryDao.add(vaultentry)
