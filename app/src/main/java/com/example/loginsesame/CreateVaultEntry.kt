@@ -43,7 +43,7 @@ class CreateVaultEntry : AppCompatActivity() {
                     Log.d(logTag.LOG_CREATE_VAULT_ENTRY, "randomUsername")
                     Log.d(logTag.LOG_CREATE_VAULT_ENTRY, "randomPassword")
 
-                    val intentAccountView = Intent(this@CreateVaultEntry, AccountList::class.java)
+                    val intentAccountView = Intent(this@CreateVaultEntry, MainActivity::class.java)
                     startActivity(intentAccountView)
                 }
             }
@@ -51,7 +51,7 @@ class CreateVaultEntry : AppCompatActivity() {
             val cancelButton = findViewById<Button>(R.id.btnVaultCancel)
             cancelButton.setOnClickListener {
                 Log.d(logTag.LOG_CREATE_VAULT_ENTRY, "cancelButton")
-                val intentAccountView = Intent(this@CreateVaultEntry, AccountList::class.java)
+                val intentAccountView = Intent(this@CreateVaultEntry, MainActivity::class.java)
                 startActivity(intentAccountView)
             }
 
