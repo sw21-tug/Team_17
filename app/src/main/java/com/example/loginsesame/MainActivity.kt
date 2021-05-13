@@ -15,6 +15,7 @@ import com.example.loginsesame.data.User
 import com.example.loginsesame.data.UserDao
 import com.example.loginsesame.data.UserDatabase
 import com.example.loginsesame.helper.LogTag
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.util.*
@@ -57,6 +58,14 @@ class MainActivity : AppCompatActivity() {
         if (!isLoggedIn && !userExists){
             //create new user and automatically login
             openCreateActivity()
+        }
+
+        btnAddAccount.setOnClickListener{
+            val logTag  = LogTag()
+            Log.d(logTag.LOG_MAIN, "btnAddAccountOK")
+
+            val intentCreateVaultEntry = Intent(this@MainActivity, CreateVaultEntry::class.java)
+            startActivity(intentCreateVaultEntry)
         }
 
     }

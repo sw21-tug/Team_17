@@ -16,6 +16,7 @@ import com.example.loginsesame.data.UserDao
 import com.example.loginsesame.data.UserDatabase
 import org.hamcrest.Matchers
 import org.junit.After
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -34,7 +35,8 @@ class TestAccountView {
     private lateinit var db: UserDatabase
 
     @get:Rule
-    var activityRule = ActivityTestRule(AccountList::class.java)
+    var activityRule = ActivityTestRule(MainActivity::class.java)
+
 
     @After
     fun cleanup() {
