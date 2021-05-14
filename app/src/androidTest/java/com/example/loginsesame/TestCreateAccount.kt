@@ -40,7 +40,7 @@ class TestCreateAccount {
         db = UserDatabase.initDb(context)
         userDao = db.getUserDao()
         userDao.deleteAllUsers()
-        Intents.release()
+        //Intents.release()
     }
 
     @After
@@ -49,7 +49,7 @@ class TestCreateAccount {
         db = UserDatabase.initDb(context)
         userDao = db.getUserDao()
         userDao.deleteAllUsers()
-        Intents.release()
+        //Intents.release()
     }
     @Test
     fun okButtonClickable() {
