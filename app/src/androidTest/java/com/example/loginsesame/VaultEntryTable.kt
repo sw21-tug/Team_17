@@ -1,7 +1,6 @@
 package com.example.loginsesame
 
 import android.content.Context
-import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import com.example.loginsesame.data.UserDao
 import com.example.loginsesame.data.UserDatabase
@@ -26,7 +25,7 @@ class VaultEntryTable {
         userDao = db.getUserDao()
         userDao.deleteAllUsers()
         vaultEntryDao = db.getVaultEntryDao()
-        vaultEntryDao.deleteAllEntrys()
+        vaultEntryDao.deleteAllEntries()
         val entity = VaultEntry(1, "account_x", "user_x", "password")
         vaultEntryDao.add(entity)
     }
@@ -35,7 +34,7 @@ class VaultEntryTable {
     @Throws(IOException::class)
     fun closeDb() {
         userDao.deleteAllUsers()
-        vaultEntryDao.deleteAllEntrys()
+        vaultEntryDao.deleteAllEntries()
         //db.close()
     }
 
@@ -44,17 +43,17 @@ class VaultEntryTable {
     fun addEntity(){
         val entity = VaultEntry(2, "account_z", "user_z", "password")
         vaultEntryDao.add(entity)
-        assert(vaultEntryDao.allEntrys().get(1) == entity)
+        assert(vaultEntryDao.allEntries().get(1) == entity)
     }
 
     @Test
     fun vaultEntry(){
-        assert(vaultEntryDao.getEntity("account_x") == vaultEntryDao.allEntrys().get(0))
+        assert(vaultEntryDao.getEntity("account_x") == vaultEntryDao.allEntries().get(0))
     }
 
     @Test
     fun removeEntity(){
-        vaultEntryDao.deleteVaultEntry(vaultEntryDao.allEntrys().get(0))
+        vaultEntryDao.deleteVaultEntry(vaultEntryDao.allEntries().get(0))
         assert(vaultEntryDao.getEntity("account_x") == null)
     }
 

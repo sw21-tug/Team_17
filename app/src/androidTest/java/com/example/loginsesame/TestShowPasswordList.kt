@@ -63,7 +63,7 @@ class TestShowPasswordList {
     @After
     @Throws(IOException::class)
     fun closeDb() {
-        vaultEntryDao.deleteAllEntrys()
+        vaultEntryDao.deleteAllEntries()
         userDao.deleteAllUsers()
     }
 
@@ -92,12 +92,12 @@ class TestShowPasswordList {
         logAssert.assertLogsExist(assertArr3)
 
 
-        assert(vaultEntryDao.allEntrys().size == 5)
-        assert(vaultEntryDao.getEntity("account_a") == vaultEntryDao.allEntrys().get(0))
-        assert(vaultEntryDao.getEntity("account_b") == vaultEntryDao.allEntrys().get(1))
-        assert(vaultEntryDao.getEntity("account_c") == vaultEntryDao.allEntrys().get(2))
-        assert(vaultEntryDao.getEntity("account_d") == vaultEntryDao.allEntrys().get(3))
-        assert(vaultEntryDao.getEntity("account_e") == vaultEntryDao.allEntrys().get(4))
+        assert(vaultEntryDao.allEntries().size == 5)
+        assert(vaultEntryDao.getEntity("account_a") == vaultEntryDao.allEntries().get(0))
+        assert(vaultEntryDao.getEntity("account_b") == vaultEntryDao.allEntries().get(1))
+        assert(vaultEntryDao.getEntity("account_c") == vaultEntryDao.allEntries().get(2))
+        assert(vaultEntryDao.getEntity("account_d") == vaultEntryDao.allEntries().get(3))
+        assert(vaultEntryDao.getEntity("account_e") == vaultEntryDao.allEntries().get(4))
 
         val recyclerView = activityRule.activity.findViewById<RecyclerView>(R.id.rvAccounts)
 

@@ -11,24 +11,20 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.room.Room
-import com.example.loginsesame.RecyclerViewAdapter.RecyclerAdapter
-import com.example.loginsesame.data.User
+import com.example.loginsesame.recyclerViewAdapter.RecyclerAdapter
 import com.example.loginsesame.data.UserDao
 import com.example.loginsesame.data.UserDatabase
 import com.example.loginsesame.data.VaultEntryDao
 import com.example.loginsesame.helper.LogTag
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import java.util.*
 
 
-lateinit var accountAdapter : RecyclerAdapter
+lateinit var accountAdapter: RecyclerAdapter
 
 class MainActivity : AppCompatActivity() {
 
-    val logTag = LogTag()
+    private val logTag = LogTag()
     var isLoggedIn = false //state if user is logged into the app
 
     private lateinit var db: UserDatabase
@@ -47,8 +43,7 @@ class MainActivity : AppCompatActivity() {
 
         var userExists = false
 
-        if(userDao.getAllUsers().isNotEmpty())
-        {
+        if (userDao.getAllUsers().isNotEmpty()) {
             userExists = true
         }
 
@@ -58,32 +53,30 @@ class MainActivity : AppCompatActivity() {
 
         Log.d(logTag.LOG_MAIN, "is Logged in = " + isLoggedIn)
         Log.d(logTag.LOG_MAIN, userDao.getAllUsers().size.toString())
-        if(!isLoggedIn && userExists){
+        if (!isLoggedIn && userExists) {
+            // if user has created account, and is not logged in open login
             openLoginActivity()
         }
 
-        if (!isLoggedIn && !userExists){
-            //create new user and automatically login
+        if (!isLoggedIn && !userExists) {
+            // create new user and automatically login
             openCreateActivity()
         }
 
         accountAdapter = RecyclerAdapter(mutableListOf())
 
-
         rvAccounts.adapter = accountAdapter
         rvAccounts.layoutManager = LinearLayoutManager(this)
 
-        for (entry in vaultEntryDao.allEntrys()) {
-            var acc = account(entry.Name, entry.username)
+        for (entry in vaultEntryDao.allEntries()) {
+            var acc = Account(entry.Name, entry.Username)
             accountAdapter.addAccount(acc)
         }
-
     }
 
 
     // Account creation
-    private fun openCreateActivity()
-    {
+    private fun openCreateActivity() {
         val intentCreateStartUp = Intent(this@MainActivity, CreateStartUp::class.java)
         this@MainActivity.startActivity(intentCreateStartUp)
     }
@@ -110,28 +103,28 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         val switchLanguage = item.itemId
 
-        if (switchLanguage == R.id.changeLanguage){
-            //Toast.makeText(this@MainActivity, "New Language", Toast.LENGTH_SHORT).show()
+        if (switchLanguage == R.id.changeLanguage) {
             showChangeLanguageDialog()
         }
 
         return super.onOptionsItemSelected(item)
     }
 
-    private fun showChangeLanguageDialog(){
+    private fun showChangeLanguageDialog() {
         val adb = AlertDialog.Builder(this)
         val items = arrayOf<CharSequence>(
-                getString(R.string.eng_Lang),
-                getString(R.string.ru_Lang))
+            getString(R.string.eng_Lang),
+            getString(R.string.ru_Lang)
+        )
 
         adb.setSingleChoiceItems(items, -1, DialogInterface.OnClickListener { arg0, arg1 ->
-            if(arg1 == 0)
+            if (arg1 == 0)
                 setLanguage("en")
             else if (arg1 == 1)
                 setLanguage("ru")
             //add more languages if needed
         })
-        adb.setPositiveButton("OK",  DialogInterface.OnClickListener { arg0, arg1 ->
+        adb.setPositiveButton("OK", DialogInterface.OnClickListener { arg0, arg1 ->
             //refresh application screen
             recreate()
         })
@@ -141,7 +134,7 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    private fun setLanguage(newLang: String){
+    private fun setLanguage(newLang: String) {
         val locale = Locale(newLang)
         Locale.setDefault(locale)
         val config = Configuration()

@@ -13,7 +13,7 @@ import androidx.room.PrimaryKey
 data class VaultEntry(
     @PrimaryKey(autoGenerate = true) val Id : Int,
     val Name : String,
-    val username: String,
+    val Username: String,
     val Password: String
     //@Ignore val UserID: Int
 )

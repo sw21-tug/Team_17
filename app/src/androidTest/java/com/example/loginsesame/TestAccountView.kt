@@ -45,7 +45,7 @@ class TestAccountView {
         db = UserDatabase.initDb(context)
         userDao = db.getUserDao()
         vaultEntryDao = db.getVaultEntryDao()
-        vaultEntryDao.deleteAllEntrys()
+        vaultEntryDao.deleteAllEntries()
         val entity1 = VaultEntry(1, "account_a", "user_a", "password")
         vaultEntryDao.add(entity1)
         val entity2 = VaultEntry(2, "account_b", "user_b", "password")
@@ -61,7 +61,7 @@ class TestAccountView {
     @After
     fun cleanup() {
         userDao.deleteAllUsers()
-        vaultEntryDao.deleteAllEntrys()
+        vaultEntryDao.deleteAllEntries()
         Intents.release()
     }
 

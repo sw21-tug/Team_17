@@ -11,10 +11,10 @@ interface VaultEntryDao {
     fun deleteVaultEntry(vaultEntry: VaultEntry)
 
     @Query ("DELETE FROM VaultEntry")
-    fun deleteAllEntrys()
+    fun deleteAllEntries()
 
     @Query("SELECT * FROM VaultEntry")
-    fun allEntrys(): List<VaultEntry>
+    fun allEntries(): List<VaultEntry>
 
     @Query("SELECT * FROM VaultEntry WHERE name = :asked_name")
     fun getEntity(asked_name : String): VaultEntry

@@ -24,6 +24,8 @@ class CreateStartUp : AppCompatActivity() {
         val userDao = db.getUserDao()
 
         val okButton = findViewById<Button>(R.id.okButton)
+        val cancelButton = findViewById<Button>(R.id.cancelButton)
+
         okButton.setOnClickListener {
             val email = findViewById<EditText>(R.id.email).text.toString()
             val username = findViewById<EditText>(R.id.username).text.toString()
@@ -42,7 +44,6 @@ class CreateStartUp : AppCompatActivity() {
             startActivity(intentMain)
         }
 
-        val cancelButton = findViewById<Button>(R.id.cancelButton)
         cancelButton.setOnClickListener {
             Log.d(logTag.LOG_STARTUP, "cancelButton")
             val intentMain = Intent(this@CreateStartUp, MainActivity::class.java)
