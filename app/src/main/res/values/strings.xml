@@ -1,18 +1,19 @@
 <resources>
     <string name="app_name">Login Sesame</string>
-    <string name="username"></string>
-    <string name="choose_username">Choose Username</string>
+    <string name="user_name"></string>
     <string name="password"></string>
-    <string name="choose_password">Choose Password</string>
     <string name="email"></string>
-    <string name="enter_your_email">Enter your E-mail</string>
-    <string name="ok">Ok</string>
-    <string name="cancel">Cancel</string>
-    <string name="input_pwd_hint">Please input your password</string>
-    <string name="setLanguage">Set App Language</string>
-    <string name="eng_Lang">English</string>
-    <string name="ru_Lang">Russian</string>
+    <string name="registration_choose_username">Choose Username</string>
+    <string name="registration_choose_pwd">Choose Password</string>
+    <string name="registration_enter_email">Enter your E-mail</string>
+    <string name="btn_ok">OK</string>
+    <string name="btn_cancel">Cancel</string>
+    <string name="hint_input_password">Please input your password</string>
+    <string name="language_set_text">Set App Language</string>
+    <string name="language_en">English</string>
+    <string name="language_ru">Russian</string>
     <string name="language_chooser_title">Please Choose New Language</string>
-    <string name="too_many_users">Too many Users in Database, check Support for help</string>
-    <string name="incorrect_pwd">Incorrect Password</string>
+    <string name="error_too_many_users_in_db">Too many Users in Database, check Support for help</string>
+    <string name="error_incorrect_pwd">Incorrect Password</string>
+    <string name="pwd_overview_text">TextView</string>
 </resources>

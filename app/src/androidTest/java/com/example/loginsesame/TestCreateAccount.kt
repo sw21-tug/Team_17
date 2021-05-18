@@ -1,28 +1,22 @@
 package com.example.loginsesame
 
 import android.content.Context
-import android.view.View
-import android.view.inputmethod.InputMethodManager
 import androidx.test.core.app.ApplicationProvider
-import androidx.test.espresso.Espresso
 import androidx.test.espresso.Espresso.closeSoftKeyboard
 import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.action.ViewActions
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.action.ViewActions.typeText
-import androidx.test.espresso.intent.Intents
 import androidx.test.espresso.matcher.ViewMatchers.withId
-import androidx.test.platform.app.InstrumentationRegistry
+import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import androidx.test.rule.ActivityTestRule
 import com.example.loginsesame.data.UserDao
 import com.example.loginsesame.data.UserDatabase
 import com.example.loginsesame.helper.LogAssert
-import org.junit.*
-
+import org.junit.After
+import org.junit.Before
+import org.junit.Rule
+import org.junit.Test
 import org.junit.runner.RunWith
-
-import org.junit.Assert.*
 
 @RunWith(AndroidJUnit4::class)
 class TestCreateAccount {
@@ -32,7 +26,7 @@ class TestCreateAccount {
 
     @Rule
     @JvmField
-    val rule: ActivityTestRule<CreateStartUp> = ActivityTestRule(CreateStartUp::class.java)
+    val rule: ActivityScenarioRule<CreateStartUp> = ActivityScenarioRule(CreateStartUp::class.java)
 
     @Before
     fun initDb(){

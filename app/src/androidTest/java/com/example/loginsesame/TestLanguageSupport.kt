@@ -1,8 +1,6 @@
 package com.example.loginsesame
 
 import android.content.Context
-import androidx.room.Room
-import androidx.test.core.app.ActivityScenario
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.Espresso
 import androidx.test.espresso.Espresso.openActionBarOverflowOrOptionsMenu
@@ -14,7 +12,6 @@ import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry.getInstrumentation
-import androidx.test.rule.ActivityTestRule
 import com.example.loginsesame.data.User
 import com.example.loginsesame.data.UserDao
 import com.example.loginsesame.data.UserDatabase
@@ -32,7 +29,7 @@ class TestLanguageSupport {
 
     @Rule
     @JvmField
-    val rule: ActivityTestRule<MainActivity> = ActivityTestRule(MainActivity::class.java)
+    val rule: ActivityScenarioRule<MainActivity> = ActivityScenarioRule(MainActivity::class.java)
 
     @Before
     fun initDbAndIntents() {
@@ -71,13 +68,13 @@ class TestLanguageSupport {
         //open menu
         openActionBarOverflowOrOptionsMenu(getInstrumentation().targetContext)
         //set language
-        Espresso.onView(withText(R.string.setLanguage)).perform(ViewActions.click())
-        Espresso.onView(withText(R.string.eng_Lang)).perform(ViewActions.click())
-        Espresso.onView(withText("OK")).perform(ViewActions.click())
+        Espresso.onView(withText(R.string.language_set_text)).perform(ViewActions.click())
+        Espresso.onView(withText(R.string.language_en)).perform(ViewActions.click())
+        Espresso.onView(withText(R.string.btn_ok)).perform(ViewActions.click())
 
         openActionBarOverflowOrOptionsMenu(getInstrumentation().targetContext)
         //assert if text is russian
-        Espresso.onView(withText(R.string.setLanguage)).check(matches(withText("Set App Language")))
+        Espresso.onView(withText(R.string.language_set_text)).check(matches(withText("Set App Language")))
 
     }
 
@@ -94,13 +91,13 @@ class TestLanguageSupport {
         //open menu
         openActionBarOverflowOrOptionsMenu(getInstrumentation().targetContext)
         //set language
-        Espresso.onView(withText(R.string.setLanguage)).perform(ViewActions.click())
-        Espresso.onView(withText(R.string.ru_Lang)).perform(ViewActions.click())
-        Espresso.onView(withText("OK")).perform(ViewActions.click())
+        Espresso.onView(withText(R.string.language_set_text)).perform(ViewActions.click())
+        Espresso.onView(withText(R.string.language_ru)).perform(ViewActions.click())
+        Espresso.onView(withText(R.string.btn_ok)).perform(ViewActions.click())
 
         openActionBarOverflowOrOptionsMenu(getInstrumentation().targetContext)
         //assert if text is russian
-        Espresso.onView(withText(R.string.setLanguage)).check(matches(withText("Установите язык на русский")))
+        Espresso.onView(withText(R.string.language_set_text)).check(matches(withText("Установите язык на русский")))
 
     }
 

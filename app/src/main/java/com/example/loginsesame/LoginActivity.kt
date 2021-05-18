@@ -8,7 +8,6 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import com.example.loginsesame.data.User
-import com.example.loginsesame.data.UserDao
 import com.example.loginsesame.data.UserDatabase
 import com.example.loginsesame.data.UserRepository
 import com.example.loginsesame.helper.LogTag
@@ -16,7 +15,6 @@ import kotlinx.coroutines.*
 
 class LoginActivity : AppCompatActivity() {
     val logTag = LogTag()
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,7 +44,7 @@ class LoginActivity : AppCompatActivity() {
                 Log.e(logTag.LOG_LOGIN, "Invalid number of Users in Database " + createdUsers.size)
                 Toast.makeText(
                     this@LoginActivity,
-                    getText(R.string.too_many_users),
+                    getText(R.string.error_too_many_users_in_db),
                     Toast.LENGTH_SHORT
                 ).show()
             } else {
@@ -62,7 +60,7 @@ class LoginActivity : AppCompatActivity() {
                     Log.d(logTag.LOG_LOGIN, "Incorrect Password")
                     Toast.makeText(
                         this@LoginActivity,
-                        getText(R.string.incorrect_pwd),
+                        getText(R.string.error_incorrect_pwd),
                         Toast.LENGTH_SHORT
                     ).show()
                     etInputPassword.text.clear()
@@ -85,5 +83,4 @@ class LoginActivity : AppCompatActivity() {
     override fun onBackPressed() {
         Log.d(logTag.LOG_LOGIN, "Back-Button Pressed With No Action")
     }
-
 }
