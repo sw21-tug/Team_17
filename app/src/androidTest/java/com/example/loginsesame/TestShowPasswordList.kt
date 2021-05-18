@@ -1,6 +1,5 @@
 package com.example.loginsesame
 
-
 import android.content.Context
 import android.util.Log
 import androidx.recyclerview.widget.RecyclerView
@@ -24,17 +23,14 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import java.io.IOException
 import kotlin.jvm.Throws
 
 
-/**
- * Instrumented test, which will execute on an Android device.
- *
- * See [testing documentation](http://d.android.com/tools/testing).
- */
 @RunWith(AndroidJUnit4::class)
-class TestAccountView {
+class TestShowPasswordList {
 
+    // View is tested in TestAccountView.kt
     private lateinit var vaultEntryDao: VaultEntryDao
     private lateinit var userDao: UserDao
     private lateinit var db: UserDatabase
@@ -42,21 +38,14 @@ class TestAccountView {
     @get:Rule
     var activityRule = ActivityTestRule(MainActivity::class.java)
 
-    @After
-    fun cleanup() {
-        userDao.deleteAllUsers()
-        vaultEntryDao.deleteAllEntrys()
-        Intents.release()
-    }
-
     @Before
     fun createDb() {
         Intents.init()
         val context = ApplicationProvider.getApplicationContext<Context>()
         db = UserDatabase.initDb(context)
         userDao = db.getUserDao()
+
         vaultEntryDao = db.getVaultEntryDao()
-        vaultEntryDao.deleteAllEntrys()
         val entity1 = VaultEntry(1, "account_a", "user_a", "password")
         vaultEntryDao.add(entity1)
         val entity2 = VaultEntry(2, "account_b", "user_b", "password")
@@ -67,13 +56,20 @@ class TestAccountView {
         vaultEntryDao.add(entity4)
         val entity5 = VaultEntry(5, "account_e", "user_e", "password")
         vaultEntryDao.add(entity5)
+
     }
 
 
-    @Test
-    @Throws(InterruptedException::class)
-    fun testVisibilityRecyclerView() {
+    @After
+    @Throws(IOException::class)
+    fun closeDb() {
+        vaultEntryDao.deleteAllEntrys()
+        userDao.deleteAllUsers()
+    }
 
+    @Test
+    @Throws(Exception::class)
+    fun checkDatabaseAndView() {
         val logAssert = LogAssert()
         Espresso.onView(ViewMatchers.withId(R.id.username)).perform(ViewActions.typeText("randomUsername"))
         Espresso.onView(ViewMatchers.withId(R.id.password)).perform(ViewActions.typeText("randomPassword"))
@@ -94,6 +90,14 @@ class TestAccountView {
         logAssert.assertLogsExist(assertArr1)
         logAssert.assertLogsExist(assertArr2)
         logAssert.assertLogsExist(assertArr3)
+
+
+        assert(vaultEntryDao.allEntrys().size == 5)
+        assert(vaultEntryDao.getEntity("account_a") == vaultEntryDao.allEntrys().get(0))
+        assert(vaultEntryDao.getEntity("account_b") == vaultEntryDao.allEntrys().get(1))
+        assert(vaultEntryDao.getEntity("account_c") == vaultEntryDao.allEntrys().get(2))
+        assert(vaultEntryDao.getEntity("account_d") == vaultEntryDao.allEntrys().get(3))
+        assert(vaultEntryDao.getEntity("account_e") == vaultEntryDao.allEntrys().get(4))
 
         val recyclerView = activityRule.activity.findViewById<RecyclerView>(R.id.rvAccounts)
 
@@ -109,42 +113,11 @@ class TestAccountView {
                 )
             )
             .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
-    }
 
 
-    @Test
-    @Throws(InterruptedException::class)
-    fun checkInsertionTest() {
-
-        val logAssert = LogAssert()
-        Espresso.onView(ViewMatchers.withId(R.id.username)).perform(ViewActions.typeText("randomUsername"))
-        Espresso.onView(ViewMatchers.withId(R.id.password)).perform(ViewActions.typeText("randomPassword"))
-        // for mobile phones like Galaxy Nexus (small screen)
-        Espresso.closeSoftKeyboard()
-        Espresso.onView(ViewMatchers.withId(R.id.email)).perform(ViewActions.typeText("randomE-Mail"))
-
-
-        //closing keyboard to press ok Button
-        Espresso.closeSoftKeyboard()
-        Thread.sleep(1000)
-
-        Espresso.onView(ViewMatchers.withId(R.id.okButton)).perform(ViewActions.click())
-
-        val assertArr1 = arrayOf("randomUsername")
-        val assertArr2 = arrayOf("randomPassword")
-        val assertArr3 = arrayOf("randomE-Mail")
-        logAssert.assertLogsExist(assertArr1)
-        logAssert.assertLogsExist(assertArr2)
-        logAssert.assertLogsExist(assertArr3)
-
-
-        val recyclerView = activityRule.activity.findViewById<RecyclerView>(R.id.rvAccounts)
-
-        print(recyclerView.adapter?.itemCount)
         Log.d("COUNT: ", recyclerView.adapter?.itemCount.toString())
 
-
-        assert(recyclerView.adapter?.itemCount != 0)
-
+        assert(recyclerView.adapter?.itemCount == 5)
     }
+
 }

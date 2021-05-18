@@ -10,15 +10,21 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.room.Room
+import com.example.loginsesame.RecyclerViewAdapter.RecyclerAdapter
 import com.example.loginsesame.data.User
 import com.example.loginsesame.data.UserDao
 import com.example.loginsesame.data.UserDatabase
+import com.example.loginsesame.data.VaultEntryDao
 import com.example.loginsesame.helper.LogTag
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.util.*
 
+
+lateinit var accountAdapter : RecyclerAdapter
 
 class MainActivity : AppCompatActivity() {
 
@@ -27,6 +33,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var db: UserDatabase
     private lateinit var userDao: UserDao
+    private lateinit var vaultEntryDao: VaultEntryDao
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,6 +43,7 @@ class MainActivity : AppCompatActivity() {
 
         db = UserDatabase.initDb(this)
         userDao = db.getUserDao()
+        vaultEntryDao = db.getVaultEntryDao()
 
         var userExists = false
 
@@ -59,7 +67,19 @@ class MainActivity : AppCompatActivity() {
             openCreateActivity()
         }
 
+        accountAdapter = RecyclerAdapter(mutableListOf())
+
+
+        rvAccounts.adapter = accountAdapter
+        rvAccounts.layoutManager = LinearLayoutManager(this)
+
+        for (entry in vaultEntryDao.allEntrys()) {
+            var acc = account(entry.Name, entry.username)
+            accountAdapter.addAccount(acc)
+        }
+
     }
+
 
     // Account creation
     private fun openCreateActivity()

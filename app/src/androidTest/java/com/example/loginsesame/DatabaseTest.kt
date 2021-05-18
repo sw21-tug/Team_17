@@ -3,6 +3,7 @@ package com.example.loginsesame
 import android.content.Context
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
+import androidx.test.espresso.intent.Intents
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.example.loginsesame.data.User
 import com.example.loginsesame.data.UserDao
@@ -31,7 +32,7 @@ class DatabaseTest {
     @Throws(IOException::class)
     fun closeDb() {
         userDao.deleteAllUsers()
-
+        Intents.release()
     }
 
     @Test
