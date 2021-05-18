@@ -1,4 +1,4 @@
-package com.example.loginsesame
+package com.example.loginsesame.database
 
 import android.content.Context
 import androidx.room.Room

@@ -1,4 +1,4 @@
-package com.example.loginsesame
+package com.example.loginsesame.database
 
 import android.content.Context
 import android.util.Log
@@ -12,6 +12,8 @@ import androidx.test.espresso.matcher.RootMatchers
 import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.rule.ActivityTestRule
+import com.example.loginsesame.MainActivity
+import com.example.loginsesame.R
 import com.example.loginsesame.data.UserDao
 import com.example.loginsesame.data.UserDatabase
 import com.example.loginsesame.data.VaultEntry
@@ -28,7 +30,7 @@ import kotlin.jvm.Throws
 
 
 @RunWith(AndroidJUnit4::class)
-class TestShowPasswordList {
+class TestDatabaseUsers {
 
     // View is tested in TestAccountView.kt
     private lateinit var vaultEntryDao: VaultEntryDao
@@ -62,14 +64,14 @@ class TestShowPasswordList {
 
     @After
     @Throws(IOException::class)
-    fun closeDb() {
+    fun cleanup() {
         vaultEntryDao.deleteAllEntries()
         userDao.deleteAllUsers()
     }
 
     @Test
     @Throws(Exception::class)
-    fun checkDatabaseAndView() {
+    fun testAddNewUsersAndInsertVaultEntries() {
         val logAssert = LogAssert()
         Espresso.onView(ViewMatchers.withId(R.id.username)).perform(ViewActions.typeText("randomUsername"))
         Espresso.onView(ViewMatchers.withId(R.id.password)).perform(ViewActions.typeText("randomPassword"))

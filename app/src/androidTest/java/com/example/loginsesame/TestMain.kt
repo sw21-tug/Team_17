@@ -47,7 +47,7 @@ class TestMain {
 
     @Test
     @Throws(Exception::class)
-    fun createActivityOpened(){
+    fun testOpenCreateUserWhenEmptyDb(){
         userDao.deleteAllUsers()
         Thread.sleep(1000)
 
@@ -57,7 +57,7 @@ class TestMain {
 
     @Test
     @Throws(Exception::class)
-    fun loginActivityOpened(){
+    fun testLoginWhenNonEmptyDB(){
         userDao.deleteAllUsers()
         val user = User(1, "Max Musterman", "test@mail.com", "123456789")
         userDao.insertUser(user)

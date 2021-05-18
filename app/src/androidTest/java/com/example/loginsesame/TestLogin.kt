@@ -61,7 +61,7 @@ class TestLogin {
     }
 
     @Test
-    fun testCorrectPasswortClickOk() {
+    fun testCorrectPasswordClickOk() {
         onView(withId(R.id.etInputPassword)).perform(ViewActions.typeText("123456789"))
 
         Espresso.closeSoftKeyboard()
@@ -74,7 +74,7 @@ class TestLogin {
     }
 
     @Test
-    fun testIncorrectPasswortClickOk() {
+    fun testIncorrectPasswordClickOk() {
 
         val logAssert = LogAssert()
         onView(withId(R.id.etInputPassword)).perform(ViewActions.typeText("randomPassword1"))
@@ -90,7 +90,7 @@ class TestLogin {
 
 
     @Test
-    fun testIncorrectPasswortClickCancel() {
+    fun testIncorrectPasswordClickCancel() {
         val logAssert = LogAssert()
         onView(withId(R.id.etInputPassword)).perform(ViewActions.typeText("randomPassword1"))
 
