@@ -113,8 +113,8 @@ class MainActivity : AppCompatActivity() {
     private fun showChangeLanguageDialog() {
         val adb = AlertDialog.Builder(this)
         val items = arrayOf<CharSequence>(
-            getString(R.string.eng_Lang),
-            getString(R.string.ru_Lang)
+            getString(R.string.language_en),
+            getString(R.string.language_ru)
         )
 
         adb.setSingleChoiceItems(items, -1, DialogInterface.OnClickListener { arg0, arg1 ->
