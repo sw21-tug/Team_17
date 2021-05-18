@@ -49,7 +49,7 @@ class TestMain {
         val currentActivity = getActivityInstance()
         val currentActivityName = currentActivity?.componentName?.className
 
-        assert(currentActivityName.toString().equals("com.example.loginsesame.CreateStartUp"))
+        assert(currentActivityName.toString().equals("com.example.loginsesame.CreateNewUserActivity"))
     }
 
     private fun getActivityInstance(): Activity? {

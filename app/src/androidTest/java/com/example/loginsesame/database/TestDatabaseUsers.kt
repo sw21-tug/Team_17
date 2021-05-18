@@ -76,18 +76,18 @@ class TestDatabaseUsers {
     @Throws(Exception::class)
     fun testAddNewUsersAndInsertVaultEntries() {
         val logAssert = LogAssert()
-        Espresso.onView(ViewMatchers.withId(R.id.username)).perform(ViewActions.typeText("randomUsername"))
-        Espresso.onView(ViewMatchers.withId(R.id.password)).perform(ViewActions.typeText("randomPassword"))
+        Espresso.onView(ViewMatchers.withId(R.id.etUsername)).perform(ViewActions.typeText("randomUsername"))
+        Espresso.onView(ViewMatchers.withId(R.id.etPassword)).perform(ViewActions.typeText("randomPassword"))
         // for mobile phones like Galaxy Nexus (small screen)
         Espresso.closeSoftKeyboard()
-        Espresso.onView(ViewMatchers.withId(R.id.email)).perform(ViewActions.typeText("randomE-Mail"))
+        Espresso.onView(ViewMatchers.withId(R.id.etEmail)).perform(ViewActions.typeText("randomE-Mail"))
 
 
         //closing keyboard to press ok Button
         Espresso.closeSoftKeyboard()
         Thread.sleep(1000)
 
-        Espresso.onView(ViewMatchers.withId(R.id.okButton)).perform(ViewActions.click())
+        Espresso.onView(ViewMatchers.withId(R.id.btnOk)).perform(ViewActions.click())
 
         val assertArr1 = arrayOf("randomUsername")
         val assertArr2 = arrayOf("randomPassword")

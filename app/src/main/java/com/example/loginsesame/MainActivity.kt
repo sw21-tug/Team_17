@@ -69,7 +69,7 @@ class MainActivity : AppCompatActivity() {
         rvAccounts.layoutManager = LinearLayoutManager(this)
 
         for (entry in vaultEntryDao.allEntries()) {
-            var acc = Account(entry.Name, entry.Username)
+            val acc = Account(entry.Name, entry.Username)
             accountAdapter.addAccount(acc)
         }
     }
@@ -77,7 +77,7 @@ class MainActivity : AppCompatActivity() {
 
     // Account creation
     private fun openCreateActivity() {
-        val intentCreateStartUp = Intent(this@MainActivity, CreateStartUp::class.java)
+        val intentCreateStartUp = Intent(this@MainActivity, CreateNewUserActivity::class.java)
         this@MainActivity.startActivity(intentCreateStartUp)
     }
 

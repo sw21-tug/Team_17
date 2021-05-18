@@ -26,7 +26,7 @@ class TestCreateAccount {
 
     @Rule
     @JvmField
-    val rule: ActivityScenarioRule<CreateStartUp> = ActivityScenarioRule(CreateStartUp::class.java)
+    val rule: ActivityScenarioRule<CreateNewUserActivity> = ActivityScenarioRule(CreateNewUserActivity::class.java)
 
     @Before
     fun initDb(){
@@ -50,19 +50,19 @@ class TestCreateAccount {
     fun testIfOkButtonIsClickable() {
 
         val logAssert = LogAssert()
-        onView(withId(R.id.username)).perform(typeText("randomUsername"))
-        onView(withId(R.id.password)).perform(typeText("randomPassword"))
+        onView(withId(R.id.etUsername)).perform(typeText("randomUsername"))
+        onView(withId(R.id.etPassword)).perform(typeText("randomPassword"))
 
         // for mobile phones like Galaxy Nexus (small screen)
         closeSoftKeyboard()
-        onView(withId(R.id.email)).perform(typeText("randomE-Mail"))
+        onView(withId(R.id.etEmail)).perform(typeText("randomE-Mail"))
 
 
         //closing keyboard to press ok Button
         closeSoftKeyboard()
         Thread.sleep(1000)
 
-        onView(withId(R.id.okButton)).perform(click())
+        onView(withId(R.id.btnOk)).perform(click())
 
         val assertArr1 = arrayOf("randomUsername")
         val assertArr2 = arrayOf("randomPassword")
@@ -76,7 +76,7 @@ class TestCreateAccount {
     fun testIfCancelButtonIsClickable() {
 
         val logAssert = LogAssert()
-        onView(withId(R.id.cancelButton)).perform(click())
+        onView(withId(R.id.btnCancel)).perform(click())
 
         val assertArr = arrayOf("cancelButton")
         logAssert.assertLogsExist(assertArr)
