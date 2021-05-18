@@ -9,9 +9,9 @@ import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.intent.Intents
 import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.espresso.matcher.ViewMatchers.withText
+import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry.getInstrumentation
-import androidx.test.rule.ActivityTestRule
 import com.example.loginsesame.data.User
 import com.example.loginsesame.data.UserDao
 import com.example.loginsesame.data.UserDatabase
@@ -29,7 +29,7 @@ class TestLanguageSupport {
 
     @Rule
     @JvmField
-    val rule: ActivityTestRule<MainActivity> = ActivityTestRule(MainActivity::class.java)
+    val rule: ActivityScenarioRule<MainActivity> = ActivityScenarioRule(MainActivity::class.java)
 
     @Before
     fun initDbAndIntents() {
@@ -70,7 +70,7 @@ class TestLanguageSupport {
         //set language
         Espresso.onView(withText(R.string.language_set_text)).perform(ViewActions.click())
         Espresso.onView(withText(R.string.language_en)).perform(ViewActions.click())
-        Espresso.onView(withText("OK")).perform(ViewActions.click())
+        Espresso.onView(withText(R.string.btn_ok)).perform(ViewActions.click())
 
         openActionBarOverflowOrOptionsMenu(getInstrumentation().targetContext)
         //assert if text is russian
@@ -93,7 +93,7 @@ class TestLanguageSupport {
         //set language
         Espresso.onView(withText(R.string.language_set_text)).perform(ViewActions.click())
         Espresso.onView(withText(R.string.language_ru)).perform(ViewActions.click())
-        Espresso.onView(withText("OK")).perform(ViewActions.click())
+        Espresso.onView(withText(R.string.btn_ok)).perform(ViewActions.click())
 
         openActionBarOverflowOrOptionsMenu(getInstrumentation().targetContext)
         //assert if text is russian

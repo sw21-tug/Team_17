@@ -117,14 +117,14 @@ class MainActivity : AppCompatActivity() {
             getString(R.string.language_ru)
         )
 
-        adb.setSingleChoiceItems(items, -1, DialogInterface.OnClickListener { arg0, arg1 ->
+        adb.setSingleChoiceItems(items, -1, DialogInterface.OnClickListener { _, arg1 ->
             if (arg1 == 0)
                 setLanguage("en")
             else if (arg1 == 1)
                 setLanguage("ru")
             //add more languages if needed
         })
-        adb.setPositiveButton("OK", DialogInterface.OnClickListener { arg0, arg1 ->
+        adb.setPositiveButton("OK", DialogInterface.OnClickListener { _, _ ->
             //refresh application screen
             recreate()
         })

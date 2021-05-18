@@ -1,20 +1,17 @@
 package com.example.loginsesame.database
 
 import android.content.Context
-import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
-import androidx.test.espresso.intent.Intents
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.example.loginsesame.data.User
 import com.example.loginsesame.data.UserDao
 import com.example.loginsesame.data.UserDatabase
+import org.junit.After
+import org.junit.Assert
+import org.junit.Before
+import org.junit.Test
 import org.junit.runner.RunWith
 import java.io.IOException
-import kotlin.Throws
-import androidx.test.rule.ActivityTestRule
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.runBlocking
-import org.junit.*
 
 @RunWith(AndroidJUnit4::class)
 class TestDatabase {
@@ -26,13 +23,13 @@ class TestDatabase {
         val context = ApplicationProvider.getApplicationContext<Context>()
         db = UserDatabase.initDb(context)
         userDao = db.getUserDao()
+        userDao.deleteAllUsers()
     }
 
     @After
     @Throws(IOException::class)
     fun closeDb() {
         userDao.deleteAllUsers()
-        Intents.release()
     }
 
     @Test

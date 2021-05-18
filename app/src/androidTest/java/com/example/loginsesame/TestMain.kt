@@ -1,72 +1,65 @@
 package com.example.loginsesame
 
+import android.app.Activity
 import android.content.Context
-import android.content.Intent
-import android.service.autofill.UserData
-import androidx.room.Room
+import android.util.Log
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.intent.Intents
-import androidx.test.espresso.intent.Intents.intended
-import androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent
-import androidx.test.espresso.intent.rule.IntentsTestRule
-import androidx.test.rule.ActivityTestRule
+import androidx.test.ext.junit.rules.ActivityScenarioRule
+import androidx.test.platform.app.InstrumentationRegistry.getInstrumentation
+import androidx.test.runner.lifecycle.ActivityLifecycleMonitorRegistry
+import androidx.test.runner.lifecycle.Stage
 import com.example.loginsesame.data.User
 import com.example.loginsesame.data.UserDao
 import com.example.loginsesame.data.UserDatabase
-import org.junit.*
+import org.junit.After
+import org.junit.Before
+import org.junit.Rule
+import org.junit.Test
 import java.io.IOException
-import kotlin.jvm.Throws
 
 
 class TestMain {
     private lateinit var userDao: UserDao
     private lateinit var db: UserDatabase
+    private var currentActivity: Activity? = null
 
     @Rule
     @JvmField
-    val rule = ActivityTestRule(MainActivity::class.java)
+    val rule = ActivityScenarioRule(MainActivity::class.java)
 
     @Before
     fun initDb() {
         val context = ApplicationProvider.getApplicationContext<Context>()
         db = UserDatabase.initDb(context)
         userDao = db.getUserDao()
-    }
-
-    @Before
-    fun init() {
-        Intents.init()
+        Thread.sleep(1000)
     }
 
     @After
     @Throws(IOException::class)
     fun cleanup() {
         userDao.deleteAllUsers()
-        Intents.release()
     }
 
     @Test
     @Throws(Exception::class)
     fun testOpenCreateUserWhenEmptyDb(){
-        userDao.deleteAllUsers()
-        Thread.sleep(1000)
 
-        rule.launchActivity(Intent())
-        intended(hasComponent(CreateStartUp::class.java.name))
+        val currentActivity = getActivityInstance()
+        val currentActivityName = currentActivity?.componentName?.className
+
+        assert(currentActivityName.toString().equals("com.example.loginsesame.CreateStartUp"))
     }
 
-    @Test
-    @Throws(Exception::class)
-    fun testLoginWhenNonEmptyDB(){
-        userDao.deleteAllUsers()
-        val user = User(1, "Max Musterman", "test@mail.com", "123456789")
-        userDao.insertUser(user)
-        Thread.sleep(1000)
-
-        rule.launchActivity(Intent())
-
-        intended(hasComponent(LoginActivity::class.java.name))
+    private fun getActivityInstance(): Activity? {
+        getInstrumentation().runOnMainSync {
+            val resumedActivities: Collection<*> =
+                ActivityLifecycleMonitorRegistry.getInstance().getActivitiesInStage(Stage.RESUMED)
+            if (resumedActivities.iterator().hasNext()) {
+                currentActivity = resumedActivities.iterator().next() as Activity?
+            }
+        }
+        return currentActivity
     }
-
-
 }

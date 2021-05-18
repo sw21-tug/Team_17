@@ -1,7 +1,7 @@
 package com.example.loginsesame.database
 
+import android.app.Activity
 import android.content.Context
-import android.util.Log
 import androidx.recyclerview.widget.RecyclerView
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.Espresso
@@ -10,8 +10,11 @@ import androidx.test.espresso.assertion.ViewAssertions
 import androidx.test.espresso.intent.Intents
 import androidx.test.espresso.matcher.RootMatchers
 import androidx.test.espresso.matcher.ViewMatchers
+import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import androidx.test.rule.ActivityTestRule
+import androidx.test.platform.app.InstrumentationRegistry
+import androidx.test.runner.lifecycle.ActivityLifecycleMonitorRegistry
+import androidx.test.runner.lifecycle.Stage
 import com.example.loginsesame.MainActivity
 import com.example.loginsesame.R
 import com.example.loginsesame.data.UserDao
@@ -26,7 +29,6 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import java.io.IOException
-import kotlin.jvm.Throws
 
 
 @RunWith(AndroidJUnit4::class)
@@ -36,9 +38,10 @@ class TestDatabaseUsers {
     private lateinit var vaultEntryDao: VaultEntryDao
     private lateinit var userDao: UserDao
     private lateinit var db: UserDatabase
+    private var currentActivity: Activity? = null
 
     @get:Rule
-    var activityRule = ActivityTestRule(MainActivity::class.java)
+    var activityRule = ActivityScenarioRule(MainActivity::class.java)
 
     @Before
     fun createDb() {
@@ -95,31 +98,39 @@ class TestDatabaseUsers {
 
 
         assert(vaultEntryDao.allEntries().size == 5)
-        assert(vaultEntryDao.getEntity("account_a") == vaultEntryDao.allEntries().get(0))
-        assert(vaultEntryDao.getEntity("account_b") == vaultEntryDao.allEntries().get(1))
-        assert(vaultEntryDao.getEntity("account_c") == vaultEntryDao.allEntries().get(2))
-        assert(vaultEntryDao.getEntity("account_d") == vaultEntryDao.allEntries().get(3))
-        assert(vaultEntryDao.getEntity("account_e") == vaultEntryDao.allEntries().get(4))
+        assert(vaultEntryDao.getEntity("account_a") == vaultEntryDao.allEntries()[0])
+        assert(vaultEntryDao.getEntity("account_b") == vaultEntryDao.allEntries()[1])
+        assert(vaultEntryDao.getEntity("account_c") == vaultEntryDao.allEntries()[2])
+        assert(vaultEntryDao.getEntity("account_d") == vaultEntryDao.allEntries()[3])
+        assert(vaultEntryDao.getEntity("account_e") == vaultEntryDao.allEntries()[4])
+        val currentActivity = getActivityInstance()
+        val recyclerView = currentActivity?.findViewById<RecyclerView>(R.id.rvAccounts)
 
-        val recyclerView = activityRule.activity.findViewById<RecyclerView>(R.id.rvAccounts)
-
-        recyclerView.adapter?.itemCount
+        recyclerView?.adapter?.itemCount
 
         Thread.sleep(1000)
         Espresso.onView(ViewMatchers.withId(R.id.rvAccounts))
             .inRoot(
                 RootMatchers.withDecorView(
                     Matchers.`is`(
-                        activityRule.activity.window.decorView
+                        currentActivity?.window?.decorView
                     )
                 )
             )
             .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
 
+        assert(recyclerView?.adapter?.itemCount == 5)
+    }
 
-        Log.d("COUNT: ", recyclerView.adapter?.itemCount.toString())
-
-        assert(recyclerView.adapter?.itemCount == 5)
+    private fun getActivityInstance(): Activity? {
+        InstrumentationRegistry.getInstrumentation().runOnMainSync {
+            val resumedActivities: Collection<*> =
+                ActivityLifecycleMonitorRegistry.getInstance().getActivitiesInStage(Stage.RESUMED)
+            if (resumedActivities.iterator().hasNext()) {
+                currentActivity = resumedActivities.iterator().next() as Activity?
+            }
+        }
+        return currentActivity
     }
 
 }

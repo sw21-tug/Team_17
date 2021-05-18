@@ -7,7 +7,7 @@
     <string name="registration_enter_email">введите адрес электронной почты</string>
     <string name="registration_choose_username">Выберите имя пользователя</string>
     <string name="registration_choose_pwd">Выберите пароль</string>
-    <string name="btn_ok">ОK</string>
+    <string name="btn_ok">OK</string>
     <string name="btn_cancel">отмена</string>
     <string name="hint_input_password">введите пароль</string>
     <string name="language_set_text">Установите язык на русский</string>
