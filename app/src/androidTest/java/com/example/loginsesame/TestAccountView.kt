@@ -27,11 +27,7 @@ import org.junit.runner.RunWith
 import kotlin.jvm.Throws
 
 
-/**
- * Instrumented test, which will execute on an Android device.
- *
- * See [testing documentation](http://d.android.com/tools/testing).
- */
+
 @RunWith(AndroidJUnit4::class)
 class TestAccountView {
 
@@ -42,15 +38,8 @@ class TestAccountView {
     @get:Rule
     var activityRule = ActivityTestRule(MainActivity::class.java)
 
-    @After
-    fun cleanup() {
-        userDao.deleteAllUsers()
-        vaultEntryDao.deleteAllEntrys()
-        Intents.release()
-    }
-
     @Before
-    fun createDb() {
+    fun initDb() {
         Intents.init()
         val context = ApplicationProvider.getApplicationContext<Context>()
         db = UserDatabase.initDb(context)
@@ -69,18 +58,24 @@ class TestAccountView {
         vaultEntryDao.add(entity5)
     }
 
+    @After
+    fun cleanup() {
+        userDao.deleteAllUsers()
+        vaultEntryDao.deleteAllEntrys()
+        Intents.release()
+    }
 
     @Test
     @Throws(InterruptedException::class)
-    fun testVisibilityRecyclerView() {
+    fun testRecyclerViewVisibility() {
 
         val logAssert = LogAssert()
         Espresso.onView(ViewMatchers.withId(R.id.username)).perform(ViewActions.typeText("randomUsername"))
         Espresso.onView(ViewMatchers.withId(R.id.password)).perform(ViewActions.typeText("randomPassword"))
+
         // for mobile phones like Galaxy Nexus (small screen)
         Espresso.closeSoftKeyboard()
         Espresso.onView(ViewMatchers.withId(R.id.email)).perform(ViewActions.typeText("randomE-Mail"))
-
 
         //closing keyboard to press ok Button
         Espresso.closeSoftKeyboard()
@@ -114,7 +109,7 @@ class TestAccountView {
 
     @Test
     @Throws(InterruptedException::class)
-    fun checkInsertionTest() {
+    fun testInsertion() {
 
         val logAssert = LogAssert()
         Espresso.onView(ViewMatchers.withId(R.id.username)).perform(ViewActions.typeText("randomUsername"))
@@ -122,7 +117,6 @@ class TestAccountView {
         // for mobile phones like Galaxy Nexus (small screen)
         Espresso.closeSoftKeyboard()
         Espresso.onView(ViewMatchers.withId(R.id.email)).perform(ViewActions.typeText("randomE-Mail"))
-
 
         //closing keyboard to press ok Button
         Espresso.closeSoftKeyboard()
@@ -137,13 +131,9 @@ class TestAccountView {
         logAssert.assertLogsExist(assertArr2)
         logAssert.assertLogsExist(assertArr3)
 
-
         val recyclerView = activityRule.activity.findViewById<RecyclerView>(R.id.rvAccounts)
 
         print(recyclerView.adapter?.itemCount)
-        Log.d("COUNT: ", recyclerView.adapter?.itemCount.toString())
-
-
         assert(recyclerView.adapter?.itemCount != 0)
 
     }

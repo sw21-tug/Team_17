@@ -17,12 +17,12 @@ import kotlinx.coroutines.runBlocking
 import org.junit.*
 
 @RunWith(AndroidJUnit4::class)
-class DatabaseTest {
+class TestDatabase {
     private lateinit var userDao: UserDao
     private lateinit var db: UserDatabase
 
     @Before
-    fun createDb() {
+    fun initDb() {
         val context = ApplicationProvider.getApplicationContext<Context>()
         db = UserDatabase.initDb(context)
         userDao = db.getUserDao()
@@ -37,7 +37,7 @@ class DatabaseTest {
 
     @Test
     @Throws(Exception::class)
-    fun writeUserAndReadInList() {
+    fun testReadAndWriteUserInDatabase() {
         userDao.deleteAllUsers()
         val user = User(1, "Max Musterman", "test@mail.com", "123456789")
         val rowid = userDao.insertUser(user)

@@ -35,7 +35,7 @@ class TestCreateAccount {
     val rule: ActivityTestRule<CreateStartUp> = ActivityTestRule(CreateStartUp::class.java)
 
     @Before
-    fun deleteDB(){
+    fun initDb(){
         val context = ApplicationProvider.getApplicationContext<Context>()
         db = UserDatabase.initDb(context)
         userDao = db.getUserDao()
@@ -51,22 +51,24 @@ class TestCreateAccount {
         userDao.deleteAllUsers()
         //Intents.release()
     }
+
     @Test
-    fun okButtonClickable() {
+    fun testIfOkButtonIsClickable() {
 
         val logAssert = LogAssert()
-        onView(withId(R.id.username)).perform(ViewActions.typeText("randomUsername"))
-        onView(withId(R.id.password)).perform(ViewActions.typeText("randomPassword"))
+        onView(withId(R.id.username)).perform(typeText("randomUsername"))
+        onView(withId(R.id.password)).perform(typeText("randomPassword"))
+
         // for mobile phones like Galaxy Nexus (small screen)
-        Espresso.closeSoftKeyboard()
-        onView(withId(R.id.email)).perform(ViewActions.typeText("randomE-Mail"))
+        closeSoftKeyboard()
+        onView(withId(R.id.email)).perform(typeText("randomE-Mail"))
 
 
         //closing keyboard to press ok Button
-        Espresso.closeSoftKeyboard()
+        closeSoftKeyboard()
         Thread.sleep(1000)
 
-        onView(withId(R.id.okButton)).perform(ViewActions.click())
+        onView(withId(R.id.okButton)).perform(click())
 
         val assertArr1 = arrayOf("randomUsername")
         val assertArr2 = arrayOf("randomPassword")
@@ -74,14 +76,13 @@ class TestCreateAccount {
         logAssert.assertLogsExist(assertArr1)
         logAssert.assertLogsExist(assertArr2)
         logAssert.assertLogsExist(assertArr3)
-
     }
 
     @Test
-    fun cancelButtonClickable() {
+    fun testIfCancelButtonIsClickable() {
 
         val logAssert = LogAssert()
-        onView(withId(R.id.cancelButton)).perform(ViewActions.click())
+        onView(withId(R.id.cancelButton)).perform(click())
 
         val assertArr = arrayOf("cancelButton")
         logAssert.assertLogsExist(assertArr)

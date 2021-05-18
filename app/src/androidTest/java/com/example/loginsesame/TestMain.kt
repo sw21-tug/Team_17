@@ -18,15 +18,24 @@ import java.io.IOException
 import kotlin.jvm.Throws
 
 
-class TestMainActivity {
+class TestMain {
     private lateinit var userDao: UserDao
     private lateinit var db: UserDatabase
 
+    @Rule
+    @JvmField
+    val rule = ActivityTestRule(MainActivity::class.java)
+
     @Before
-    fun db_init() {
+    fun initDb() {
         val context = ApplicationProvider.getApplicationContext<Context>()
         db = UserDatabase.initDb(context)
         userDao = db.getUserDao()
+    }
+
+    @Before
+    fun init() {
+        Intents.init()
     }
 
     @After
@@ -34,15 +43,6 @@ class TestMainActivity {
     fun cleanup() {
         userDao.deleteAllUsers()
         Intents.release()
-    }
-
-    @Rule
-    @JvmField
-    val rule = ActivityTestRule(MainActivity::class.java)
-
-    @Before
-    fun init() {
-        Intents.init()
     }
 
     @Test

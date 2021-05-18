@@ -43,7 +43,7 @@ class TestLogin {
     val rule: ActivityTestRule<LoginActivity> = ActivityTestRule(LoginActivity::class.java)
 
     @Before
-    fun db_init() {
+    fun initDbAndIntents() {
         Intents.init()
         val context = ApplicationProvider.getApplicationContext<Context>()
         db = UserDatabase.initDb(context)
@@ -61,7 +61,7 @@ class TestLogin {
     }
 
     @Test
-    fun userEntersCorrectPasswordClicksOk() {
+    fun testCorrectPasswortClickOk() {
         onView(withId(R.id.etInputPassword)).perform(ViewActions.typeText("123456789"))
 
         Espresso.closeSoftKeyboard()
@@ -74,7 +74,7 @@ class TestLogin {
     }
 
     @Test
-    fun userEntersIncorrectPasswordClicksOk() {
+    fun testIncorrectPasswortClickOk() {
 
         val logAssert = LogAssert()
         onView(withId(R.id.etInputPassword)).perform(ViewActions.typeText("randomPassword1"))
@@ -90,7 +90,7 @@ class TestLogin {
 
 
     @Test
-    fun userEntersIncorrectPasswordClicksCancel() {
+    fun testIncorrectPasswortClickCancel() {
         val logAssert = LogAssert()
         onView(withId(R.id.etInputPassword)).perform(ViewActions.typeText("randomPassword1"))
 
@@ -103,7 +103,7 @@ class TestLogin {
     }
 
     @Test
-    fun userClicksBackButton() {
+    fun testBackButtonWithoutAction() {
         val logAssert = LogAssert()
 
         //Second pressBack is needed if software keyboard is open, so keyboard needs to be closed before

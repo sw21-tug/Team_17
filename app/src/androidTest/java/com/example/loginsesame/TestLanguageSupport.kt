@@ -35,7 +35,7 @@ class TestLanguageSupport {
     val rule: ActivityTestRule<MainActivity> = ActivityTestRule(MainActivity::class.java)
 
     @Before
-    fun db_init() {
+    fun initDbAndIntents() {
 
         Intents.init()
 
