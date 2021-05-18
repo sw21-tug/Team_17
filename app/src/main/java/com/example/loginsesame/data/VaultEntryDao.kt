@@ -1,6 +1,7 @@
 package com.example.loginsesame.data
 
 import androidx.room.*
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface VaultEntryDao {
@@ -14,7 +15,7 @@ interface VaultEntryDao {
     fun deleteAllEntries()
 
     @Query("SELECT * FROM VaultEntry")
-    fun allEntries(): List<VaultEntry>
+    fun allEntries(): Flow<List<VaultEntry>>
 
     @Query("SELECT * FROM VaultEntry WHERE name = :asked_name")
     fun getEntity(asked_name : String): VaultEntry

@@ -6,8 +6,12 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.EditText
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import com.example.loginsesame.data.User
 import com.example.loginsesame.data.UserDatabase
+import com.example.loginsesame.data.UserRepository
+import com.example.loginsesame.factories.CreateViewModelFactory
 import com.example.loginsesame.helper.LogTag
 import kotlinx.coroutines.*
 
@@ -21,10 +25,12 @@ class CreateStartUp : AppCompatActivity() {
         val logTag = LogTag()
 
         val db = UserDatabase.initDb(this)
-        val userDao = db.getUserDao()
+        val repo = UserRepository(db.getUserDao(), db.getVaultEntryDao())
 
         val okButton = findViewById<Button>(R.id.okButton)
         val cancelButton = findViewById<Button>(R.id.cancelButton)
+        val viewModel =
+            ViewModelProvider(this, CreateViewModelFactory(repo)).get(CreateViewModel::class.java)
 
         okButton.setOnClickListener {
             val email = findViewById<EditText>(R.id.email).text.toString()
@@ -32,8 +38,8 @@ class CreateStartUp : AppCompatActivity() {
             val password = findViewById<EditText>(R.id.password).text.toString()
 
             val user = User(null, email, username, password)
+            viewModel.addUser(user)
 
-            userDao.insertUser(user)
 
             Log.d(logTag.LOG_STARTUP, "randomUsername")
             Log.d(logTag.LOG_STARTUP, "randomPassword")

@@ -7,20 +7,24 @@ import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
-import androidx.room.Room
 import com.example.loginsesame.data.User
 import com.example.loginsesame.data.UserDao
 import com.example.loginsesame.data.UserDatabase
+import com.example.loginsesame.data.UserRepository
 import com.example.loginsesame.helper.LogTag
+import kotlinx.coroutines.*
 
 class LoginActivity : AppCompatActivity() {
     val logTag = LogTag()
-    private lateinit var userDao: UserDao
-    private lateinit var db: UserDatabase
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
+        val db = UserDatabase.initDb(this)
+        val userRepository = UserRepository(db.getUserDao(), db.getVaultEntryDao())
+        val viewModel = MainViewModel(userRepository)
+        lateinit var users: List<User>
 
         // setOnClickListeners for the Buttons
         val etInputPassword = findViewById<EditText>(R.id.etInputPassword)
@@ -28,15 +32,16 @@ class LoginActivity : AppCompatActivity() {
         val btnInputPasswordCancel = findViewById<Button>(R.id.btnInputPasswordCancel)
         val logTag = LogTag()
 
-        db = UserDatabase.initDb(this)
-        userDao = db.getUserDao()
+        viewModel.users.observe(this, {
+            users = it
+        })
 
         btnInputPasswordOK.setOnClickListener {
             Log.d(logTag.LOG_LOGIN, "btnInputPasswordOK")
 
             // check if more than one user exists
             // if more than 1 user exists, there's no way of knowing which user is wanted
-            val createdUsers = userDao.getAllUsers()
+            val createdUsers = users
             if (createdUsers.size != 1) {
                 Log.e(logTag.LOG_LOGIN, "Invalid number of Users in Database " + createdUsers.size)
                 Toast.makeText(
@@ -80,4 +85,5 @@ class LoginActivity : AppCompatActivity() {
     override fun onBackPressed() {
         Log.d(logTag.LOG_LOGIN, "Back-Button Pressed With No Action")
     }
+
 }

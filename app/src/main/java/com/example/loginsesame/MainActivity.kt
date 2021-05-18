@@ -10,13 +10,14 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.loginsesame.recyclerViewAdapter.RecyclerAdapter
-import com.example.loginsesame.data.UserDao
-import com.example.loginsesame.data.UserDatabase
-import com.example.loginsesame.data.VaultEntryDao
+import com.example.loginsesame.data.*
+import com.example.loginsesame.factories.MainViewModelFactory
 import com.example.loginsesame.helper.LogTag
+import com.example.loginsesame.recyclerViewAdapter.RecyclerAdapter
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.coroutines.*
 import java.util.*
 
 
@@ -27,51 +28,45 @@ class MainActivity : AppCompatActivity() {
     private val logTag = LogTag()
     var isLoggedIn = false //state if user is logged into the app
 
-    private lateinit var db: UserDatabase
-    private lateinit var userDao: UserDao
-    private lateinit var vaultEntryDao: VaultEntryDao
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        val db = UserDatabase.initDb(this)
+        val repository = UserRepository(db.getUserDao(), db.getVaultEntryDao())
+        val viewModel =
+            ViewModelProvider(this, MainViewModelFactory(repository)).get(MainViewModel::class.java)
+
+
+        viewModel.users.observe(this, {
+            Log.d(logTag.LOG_MAIN, it.size.toString())
+            if (it.isNotEmpty() && !isLoggedIn) {
+                openLoginActivity()
+            } else if (it.isEmpty() && !isLoggedIn) {
+                openCreateActivity()
+            }
+        })
+
+        viewModel.entries.observe(this, {
+            for (entry in it) {
+                var acc = Account(entry.Name, entry.Username)
+                accountAdapter.addAccount(acc)
+            }
+        })
+
         loadLocale()
         setContentView(R.layout.activity_main)
         isLoggedIn = intent.getBooleanExtra("isLoggedIn", false)
-
-        db = UserDatabase.initDb(this)
-        userDao = db.getUserDao()
-        vaultEntryDao = db.getVaultEntryDao()
-
-        var userExists = false
-
-        if (userDao.getAllUsers().isNotEmpty()) {
-            userExists = true
-        }
 
         //check if user exists
         //yes -> open Login Activity
         //no -> open create activity
 
         Log.d(logTag.LOG_MAIN, "is Logged in = " + isLoggedIn)
-        Log.d(logTag.LOG_MAIN, userDao.getAllUsers().size.toString())
-        if (!isLoggedIn && userExists) {
-            // if user has created account, and is not logged in open login
-            openLoginActivity()
-        }
-
-        if (!isLoggedIn && !userExists) {
-            // create new user and automatically login
-            openCreateActivity()
-        }
-
         accountAdapter = RecyclerAdapter(mutableListOf())
 
         rvAccounts.adapter = accountAdapter
         rvAccounts.layoutManager = LinearLayoutManager(this)
 
-        for (entry in vaultEntryDao.allEntries()) {
-            var acc = Account(entry.Name, entry.Username)
-            accountAdapter.addAccount(acc)
-        }
     }
 
 
