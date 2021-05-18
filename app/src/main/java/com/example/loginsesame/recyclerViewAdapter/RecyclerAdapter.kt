@@ -33,8 +33,8 @@ class RecyclerAdapter(private val accountList: MutableList<Account>) :
         val curAccount = accountList[position]
 
         holder.itemView.apply {
-            tv_account_name.text = curAccount.accountName
-            tv_account_user.text = curAccount.accountUser
+            tvAccountName.text = curAccount.accountName
+            tvAccountUser.text = curAccount.accountUser
         }
     }
 

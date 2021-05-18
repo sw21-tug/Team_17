@@ -57,13 +57,13 @@ class TestLanguageSupport {
     fun testSwitchToEnglish() {
 
         //create new account
-        Espresso.onView(ViewMatchers.withId(R.id.username)).perform(ViewActions.typeText("randomUsername"))
-        Espresso.onView(ViewMatchers.withId(R.id.password)).perform(ViewActions.typeText("randomPassword"))
-        Espresso.onView(ViewMatchers.withId(R.id.email)).perform(ViewActions.typeText("randomE-Mail"))
+        Espresso.onView(ViewMatchers.withId(R.id.etUsername)).perform(ViewActions.typeText("randomUsername"))
+        Espresso.onView(ViewMatchers.withId(R.id.etPassword)).perform(ViewActions.typeText("randomPassword"))
+        Espresso.onView(ViewMatchers.withId(R.id.etEmail)).perform(ViewActions.typeText("randomE-Mail"))
 
         //closing keyboard to press ok Button
         Espresso.closeSoftKeyboard()
-        Espresso.onView(ViewMatchers.withId(R.id.okButton)).perform(ViewActions.click())
+        Espresso.onView(ViewMatchers.withId(R.id.btnOk)).perform(ViewActions.click())
 
         //open menu
         openActionBarOverflowOrOptionsMenu(getInstrumentation().targetContext)
@@ -81,12 +81,12 @@ class TestLanguageSupport {
     @Test
     fun testSwitchToRussian() {
         //create new account
-        Espresso.onView(ViewMatchers.withId(R.id.username)).perform(ViewActions.typeText("randomUsername"))
-        Espresso.onView(ViewMatchers.withId(R.id.password)).perform(ViewActions.typeText("randomPassword"))
-        Espresso.onView(ViewMatchers.withId(R.id.email)).perform(ViewActions.typeText("randomE-Mail"))
+        Espresso.onView(ViewMatchers.withId(R.id.etUsername)).perform(ViewActions.typeText("randomUsername"))
+        Espresso.onView(ViewMatchers.withId(R.id.etPassword)).perform(ViewActions.typeText("randomPassword"))
+        Espresso.onView(ViewMatchers.withId(R.id.etEmail)).perform(ViewActions.typeText("randomE-Mail"))
 
         Espresso.closeSoftKeyboard()
-        Espresso.onView(ViewMatchers.withId(R.id.okButton)).perform(ViewActions.click())
+        Espresso.onView(ViewMatchers.withId(R.id.btnOk)).perform(ViewActions.click())
 
         //open menu
         openActionBarOverflowOrOptionsMenu(getInstrumentation().targetContext)

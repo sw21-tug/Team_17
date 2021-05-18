@@ -10,7 +10,7 @@ class LogAssert {
     private var logText: String? = null
 
     private val logs: String
-        private get() {
+        get() {
             val logcat: Process
             val log = StringBuilder()
             try {
@@ -43,7 +43,7 @@ class LogAssert {
 
     private fun clearLog() {
         try {
-            val process = ProcessBuilder()
+            ProcessBuilder()
                     .command("logcat", "-c")
                     .redirectErrorStream(true)
                     .start()
