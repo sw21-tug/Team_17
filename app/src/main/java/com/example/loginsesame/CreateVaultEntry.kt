@@ -25,16 +25,19 @@ class CreateVaultEntry : AppCompatActivity() {
 
             val btnVaultSave = findViewById<Button>(R.id.btnVaultSave)
             btnVaultSave.setOnClickListener {
-                Log.d(logTag.LOG_CREATE_VAULT_ENTRY, "createButtonClicked")
+                Log.d(logTag.LOG_CREATE_VAULT_ENTRY, "saveButtonClicked")
                 val entryname = findViewById<EditText>(R.id.vaultnameEntry).text.toString()
                 val url = findViewById<EditText>(R.id.vaultURL).text.toString()
                 val username = findViewById<EditText>(R.id.vaultUsername).text.toString()
                 val password = findViewById<EditText>(R.id.vaultPassword).text.toString()
 
-                if (entryname.isEmpty() && url.isEmpty()) {
+                if (entryname.isEmpty() && url.isEmpty())
+                {
                     Log.d(logTag.LOG_CREATE_VAULT_ENTRY, "incorrectData")
                     Toast.makeText(this, "Either Entry name or URL must be filled in!", Toast.LENGTH_LONG).show()
-                } else {
+                }
+                else
+                {
                     val vaultentry = VaultEntry(0, entryname, url, username, password)
                     vaultEntryDao.add(vaultentry)
 

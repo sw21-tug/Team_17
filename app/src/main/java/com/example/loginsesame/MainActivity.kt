@@ -10,16 +10,21 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.room.Room
+import com.example.loginsesame.RecyclerViewAdapter.RecyclerAdapter
 import com.example.loginsesame.data.User
 import com.example.loginsesame.data.UserDao
 import com.example.loginsesame.data.UserDatabase
+import com.example.loginsesame.data.VaultEntryDao
 import com.example.loginsesame.helper.LogTag
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.util.*
 
+
+lateinit var accountAdapter : RecyclerAdapter
 
 class MainActivity : AppCompatActivity() {
 
@@ -28,47 +33,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var db: UserDatabase
     private lateinit var userDao: UserDao
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        loadLocale()
-        setContentView(R.layout.activity_main)
-        isLoggedIn = intent.getBooleanExtra("isLoggedIn", false)
-
-        db = UserDatabase.initDb(this)
-        userDao = db.getUserDao()
-
-        var userExists = false
-
-        if(userDao.getAllUsers().isNotEmpty())
-        {
-            userExists = true
-        }
-
-        //check if user exists
-        //yes -> open Login Activity
-        //no -> open create activity
-
-        Log.d(logTag.LOG_MAIN, "is Logged in = " + isLoggedIn)
-        Log.d(logTag.LOG_MAIN, userDao.getAllUsers().size.toString())
-        if(!isLoggedIn && userExists){
-            openLoginActivity()
-        }
-
-        if (!isLoggedIn && !userExists){
-            //create new user and automatically login
-            openCreateActivity()
-        }
-
-        btnAddAccount.setOnClickListener{
-            val logTag  = LogTag()
-            Log.d(logTag.LOG_MAIN, "btnAddAccountOK")
-
-            val intentCreateVaultEntry = Intent(this@MainActivity, CreateVaultEntry::class.java)
-            startActivity(intentCreateVaultEntry)
-        }
-
-    }
+    private lateinit var vaultEntryDao: VaultEntryDao
 
     // Account creation
     private fun openCreateActivity()
@@ -107,6 +72,17 @@ class MainActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
+    private fun setLanguage(newLang: String){
+        val locale = Locale(newLang)
+        Locale.setDefault(locale)
+        val config = Configuration()
+        baseContext.resources.updateConfiguration(config, baseContext.resources.displayMetrics)
+
+        val editor = getSharedPreferences("Settings", Context.MODE_PRIVATE).edit()
+        editor.putString("My_Lang", newLang)
+        editor.apply()
+    }
+
     private fun showChangeLanguageDialog(){
         val adb = AlertDialog.Builder(this)
         val items = arrayOf<CharSequence>(
@@ -130,17 +106,6 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    private fun setLanguage(newLang: String){
-        val locale = Locale(newLang)
-        Locale.setDefault(locale)
-        val config = Configuration()
-        baseContext.resources.updateConfiguration(config, baseContext.resources.displayMetrics)
-
-        val editor = getSharedPreferences("Settings", Context.MODE_PRIVATE).edit()
-        editor.putString("My_Lang", newLang)
-        editor.apply()
-    }
-
     private fun loadLocale() {
         val sharedPreferences = getSharedPreferences("Settings", Context.MODE_PRIVATE)
         val language = sharedPreferences.getString("My_Lang", "en")
@@ -148,5 +113,58 @@ class MainActivity : AppCompatActivity() {
             setLanguage(language)
         }
 
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        loadLocale()
+        setContentView(R.layout.activity_main)
+        isLoggedIn = intent.getBooleanExtra("isLoggedIn", false)
+
+        db = UserDatabase.initDb(this)
+        userDao = db.getUserDao()
+        vaultEntryDao = db.getVaultEntryDao()
+
+        var userExists = false
+
+        if (userDao.getAllUsers().isNotEmpty()) {
+            userExists = true
+        }
+
+        //check if user exists
+        //yes -> open Login Activity
+        //no -> open create activity
+
+        Log.d(logTag.LOG_MAIN, "is Logged in = " + isLoggedIn)
+        Log.d(logTag.LOG_MAIN, userDao.getAllUsers().size.toString())
+        if (!isLoggedIn && userExists) {
+            openLoginActivity()
+        }
+
+        if (!isLoggedIn && !userExists) {
+            //create new user and automatically login
+            openCreateActivity()
+        }
+
+
+        btnAddAccount.setOnClickListener {
+            val logTag = LogTag()
+            Log.d(logTag.LOG_MAIN, "btnAddAccountOK")
+
+            val intentCreateVaultEntry = Intent(this@MainActivity, CreateVaultEntry::class.java)
+            startActivity(intentCreateVaultEntry)
+
+            accountAdapter = RecyclerAdapter(mutableListOf())
+
+
+            rvAccounts.adapter = accountAdapter
+            rvAccounts.layoutManager = LinearLayoutManager(this)
+
+            for (entry in vaultEntryDao.allEntrys()) {
+                var acc = account(entry.Name, entry.username)
+                accountAdapter.addAccount(acc)
+            }
+
+        }
     }
 }
