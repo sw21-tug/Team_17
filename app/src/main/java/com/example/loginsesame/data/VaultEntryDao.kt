@@ -17,8 +17,8 @@ interface VaultEntryDao {
     @Query("SELECT * FROM VaultEntry")
     fun allEntries(): Flow<List<VaultEntry>>
 
-    @Query("SELECT * FROM VaultEntry WHERE name = :asked_name")
-    fun getEntity(asked_name : String): VaultEntry
+    @Query("SELECT * FROM VaultEntry WHERE name = :askedName")
+    fun getEntity(askedName : String): Flow<VaultEntry>
 
     @Update
     suspend fun updateVaultEntry(vararg updated_entity: VaultEntry)

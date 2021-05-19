@@ -28,8 +28,23 @@ class UserRepository(private val userDao: UserDao, private val vaultEntryDao: Va
     }
 
     @WorkerThread
-    fun deleteAll(){
+    suspend fun updateVaultEntry(vaultEntry: VaultEntry){
+        vaultEntryDao.updateVaultEntry(vaultEntry)
+    }
+
+    @WorkerThread
+    fun deleteAllUsers(){
         userDao.deleteAllUsers()
+    }
+
+    @WorkerThread
+    fun deleteAllEntries(){
+        vaultEntryDao.deleteAllEntries()
+    }
+
+    @WorkerThread
+    fun getVaultEntry(entryName: String): Flow<VaultEntry>{
+        return vaultEntryDao.getEntity(entryName)
     }
 
 }

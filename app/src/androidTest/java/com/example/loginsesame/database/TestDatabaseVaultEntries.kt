@@ -1,68 +1,115 @@
 package com.example.loginsesame.database
 
 import android.content.Context
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.Observer
+import androidx.lifecycle.asLiveData
+import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
-import com.example.loginsesame.data.UserDao
 import com.example.loginsesame.data.UserDatabase
+import com.example.loginsesame.data.UserRepository
 import com.example.loginsesame.data.VaultEntry
 import com.example.loginsesame.data.VaultEntryDao
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import org.junit.After
 import org.junit.Before
+import org.junit.Rule
 import org.junit.Test
 import java.io.IOException
-import kotlin.jvm.Throws
+import java.util.concurrent.CountDownLatch
+import java.util.concurrent.TimeUnit
 
 class TestDatabaseVaultEntries {
 
-    private lateinit var vaultEntryDao: VaultEntryDao
-    private lateinit var userDao: UserDao
     private lateinit var db: UserDatabase
+    private lateinit var repository: UserRepository
+    private val entry = VaultEntry(1, "account_x", "user_x", "password")
+
+    @Rule
+    @JvmField
+    val rule = InstantTaskExecutorRule()
+
 
     @Before
     fun initDb() {
         val context = ApplicationProvider.getApplicationContext<Context>()
-        db = UserDatabase.initDb(context)
-        userDao = db.getUserDao()
-        userDao.deleteAllUsers()
-        vaultEntryDao = db.getVaultEntryDao()
-        vaultEntryDao.deleteAllEntries()
-        val entity = VaultEntry(1, "account_x", "user_x", "password")
-        vaultEntryDao.add(entity)
+        db = Room.inMemoryDatabaseBuilder(context, UserDatabase::class.java).allowMainThreadQueries().build()
+        repository = UserRepository(db.getUserDao(), db.getVaultEntryDao())
     }
 
     @After
     @Throws(IOException::class)
     fun cleanup() {
-        userDao.deleteAllUsers()
-        vaultEntryDao.deleteAllEntries()
-        //db.close()
+        repository.deleteAllEntries()
     }
 
 
     @Test
     fun testAddEntity(){
         val entity = VaultEntry(2, "account_z", "user_z", "password")
-        vaultEntryDao.add(entity)
-        assert(vaultEntryDao.allEntries().get(1) == entity)
+        GlobalScope.launch {
+            repository.insertVaultEntry(entity)
+        }
+        Thread.sleep(2000)
+        val entries = repository.entries.asLiveData().blockingObserve()
+        assert(entries!![0] == entity)
     }
 
     @Test
     fun testGetEntity(){
-        assert(vaultEntryDao.getEntity("account_x") == vaultEntryDao.allEntries().get(0))
+        GlobalScope.launch {
+            repository.insertVaultEntry(entry)
+        }
+        val entity = repository.getVaultEntry("account_x").asLiveData().blockingObserve()
+        assert(entity == entry)
     }
 
     @Test
     fun testDeleteEntity(){
-        vaultEntryDao.deleteVaultEntry(vaultEntryDao.allEntries().get(0))
-        assert(vaultEntryDao.getEntity("account_x") == null)
+        GlobalScope.launch {
+            repository.insertVaultEntry(entry)
+        }
+        repository.entries.asLiveData().blockingObserve()
+        GlobalScope.launch {
+            repository.deleteAllEntries()
+        }
+        val entries = repository.entries.asLiveData().blockingObserve()
+        assert(entries.isNullOrEmpty())
     }
 
     @Test
     fun testEditEntity(){
-        val entity_b = VaultEntry(3, "account_b", "user_b", "password")
-        vaultEntryDao.add(entity_b)
-        val entity = VaultEntry(3, "account_y", "user_y", "password_y")
-        vaultEntryDao.updateVaultEntry(entity)
-        assert(vaultEntryDao.getEntity("account_y") == entity)
+        val entityB = VaultEntry(3, "account_b", "user_b", "password")
+        GlobalScope.launch {
+            repository.insertVaultEntry(entityB)
+        }
+        Thread.sleep(2000)
+        val entries = repository.entries.asLiveData().blockingObserve()
+        assert(entries!![0] == entityB)
+
+        val newEntityB = VaultEntry(3, "account_y", "user_y", "password_y")
+        GlobalScope.launch {
+            repository.updateVaultEntry(newEntityB)
+        }
+        val updatedEntry = repository.entries.asLiveData().blockingObserve()
+        assert(updatedEntry!![0] == newEntityB)
+    }
+
+    private fun <T> LiveData<T>.blockingObserve(): T? {
+        var value: T? = null
+        val latch = CountDownLatch(1)
+
+        val observer = Observer<T> { t ->
+            value = t
+            latch.countDown()
+        }
+
+        observeForever(observer)
+
+        latch.await(2, TimeUnit.SECONDS)
+        return value
     }
 }

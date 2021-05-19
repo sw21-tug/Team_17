@@ -2,6 +2,10 @@ package com.example.loginsesame.database
 
 import android.app.Activity
 import android.content.Context
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.Observer
+import androidx.lifecycle.asLiveData
 import androidx.recyclerview.widget.RecyclerView
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.Espresso
@@ -28,41 +32,45 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import java.io.IOException
+import java.util.concurrent.CountDownLatch
+import java.util.concurrent.TimeUnit
 
 
 @RunWith(AndroidJUnit4::class)
 class TestDatabaseUsers {
 
     // View is tested in TestAccountView.kt
-    private lateinit var vaultEntryDao: VaultEntryDao
-    private lateinit var userDao: UserDao
     private lateinit var db: UserDatabase
     private var currentActivity: Activity? = null
     private lateinit var userRepository: UserRepository
 
-    @get:Rule
-    var activityRule = ActivityScenarioRule(MainActivity::class.java)
+    @Rule
+    @JvmField
+    val activityRule = ActivityScenarioRule(MainActivity::class.java)
+
+    @Rule
+    @JvmField
+    val instantTaskExecutorRule = InstantTaskExecutorRule()
 
     @Before
     fun createDb() {
         Intents.init()
         val context = ApplicationProvider.getApplicationContext<Context>()
         db = UserDatabase.initDb(context)
-        userDao = db.getUserDao()
-        vaultEntryDao = db.getVaultEntryDao()
-        userRepository = UserRepository(userDao, vaultEntryDao)
+        userRepository = UserRepository(db.getUserDao(), db.getVaultEntryDao())
+        userRepository.deleteAllUsers()
 
         GlobalScope.launch {
             val entity1 = VaultEntry(1, "account_a", "user_a", "password")
-            vaultEntryDao.add(entity1)
+            userRepository.insertVaultEntry(entity1)
             val entity2 = VaultEntry(2, "account_b", "user_b", "password")
-            vaultEntryDao.add(entity2)
+            userRepository.insertVaultEntry(entity2)
             val entity3 = VaultEntry(3, "account_c", "user_c", "password")
-            vaultEntryDao.add(entity3)
+            userRepository.insertVaultEntry(entity3)
             val entity4 = VaultEntry(4, "account_d", "user_d", "password")
-            vaultEntryDao.add(entity4)
+            userRepository.insertVaultEntry(entity4)
             val entity5 = VaultEntry(5, "account_e", "user_e", "password")
-            vaultEntryDao.add(entity5)
+            userRepository.insertVaultEntry(entity5)
         }
     }
 
@@ -70,8 +78,7 @@ class TestDatabaseUsers {
     @After
     @Throws(IOException::class)
     fun cleanup() {
-        vaultEntryDao.deleteAllEntries()
-        userDao.deleteAllUsers()
+        userRepository.deleteAllEntries()
     }
 
     @Test
@@ -98,14 +105,14 @@ class TestDatabaseUsers {
         logAssert.assertLogsExist(assertArr2)
         logAssert.assertLogsExist(assertArr3)
 
-        /*
-        assert(vaultEntryDao.allEntries().size == 5)
-        assert(vaultEntryDao.getEntity("account_a") == vaultEntryDao.allEntries()[0])
-        assert(vaultEntryDao.getEntity("account_b") == vaultEntryDao.allEntries()[1])
-        assert(vaultEntryDao.getEntity("account_c") == vaultEntryDao.allEntries()[2])
-        assert(vaultEntryDao.getEntity("account_d") == vaultEntryDao.allEntries()[3])
-        assert(vaultEntryDao.getEntity("account_e") == vaultEntryDao.allEntries()[4])
-         */
+        val entries = userRepository.entries.asLiveData().blockingObserve()
+        assert(entries!!.size == 5)
+        assert(userRepository.getVaultEntry("account_a").asLiveData().blockingObserve() == entries[0])
+        assert(userRepository.getVaultEntry("account_b").asLiveData().blockingObserve() == entries[1])
+        assert(userRepository.getVaultEntry("account_c").asLiveData().blockingObserve() == entries[2])
+        assert(userRepository.getVaultEntry("account_d").asLiveData().blockingObserve() == entries[3])
+        assert(userRepository.getVaultEntry("account_e").asLiveData().blockingObserve() == entries[4])
+
         val currentActivity = getActivityInstance()
         val recyclerView = currentActivity?.findViewById<RecyclerView>(R.id.rvAccounts)
 
@@ -134,6 +141,21 @@ class TestDatabaseUsers {
             }
         }
         return currentActivity
+    }
+
+    private fun <T> LiveData<T>.blockingObserve(): T? {
+        var value: T? = null
+        val latch = CountDownLatch(1)
+
+        val observer = Observer<T> { t ->
+            value = t
+            latch.countDown()
+        }
+
+        observeForever(observer)
+
+        latch.await(2, TimeUnit.SECONDS)
+        return value
     }
 
 }

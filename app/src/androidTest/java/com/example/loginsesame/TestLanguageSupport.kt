@@ -15,6 +15,9 @@ import androidx.test.platform.app.InstrumentationRegistry.getInstrumentation
 import com.example.loginsesame.data.User
 import com.example.loginsesame.data.UserDao
 import com.example.loginsesame.data.UserDatabase
+import com.example.loginsesame.data.UserRepository
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule
@@ -24,7 +27,7 @@ import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
 class TestLanguageSupport {
-    private lateinit var userDao: UserDao
+    private lateinit var repository: UserRepository
     private lateinit var db: UserDatabase
 
     @Rule
@@ -38,17 +41,15 @@ class TestLanguageSupport {
 
         val context = ApplicationProvider.getApplicationContext<Context>()
         db = UserDatabase.initDb(context)
-        userDao = db.getUserDao()
+        repository = UserRepository(db.getUserDao(), db.getVaultEntryDao())
 
         val user = User(null, "Max Musterman", "test@mail.com", "123456789")
-        userDao.deleteAllUsers()
-        userDao.insertUser(user)
-
+        repository.deleteAllUsers()
     }
 
     @After
     fun cleanup() {
-        userDao.deleteAllUsers()
+        repository.deleteAllUsers()
 
         Intents.release()
     }

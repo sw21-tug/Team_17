@@ -49,6 +49,7 @@ class TestAccountView {
         val context = ApplicationProvider.getApplicationContext<Context>()
         db = UserDatabase.initDb(context)
         userDao = db.getUserDao()
+        userDao.deleteAllUsers()
         vaultEntryDao = db.getVaultEntryDao()
         vaultEntryDao.deleteAllEntries()
         GlobalScope.launch {
