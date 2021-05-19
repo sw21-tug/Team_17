@@ -14,6 +14,12 @@
     <string name="language_en">английский</string>
     <string name="language_ru">русский</string>
     <string name="language_chooser_title">Сука Блядь</string>
+    <string name="vault_entry_name">Введите название записи</string>
+    <string name="vault_url">Введите УРЛ</string>
+    <string name="vault_username">Введите имя пользователя</string>
+    <string name="vault_password">Введите пароль</string>
+    <string name="vault_save">Сохранить</string>
+    <string name="url_or_entryname">Необходимо указать либо имя записи, либо УРЛ!</string>
     <string name="error_too_many_users_in_db">Слишком много пользователей в базе данных, обратитесь за помощью в службу поддержки</string>
     <string name="error_incorrect_pwd">Неверный пароль</string>
     <string name="pwd_overview_text">текстовый вид</string>

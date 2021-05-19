@@ -13,6 +13,12 @@
     <string name="language_en">English</string>
     <string name="language_ru">Russian</string>
     <string name="language_chooser_title">Please Choose New Language</string>
+    <string name="vault_entry_name">Enter Entry Name</string>
+    <string name="vault_url">Enter URL</string>
+    <string name="vault_username">Enter Username</string>
+    <string name="vault_password">Enter Password</string>
+    <string name="vault_save">Save</string>
+    <string name="url_or_entryname">Either Entry name or URL must be filled in!</string>
     <string name="error_too_many_users_in_db">Too many Users in Database, check Support for help</string>
     <string name="error_incorrect_pwd">Incorrect Password</string>
     <string name="pwd_overview_text">TextView</string>
