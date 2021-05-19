@@ -46,7 +46,7 @@ class CreateVaultEntry : AppCompatActivity() {
                     Log.d(logTag.LOG_CREATE_VAULT_ENTRY, "randomUsername")
                     Log.d(logTag.LOG_CREATE_VAULT_ENTRY, "randomPassword")
 
-                    finish()
+                    openMainActivity()
                 }
             }
 
@@ -54,8 +54,14 @@ class CreateVaultEntry : AppCompatActivity() {
             cancelButton.setOnClickListener {
                 Log.d(logTag.LOG_CREATE_VAULT_ENTRY, "cancelButton")
 
-                finish()
+                openMainActivity()
             }
 
         }
+
+    private fun openMainActivity() {
+        val i = Intent(this@CreateVaultEntry, MainActivity::class.java)
+        i.putExtra("isLoggedIn", true);
+        this@CreateVaultEntry.startActivity(i)
+    }
 }

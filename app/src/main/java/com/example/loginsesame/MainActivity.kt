@@ -115,6 +115,7 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         loadLocale()
@@ -124,6 +125,7 @@ class MainActivity : AppCompatActivity() {
         db = UserDatabase.initDb(this)
         userDao = db.getUserDao()
         vaultEntryDao = db.getVaultEntryDao()
+
 
         var userExists = false
 
@@ -146,6 +148,16 @@ class MainActivity : AppCompatActivity() {
             openCreateActivity()
         }
 
+        accountAdapter = RecyclerAdapter(mutableListOf())
+
+
+        rvAccounts.adapter = accountAdapter
+        rvAccounts.layoutManager = LinearLayoutManager(this)
+
+        for (entry in vaultEntryDao.allEntrys()) {
+            var acc = account(entry.Name, entry.username)
+            accountAdapter.addAccount(acc)
+        }
 
         btnAddAccount.setOnClickListener {
             val logTag = LogTag()
@@ -153,18 +165,7 @@ class MainActivity : AppCompatActivity() {
 
             val intentCreateVaultEntry = Intent(this@MainActivity, CreateVaultEntry::class.java)
             startActivity(intentCreateVaultEntry)
-
-            accountAdapter = RecyclerAdapter(mutableListOf())
-
-
-            rvAccounts.adapter = accountAdapter
-            rvAccounts.layoutManager = LinearLayoutManager(this)
-
-            for (entry in vaultEntryDao.allEntrys()) {
-                var acc = account(entry.Name, entry.username)
-                accountAdapter.addAccount(acc)
-            }
-
+            finish()
         }
     }
 }
