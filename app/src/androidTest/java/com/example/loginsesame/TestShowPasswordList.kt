@@ -38,6 +38,14 @@ class TestShowPasswordList {
     @get:Rule
     var activityRule = ActivityTestRule(MainActivity::class.java)
 
+
+    @After
+    fun closeDb() {
+        vaultEntryDao.deleteAllEntrys()
+        userDao.deleteAllUsers()
+        Intents.release()
+    }
+
     @Before
     fun createDb() {
         Intents.init()
@@ -46,25 +54,18 @@ class TestShowPasswordList {
         userDao = db.getUserDao()
 
         vaultEntryDao = db.getVaultEntryDao()
-        val entity1 = VaultEntry(1, "account_a", "user_a", "password")
+        vaultEntryDao.deleteAllEntrys()
+        val entity1 = VaultEntry(1, "account_a", "user_a", "url_a","password")
         vaultEntryDao.add(entity1)
-        val entity2 = VaultEntry(2, "account_b", "user_b", "password")
+        val entity2 = VaultEntry(2, "account_b", "user_b", "url_b", "password")
         vaultEntryDao.add(entity2)
-        val entity3 = VaultEntry(3, "account_c", "user_c", "password")
+        val entity3 = VaultEntry(3, "account_c", "user_c", "url_c", "password")
         vaultEntryDao.add(entity3)
-        val entity4 = VaultEntry(4, "account_d", "user_d", "password")
+        val entity4 = VaultEntry(4, "account_d", "user_d", "url_d", "password")
         vaultEntryDao.add(entity4)
-        val entity5 = VaultEntry(5, "account_e", "user_e", "password")
+        val entity5 = VaultEntry(5, "account_e", "user_e", "url_e", "password")
         vaultEntryDao.add(entity5)
 
-    }
-
-
-    @After
-    @Throws(IOException::class)
-    fun closeDb() {
-        vaultEntryDao.deleteAllEntrys()
-        userDao.deleteAllUsers()
     }
 
     @Test
