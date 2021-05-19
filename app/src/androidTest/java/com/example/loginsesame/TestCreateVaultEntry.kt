@@ -31,8 +31,8 @@ class TestCreateVaultEntry
 
         onView(ViewMatchers.withId(R.id.btnVaultSave)).perform(ViewActions.click())
 
-        val assertButton = arrayOf("createButtonClicked")
-        logAssert.assertLogsExist(assertButton)
+        //val assertButton = arrayOf("createButtonClicked")
+        //logAssert.assertLogsExist(assertButton)
 
         val assertEntryName = arrayOf("randomEntryName")
         logAssert.assertLogsExist(assertEntryName)
@@ -55,8 +55,8 @@ class TestCreateVaultEntry
 
         onView(ViewMatchers.withId(R.id.btnVaultSave)).perform(ViewActions.click())
 
-        val assertButton = arrayOf("createButtonClicked")
-        logAssert.assertLogsExist(assertButton)
+        //val assertButton = arrayOf("createButtonClicked")
+        //logAssert.assertLogsExist(assertButton)
 
         val assertEntryName = arrayOf("randomEntryName")
         logAssert.assertLogsExist(assertEntryName)
@@ -79,8 +79,8 @@ class TestCreateVaultEntry
 
         onView(ViewMatchers.withId(R.id.btnVaultSave)).perform(ViewActions.click())
 
-        val assertButton = arrayOf("createButtonClicked")
-        logAssert.assertLogsExist(assertButton)
+        //val assertButton = arrayOf("createButtonClicked")
+        //logAssert.assertLogsExist(assertButton)
 
         val assertEntryName = arrayOf("randomEntryName")
         logAssert.assertLogsExist(assertEntryName)
@@ -103,8 +103,8 @@ class TestCreateVaultEntry
 
         onView(ViewMatchers.withId(R.id.btnVaultSave)).perform(ViewActions.click())
 
-        val assertButton = arrayOf("createButtonClicked")
-        logAssert.assertLogsExist(assertButton)
+        //val assertButton = arrayOf("createButtonClicked")
+        //logAssert.assertLogsExist(assertButton)
 
         val assertMsg = arrayOf("incorrectData")
         logAssert.assertLogsExist(assertMsg)
