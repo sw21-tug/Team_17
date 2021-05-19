@@ -6,10 +6,10 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface VaultEntryDao {
     @Insert
-    fun add(newVaultEntry: VaultEntry)
+    suspend fun add(newVaultEntry: VaultEntry)
 
     @Delete
-    fun deleteVaultEntry(vaultEntry: VaultEntry)
+    suspend fun deleteVaultEntry(vaultEntry: VaultEntry)
 
     @Query ("DELETE FROM VaultEntry")
     fun deleteAllEntries()
@@ -21,7 +21,7 @@ interface VaultEntryDao {
     fun getEntity(asked_name : String): VaultEntry
 
     @Update
-    fun updateVaultEntry(vararg updated_entity: VaultEntry)
+    suspend fun updateVaultEntry(vararg updated_entity: VaultEntry)
 
 
 }

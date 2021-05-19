@@ -15,6 +15,8 @@ import com.example.loginsesame.data.User
 import com.example.loginsesame.data.UserDao
 import com.example.loginsesame.data.UserDatabase
 import com.example.loginsesame.helper.LogAssert
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule
@@ -44,7 +46,10 @@ class TestLogin {
 
         val user = User(null, "Max Musterman", "test@mail.com", "123456789")
         userDao.deleteAllUsers()
-        userDao.insertUser(user)
+        GlobalScope.launch {
+            userDao.insertUser(user)
+        }
+
     }
 
     @After

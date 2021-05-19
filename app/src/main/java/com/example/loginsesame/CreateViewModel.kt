@@ -9,7 +9,7 @@ import kotlinx.coroutines.launch
 class CreateViewModel(private val userRepository: UserRepository) : ViewModel() {
     fun addUser(user: User){
         viewModelScope.launch {
-            userRepository.insert(user)
+            userRepository.insertUser(user)
         }
     }
 }

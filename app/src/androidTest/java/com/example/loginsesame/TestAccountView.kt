@@ -21,6 +21,8 @@ import com.example.loginsesame.data.UserDatabase
 import com.example.loginsesame.data.VaultEntry
 import com.example.loginsesame.data.VaultEntryDao
 import com.example.loginsesame.helper.LogAssert
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import org.hamcrest.Matchers
 import org.junit.After
 import org.junit.Before
@@ -28,7 +30,6 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import kotlin.jvm.Throws
-
 
 
 @RunWith(AndroidJUnit4::class)
@@ -50,16 +51,19 @@ class TestAccountView {
         userDao = db.getUserDao()
         vaultEntryDao = db.getVaultEntryDao()
         vaultEntryDao.deleteAllEntries()
-        val entity1 = VaultEntry(1, "account_a", "user_a", "password")
-        vaultEntryDao.add(entity1)
-        val entity2 = VaultEntry(2, "account_b", "user_b", "password")
-        vaultEntryDao.add(entity2)
-        val entity3 = VaultEntry(3, "account_c", "user_c", "password")
-        vaultEntryDao.add(entity3)
-        val entity4 = VaultEntry(4, "account_d", "user_d", "password")
-        vaultEntryDao.add(entity4)
-        val entity5 = VaultEntry(5, "account_e", "user_e", "password")
-        vaultEntryDao.add(entity5)
+        GlobalScope.launch {
+            val entity1 = VaultEntry(1, "account_a", "user_a", "password")
+            vaultEntryDao.add(entity1)
+            val entity2 = VaultEntry(2, "account_b", "user_b", "password")
+            vaultEntryDao.add(entity2)
+            val entity3 = VaultEntry(3, "account_c", "user_c", "password")
+            vaultEntryDao.add(entity3)
+            val entity4 = VaultEntry(4, "account_d", "user_d", "password")
+            vaultEntryDao.add(entity4)
+            val entity5 = VaultEntry(5, "account_e", "user_e", "password")
+            vaultEntryDao.add(entity5)
+        }
+
     }
 
     @After
@@ -74,12 +78,15 @@ class TestAccountView {
     fun testRecyclerViewVisibility() {
 
         val logAssert = LogAssert()
-        Espresso.onView(ViewMatchers.withId(R.id.etUsername)).perform(ViewActions.typeText("randomUsername"))
-        Espresso.onView(ViewMatchers.withId(R.id.etPassword)).perform(ViewActions.typeText("randomPassword"))
+        Espresso.onView(ViewMatchers.withId(R.id.etUsername))
+            .perform(ViewActions.typeText("randomUsername"))
+        Espresso.onView(ViewMatchers.withId(R.id.etPassword))
+            .perform(ViewActions.typeText("randomPassword"))
 
         // for mobile phones like Galaxy Nexus (small screen)
         Espresso.closeSoftKeyboard()
-        Espresso.onView(ViewMatchers.withId(R.id.etEmail)).perform(ViewActions.typeText("randomE-Mail"))
+        Espresso.onView(ViewMatchers.withId(R.id.etEmail))
+            .perform(ViewActions.typeText("randomE-Mail"))
 
         //closing keyboard to press ok Button
         Espresso.closeSoftKeyboard()
@@ -116,11 +123,14 @@ class TestAccountView {
     fun testInsertion() {
 
         val logAssert = LogAssert()
-        Espresso.onView(ViewMatchers.withId(R.id.etUsername)).perform(ViewActions.typeText("randomUsername"))
-        Espresso.onView(ViewMatchers.withId(R.id.etPassword)).perform(ViewActions.typeText("randomPassword"))
+        Espresso.onView(ViewMatchers.withId(R.id.etUsername))
+            .perform(ViewActions.typeText("randomUsername"))
+        Espresso.onView(ViewMatchers.withId(R.id.etPassword))
+            .perform(ViewActions.typeText("randomPassword"))
         // for mobile phones like Galaxy Nexus (small screen)
         Espresso.closeSoftKeyboard()
-        Espresso.onView(ViewMatchers.withId(R.id.etEmail)).perform(ViewActions.typeText("randomE-Mail"))
+        Espresso.onView(ViewMatchers.withId(R.id.etEmail))
+            .perform(ViewActions.typeText("randomE-Mail"))
 
         //closing keyboard to press ok Button
         Espresso.closeSoftKeyboard()
