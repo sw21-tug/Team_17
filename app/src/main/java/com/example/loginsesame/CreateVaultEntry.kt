@@ -10,6 +10,8 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.loginsesame.data.UserDatabase
 import com.example.loginsesame.data.VaultEntry
 import com.example.loginsesame.helper.LogTag
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import kotlin.math.log
 
 class CreateVaultEntry : AppCompatActivity() {
@@ -39,7 +41,9 @@ class CreateVaultEntry : AppCompatActivity() {
                 else
                 {
                     val vaultentry = VaultEntry(0, entryname, url, username, password)
-                    vaultEntryDao.add(vaultentry)
+                    GlobalScope.launch {
+                        vaultEntryDao.add(vaultentry)
+                    }
 
                     Log.d(logTag.LOG_CREATE_VAULT_ENTRY, "randomEntryName")
                     Log.d(logTag.LOG_CREATE_VAULT_ENTRY, "randomUrl")

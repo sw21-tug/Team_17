@@ -49,20 +49,21 @@ class TestAccountView {
         val context = ApplicationProvider.getApplicationContext<Context>()
         db = UserDatabase.initDb(context)
         userDao = db.getUserDao()
+        userDao.deleteAllUsers()
         vaultEntryDao = db.getVaultEntryDao()
         vaultEntryDao.deleteAllEntries()
-        val entity1 = VaultEntry(1, "account_a", "user_a", "url_a","password")
-        vaultEntryDao.add(entity1)
-        val entity2 = VaultEntry(2, "account_b", "user_b", "url_b", "password")
-        vaultEntryDao.add(entity2)
-        val entity3 = VaultEntry(3, "account_c", "user_c", "url_c", "password")
-        vaultEntryDao.add(entity3)
-        val entity4 = VaultEntry(4, "account_d", "user_d", "url_d", "password")
-        vaultEntryDao.add(entity4)
-        val entity5 = VaultEntry(5, "account_e", "user_e", "url_e", "password")
-        vaultEntryDao.add(entity5)
-    }
-
+        GlobalScope.launch {
+            val entity1 = VaultEntry(1, "account_a", "user_a", "url", "password")
+            vaultEntryDao.add(entity1)
+            val entity2 = VaultEntry(2, "account_b", "user_b", "url", "password")
+            vaultEntryDao.add(entity2)
+            val entity3 = VaultEntry(3, "account_c", "user_c", "url", "password")
+            vaultEntryDao.add(entity3)
+            val entity4 = VaultEntry(4, "account_d", "user_d", "url", "password")
+            vaultEntryDao.add(entity4)
+            val entity5 = VaultEntry(5, "account_e", "user_e", "url", "password")
+            vaultEntryDao.add(entity5)
+        }
     }
 
     @After
@@ -121,21 +122,20 @@ class TestAccountView {
     fun testAddAccountButton() {
 
         val logAssert = LogAssert()
-        Espresso.onView(ViewMatchers.withId(R.id.username))
+        Espresso.onView(ViewMatchers.withId(R.id.etUsername))
             .perform(ViewActions.typeText("randomUsername"))
-        Espresso.onView(ViewMatchers.withId(R.id.password))
+        Espresso.onView(ViewMatchers.withId(R.id.etPassword))
             .perform(ViewActions.typeText("randomPassword"))
         // for mobile phones like Galaxy Nexus (small screen)
         Espresso.closeSoftKeyboard()
-        Espresso.onView(ViewMatchers.withId(R.id.email))
+        Espresso.onView(ViewMatchers.withId(R.id.etEmail))
             .perform(ViewActions.typeText("randomE-Mail"))
-
 
         //closing keyboard to press ok Button
         Espresso.closeSoftKeyboard()
         Thread.sleep(1000)
 
-        Espresso.onView(ViewMatchers.withId(R.id.okButton)).perform(ViewActions.click())
+        Espresso.onView(ViewMatchers.withId(R.id.btnOk)).perform(ViewActions.click())
 
         val assertArr1 = arrayOf("randomUsername")
         val assertArr2 = arrayOf("randomPassword")

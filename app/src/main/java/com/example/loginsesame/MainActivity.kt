@@ -38,42 +38,33 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         isLoggedIn = intent.getBooleanExtra("isLoggedIn", false)
 
-        db = UserDatabase.initDb(this)
-        userDao = db.getUserDao()
-        vaultEntryDao = db.getVaultEntryDao()
+        val db = UserDatabase.initDb(this)
+        val repository = UserRepository(db.getUserDao(), db.getVaultEntryDao())
+        val viewModel =
+            ViewModelProvider(this, MainViewModelFactory(repository)).get(MainViewModel::class.java)
 
-        var userExists = false
 
-        if(userDao.getAllUsers().isNotEmpty())
-        {
-            userExists = true
-        }
+        viewModel.users.observe(this, {
+            Log.d(logTag.LOG_MAIN, it.size.toString())
+            if (it.isNotEmpty() && !isLoggedIn) {
+                openLoginActivity()
+            } else if (it.isEmpty() && !isLoggedIn) {
+                openCreateActivity()
+            }
+        })
 
-        //check if user exists
-        //yes -> open Login Activity
-        //no -> open create activity
-
-        Log.d(logTag.LOG_MAIN, "is Logged in = " + isLoggedIn)
-        Log.d(logTag.LOG_MAIN, userDao.getAllUsers().size.toString())
-        if(!isLoggedIn && userExists){
-            openLoginActivity()
-        }
-
-        if (!isLoggedIn && !userExists){
-            //create new user and automatically login
-            openCreateActivity()
-        }
+        viewModel.entries.observe(this, {
+            for (entry in it) {
+                var acc = Account(entry.Name, entry.username)
+                accountAdapter.addAccount(acc)
+            }
+        })
 
         accountAdapter = RecyclerAdapter(mutableListOf())
 
 
         rvAccounts.adapter = accountAdapter
         rvAccounts.layoutManager = LinearLayoutManager(this)
-
-        for (entry in vaultEntryDao.allEntrys()) {
-            var acc = account(entry.Name, entry.username)
-            accountAdapter.addAccount(acc)
-        }
 
         btnAddAccount.setOnClickListener {
             val logTag = LogTag()

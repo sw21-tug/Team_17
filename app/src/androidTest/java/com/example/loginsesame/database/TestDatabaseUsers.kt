@@ -61,15 +61,15 @@ class TestDatabaseUsers {
         userRepository.deleteAllUsers()
 
         GlobalScope.launch {
-            val entity1 = VaultEntry(1, "account_a", "user_a", "password")
+            val entity1 = VaultEntry(1, "account_a", "user_a", "url", "password")
             userRepository.insertVaultEntry(entity1)
-            val entity2 = VaultEntry(2, "account_b", "user_b", "password")
+            val entity2 = VaultEntry(2, "account_b", "user_b", "url", "password")
             userRepository.insertVaultEntry(entity2)
-            val entity3 = VaultEntry(3, "account_c", "user_c", "password")
+            val entity3 = VaultEntry(3, "account_c", "user_c", "url", "password")
             userRepository.insertVaultEntry(entity3)
-            val entity4 = VaultEntry(4, "account_d", "user_d", "password")
+            val entity4 = VaultEntry(4, "account_d", "user_d", "url", "password")
             userRepository.insertVaultEntry(entity4)
-            val entity5 = VaultEntry(5, "account_e", "user_e", "password")
+            val entity5 = VaultEntry(5, "account_e", "user_e", "url", "password")
             userRepository.insertVaultEntry(entity5)
         }
     }
@@ -85,11 +85,14 @@ class TestDatabaseUsers {
     @Throws(Exception::class)
     fun testAddNewUsersAndInsertVaultEntries() {
         val logAssert = LogAssert()
-        Espresso.onView(ViewMatchers.withId(R.id.etUsername)).perform(ViewActions.typeText("randomUsername"))
-        Espresso.onView(ViewMatchers.withId(R.id.etPassword)).perform(ViewActions.typeText("randomPassword"))
+        Espresso.onView(ViewMatchers.withId(R.id.etUsername))
+            .perform(ViewActions.typeText("randomUsername"))
+        Espresso.onView(ViewMatchers.withId(R.id.etPassword))
+            .perform(ViewActions.typeText("randomPassword"))
         // for mobile phones like Galaxy Nexus (small screen)
         Espresso.closeSoftKeyboard()
-        Espresso.onView(ViewMatchers.withId(R.id.etEmail)).perform(ViewActions.typeText("randomE-Mail"))
+        Espresso.onView(ViewMatchers.withId(R.id.etEmail))
+            .perform(ViewActions.typeText("randomE-Mail"))
 
 
         //closing keyboard to press ok Button
@@ -107,11 +110,21 @@ class TestDatabaseUsers {
 
         val entries = userRepository.entries.asLiveData().blockingObserve()
         assert(entries!!.size == 5)
-        assert(userRepository.getVaultEntry("account_a").asLiveData().blockingObserve() == entries[0])
-        assert(userRepository.getVaultEntry("account_b").asLiveData().blockingObserve() == entries[1])
-        assert(userRepository.getVaultEntry("account_c").asLiveData().blockingObserve() == entries[2])
-        assert(userRepository.getVaultEntry("account_d").asLiveData().blockingObserve() == entries[3])
-        assert(userRepository.getVaultEntry("account_e").asLiveData().blockingObserve() == entries[4])
+        assert(
+            userRepository.getVaultEntry("account_a").asLiveData().blockingObserve() == entries[0]
+        )
+        assert(
+            userRepository.getVaultEntry("account_b").asLiveData().blockingObserve() == entries[1]
+        )
+        assert(
+            userRepository.getVaultEntry("account_c").asLiveData().blockingObserve() == entries[2]
+        )
+        assert(
+            userRepository.getVaultEntry("account_d").asLiveData().blockingObserve() == entries[3]
+        )
+        assert(
+            userRepository.getVaultEntry("account_e").asLiveData().blockingObserve() == entries[4]
+        )
 
         val currentActivity = getActivityInstance()
         val recyclerView = currentActivity?.findViewById<RecyclerView>(R.id.rvAccounts)

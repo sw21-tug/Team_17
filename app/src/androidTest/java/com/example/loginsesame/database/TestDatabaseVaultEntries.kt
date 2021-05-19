@@ -26,7 +26,7 @@ class TestDatabaseVaultEntries {
 
     private lateinit var db: UserDatabase
     private lateinit var repository: UserRepository
-    private val entry = VaultEntry(1, "account_x", "user_x", "password")
+    private val entry = VaultEntry(1, "account_x", "user_x", "url", "password")
 
     @Rule
     @JvmField
@@ -36,7 +36,9 @@ class TestDatabaseVaultEntries {
     @Before
     fun initDb() {
         val context = ApplicationProvider.getApplicationContext<Context>()
-        db = Room.inMemoryDatabaseBuilder(context, UserDatabase::class.java).allowMainThreadQueries().build()
+        db =
+            Room.inMemoryDatabaseBuilder(context, UserDatabase::class.java).allowMainThreadQueries()
+                .build()
         repository = UserRepository(db.getUserDao(), db.getVaultEntryDao())
     }
 
@@ -48,8 +50,8 @@ class TestDatabaseVaultEntries {
 
 
     @Test
-    fun testAddEntity(){
-        val entity = VaultEntry(2, "account_z", "user_z", "password")
+    fun testAddEntity() {
+        val entity = VaultEntry(2, "account_z", "user_z", "url", "password")
         GlobalScope.launch {
             repository.insertVaultEntry(entity)
         }
@@ -59,7 +61,7 @@ class TestDatabaseVaultEntries {
     }
 
     @Test
-    fun testGetEntity(){
+    fun testGetEntity() {
         GlobalScope.launch {
             repository.insertVaultEntry(entry)
         }
@@ -68,7 +70,7 @@ class TestDatabaseVaultEntries {
     }
 
     @Test
-    fun testDeleteEntity(){
+    fun testDeleteEntity() {
         GlobalScope.launch {
             repository.insertVaultEntry(entry)
         }
@@ -81,8 +83,8 @@ class TestDatabaseVaultEntries {
     }
 
     @Test
-    fun testEditEntity(){
-        val entityB = VaultEntry(3, "account_b", "user_b", "password")
+    fun testEditEntity() {
+        val entityB = VaultEntry(3, "account_b", "user_b", "url", "password")
         GlobalScope.launch {
             repository.insertVaultEntry(entityB)
         }
@@ -90,7 +92,7 @@ class TestDatabaseVaultEntries {
         val entries = repository.entries.asLiveData().blockingObserve()
         assert(entries!![0] == entityB)
 
-        val newEntityB = VaultEntry(3, "account_y", "user_y", "password_y")
+        val newEntityB = VaultEntry(3, "account_y", "user_y", "url", "password_y")
         GlobalScope.launch {
             repository.updateVaultEntry(newEntityB)
         }
