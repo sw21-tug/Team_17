@@ -79,7 +79,12 @@ class TestDatabaseVaultEntries {
             repository.deleteAllEntries()
         }
         val entries = repository.entries.asLiveData().blockingObserve()
-        assert(entries.isNullOrEmpty())
+
+        if (entries != null) {
+            assert(entries.isEmpty())
+        } else {
+            assert(false)
+        }
     }
 
     @Test

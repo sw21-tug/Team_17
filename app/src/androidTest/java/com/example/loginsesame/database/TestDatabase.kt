@@ -37,11 +37,14 @@ class TestDatabase {
         db = Room.inMemoryDatabaseBuilder(context, UserDatabase::class.java).allowMainThreadQueries().build()
         userRepository = UserRepository(db.getUserDao(), db.getVaultEntryDao())
         userRepository.deleteAllUsers()
+        userRepository.deleteAllEntries()
     }
 
     @After
     @Throws(IOException::class)
     fun closeDb() {
+        userRepository.deleteAllUsers()
+        userRepository.deleteAllEntries()
         db.close()
     }
 
@@ -59,6 +62,7 @@ class TestDatabase {
         }
         val usersDelete = userRepository.users.asLiveData().blockingObserve()
         assert(usersDelete!!.isEmpty())
+        Thread.sleep(1000)
     }
 
     private fun <T> LiveData<T>.blockingObserve(): T? {

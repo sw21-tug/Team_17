@@ -59,6 +59,7 @@ class TestDatabaseUsers {
         db = UserDatabase.initDb(context)
         userRepository = UserRepository(db.getUserDao(), db.getVaultEntryDao())
         userRepository.deleteAllUsers()
+        userRepository.deleteAllEntries()
 
         GlobalScope.launch {
             val entity1 = VaultEntry(1, "account_a", "user_a", "url", "password")
@@ -78,6 +79,7 @@ class TestDatabaseUsers {
     @After
     @Throws(IOException::class)
     fun cleanup() {
+        userRepository.deleteAllUsers()
         userRepository.deleteAllEntries()
     }
 
