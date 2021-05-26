@@ -1,32 +1,27 @@
 package com.example.loginsesame
 
 import android.content.Context
-import android.content.Intent
-import android.service.autofill.UserData
-import android.service.autofill.Validators.not
-import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.Espresso
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions
-import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.intent.Intents
 import androidx.test.espresso.intent.Intents.intended
 import androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent
-import androidx.test.espresso.intent.rule.IntentsTestRule
-import androidx.test.espresso.matcher.RootMatchers.withDecorView
-import androidx.test.espresso.matcher.ViewMatchers.*
+import androidx.test.espresso.matcher.ViewMatchers.withId
+import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import androidx.test.rule.ActivityTestRule
 import com.example.loginsesame.data.User
 import com.example.loginsesame.data.UserDao
 import com.example.loginsesame.data.UserDatabase
 import com.example.loginsesame.helper.LogAssert
-import org.junit.*
-import org.junit.Assert.*
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import org.junit.After
+import org.junit.Before
+import org.junit.Rule
+import org.junit.Test
 import org.junit.runner.RunWith
-import java.io.IOException
-import kotlin.concurrent.thread
 
 /**
  * Instrumented test, which will execute on an Android device.
@@ -40,10 +35,10 @@ class TestLogin {
 
     @Rule
     @JvmField
-    val rule: ActivityTestRule<LoginActivity> = ActivityTestRule(LoginActivity::class.java)
+    val rule: ActivityScenarioRule<LoginActivity> = ActivityScenarioRule(LoginActivity::class.java)
 
     @Before
-    fun db_init() {
+    fun initDbAndIntents() {
         Intents.init()
         val context = ApplicationProvider.getApplicationContext<Context>()
         db = UserDatabase.initDb(context)
@@ -51,7 +46,10 @@ class TestLogin {
 
         val user = User(null, "Max Musterman", "test@mail.com", "123456789")
         userDao.deleteAllUsers()
-        userDao.insertUser(user)
+        GlobalScope.launch {
+            userDao.insertUser(user)
+        }
+
     }
 
     @After
@@ -61,7 +59,7 @@ class TestLogin {
     }
 
     @Test
-    fun userEntersCorrectPasswordClicksOk() {
+    fun testCorrectPasswordClickOk() {
         onView(withId(R.id.etInputPassword)).perform(ViewActions.typeText("123456789"))
 
         Espresso.closeSoftKeyboard()
@@ -74,7 +72,7 @@ class TestLogin {
     }
 
     @Test
-    fun userEntersIncorrectPasswordClicksOk() {
+    fun testIncorrectPasswordClickOk() {
 
         val logAssert = LogAssert()
         onView(withId(R.id.etInputPassword)).perform(ViewActions.typeText("randomPassword1"))
@@ -90,7 +88,7 @@ class TestLogin {
 
 
     @Test
-    fun userEntersIncorrectPasswordClicksCancel() {
+    fun testIncorrectPasswordClickCancel() {
         val logAssert = LogAssert()
         onView(withId(R.id.etInputPassword)).perform(ViewActions.typeText("randomPassword1"))
 
@@ -103,7 +101,7 @@ class TestLogin {
     }
 
     @Test
-    fun userClicksBackButton() {
+    fun testBackButtonWithoutAction() {
         val logAssert = LogAssert()
 
         //Second pressBack is needed if software keyboard is open, so keyboard needs to be closed before

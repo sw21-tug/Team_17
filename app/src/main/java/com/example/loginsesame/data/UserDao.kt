@@ -4,18 +4,19 @@ import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface UserDao {
     @Insert
-    fun insertUser(user: User)
+    suspend fun insertUser(user: User)
 
     @Delete
-    fun deleteUser(user: User)
+    suspend fun deleteUser(user: User)
 
     @Query ("DELETE FROM USER")
     fun deleteAllUsers()
 
     @Query("SELECT * FROM USER")
-    fun getAllUsers(): List<User>
+    fun getAllUsers(): Flow<List<User>>
 }

@@ -1,25 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="username"></string>
-    <string name="choose_username">Выберите имя пользователя</string>
-    <string name="password"></string>
-    <string name="choose_password">Выберите пароль</string>
-    <string name="email"></string>
-    <string name="enter_your_email">введите адрес электронной почты</string>
     <string name="app_name">Войти Sesame</string>
-    <string name="ok">ОK</string>
-    <string name="cancel">отмена</string>
-    <string name="input_pwd_hint">введите пароль</string>
-    <string name="setLanguage">Установите язык на русский</string>
-    <string name="eng_Lang">английский</string>
-    <string name="ru_Lang">русский</string>
+    <string name="user_name"></string>
+    <string name="password"></string>
+    <string name="email"></string>
+    <string name="registration_enter_email">введите адрес электронной почты</string>
+    <string name="registration_choose_username">Выберите имя пользователя</string>
+    <string name="registration_choose_pwd">Выберите пароль</string>
+    <string name="btn_ok">OK</string>
+    <string name="btn_cancel">отмена</string>
+    <string name="hint_input_password">введите пароль</string>
+    <string name="language_set_text">Установите язык на русский</string>
+    <string name="language_en">английский</string>
+    <string name="language_ru">русский</string>
     <string name="language_chooser_title">Сука Блядь</string>
-    <string name="too_many_users">Слишком много пользователей в базе данных, обратитесь за помощью в службу поддержки</string>
-    <string name="incorrect_pwd">Неверный пароль</string>
     <string name="vault_entry_name">Введите название записи</string>
     <string name="vault_url">Введите УРЛ</string>
     <string name="vault_username">Введите имя пользователя</string>
     <string name="vault_password">Введите пароль</string>
     <string name="vault_save">Сохранить</string>
     <string name="url_or_entryname">Необходимо указать либо имя записи, либо УРЛ!</string>
+    <string name="error_too_many_users_in_db">Слишком много пользователей в базе данных, обратитесь за помощью в службу поддержки</string>
+    <string name="error_incorrect_pwd">Неверный пароль</string>
+    <string name="pwd_overview_text">текстовый вид</string>
 </resources>

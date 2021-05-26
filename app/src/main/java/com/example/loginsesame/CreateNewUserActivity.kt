@@ -6,46 +6,53 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.EditText
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import com.example.loginsesame.data.User
 import com.example.loginsesame.data.UserDatabase
+import com.example.loginsesame.data.UserRepository
+import com.example.loginsesame.factories.CreateViewModelFactory
 import com.example.loginsesame.helper.LogTag
 import kotlinx.coroutines.*
 
 
-class CreateStartUp : AppCompatActivity() {
+class CreateNewUserActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_startup)
+        setContentView(R.layout.activity_create_new_user)
 
         val logTag = LogTag()
 
         val db = UserDatabase.initDb(this)
-        val userDao = db.getUserDao()
+        val repo = UserRepository(db.getUserDao(), db.getVaultEntryDao())
 
-        val okButton = findViewById<Button>(R.id.okButton)
+        val okButton = findViewById<Button>(R.id.btnOk)
+        val cancelButton = findViewById<Button>(R.id.btnCancel)
+        val viewModel =
+            ViewModelProvider(this, CreateViewModelFactory(repo)).get(CreateViewModel::class.java)
+
         okButton.setOnClickListener {
-            val email = findViewById<EditText>(R.id.email).text.toString()
-            val username = findViewById<EditText>(R.id.username).text.toString()
-            val password = findViewById<EditText>(R.id.password).text.toString()
+            val email = findViewById<EditText>(R.id.etEmail).text.toString()
+            val username = findViewById<EditText>(R.id.etUsername).text.toString()
+            val password = findViewById<EditText>(R.id.etPassword).text.toString()
 
             val user = User(null, email, username, password)
+            viewModel.addUser(user)
 
-            userDao.insertUser(user)
 
             Log.d(logTag.LOG_STARTUP, "randomUsername")
             Log.d(logTag.LOG_STARTUP, "randomPassword")
             Log.d(logTag.LOG_STARTUP, "randomEmail")
 
-            val intentMain = Intent(this@CreateStartUp, MainActivity::class.java)
+            val intentMain = Intent(this@CreateNewUserActivity, MainActivity::class.java)
             intentMain.putExtra("isLoggedIn", true)
             startActivity(intentMain)
         }
 
-        val cancelButton = findViewById<Button>(R.id.cancelButton)
         cancelButton.setOnClickListener {
             Log.d(logTag.LOG_STARTUP, "cancelButton")
-            val intentMain = Intent(this@CreateStartUp, MainActivity::class.java)
+            val intentMain = Intent(this@CreateNewUserActivity, MainActivity::class.java)
             startActivity(intentMain)
         }
 

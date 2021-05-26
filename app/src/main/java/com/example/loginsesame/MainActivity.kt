@@ -10,35 +10,77 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.room.Room
-import com.example.loginsesame.RecyclerViewAdapter.RecyclerAdapter
-import com.example.loginsesame.data.User
-import com.example.loginsesame.data.UserDao
-import com.example.loginsesame.data.UserDatabase
-import com.example.loginsesame.data.VaultEntryDao
+import com.example.loginsesame.data.*
+import com.example.loginsesame.factories.MainViewModelFactory
 import com.example.loginsesame.helper.LogTag
+import com.example.loginsesame.recyclerViewAdapter.RecyclerAdapter
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import java.util.*
 
 
-lateinit var accountAdapter : RecyclerAdapter
+lateinit var accountAdapter: RecyclerAdapter
 
 class MainActivity : AppCompatActivity() {
 
-    val logTag = LogTag()
+    private val logTag = LogTag()
     var isLoggedIn = false //state if user is logged into the app
 
     private lateinit var db: UserDatabase
     private lateinit var userDao: UserDao
     private lateinit var vaultEntryDao: VaultEntryDao
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        loadLocale()
+        setContentView(R.layout.activity_main)
+        isLoggedIn = intent.getBooleanExtra("isLoggedIn", false)
+
+        val db = UserDatabase.initDb(this)
+        val repository = UserRepository(db.getUserDao(), db.getVaultEntryDao())
+        val viewModel =
+            ViewModelProvider(this, MainViewModelFactory(repository)).get(MainViewModel::class.java)
+
+
+        viewModel.users.observe(this, {
+            Log.d(logTag.LOG_MAIN, it.size.toString())
+            if (it.isNotEmpty() && !isLoggedIn) {
+                openLoginActivity()
+            } else if (it.isEmpty() && !isLoggedIn) {
+                openCreateActivity()
+            }
+        })
+
+        viewModel.entries.observe(this, {
+            for (entry in it) {
+                var acc = Account(entry.Name, entry.username)
+                accountAdapter.addAccount(acc)
+            }
+        })
+
+        accountAdapter = RecyclerAdapter(mutableListOf())
+
+
+        rvAccounts.adapter = accountAdapter
+        rvAccounts.layoutManager = LinearLayoutManager(this)
+
+        btnAddAccount.setOnClickListener {
+            val logTag = LogTag()
+            Log.d(logTag.LOG_MAIN, "btnAddAccountOK")
+
+            val intentCreateVaultEntry = Intent(this@MainActivity, CreateVaultEntry::class.java)
+            startActivity(intentCreateVaultEntry)
+            finish()
+        }
+
+    }
+
+
     // Account creation
-    private fun openCreateActivity()
-    {
-        val intentCreateStartUp = Intent(this@MainActivity, CreateStartUp::class.java)
+    private fun openCreateActivity() {
+        val intentCreateStartUp = Intent(this@MainActivity, CreateNewUserActivity::class.java)
         this@MainActivity.startActivity(intentCreateStartUp)
     }
 
@@ -64,12 +106,35 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         val switchLanguage = item.itemId
 
-        if (switchLanguage == R.id.changeLanguage){
-            //Toast.makeText(this@MainActivity, "New Language", Toast.LENGTH_SHORT).show()
+        if (switchLanguage == R.id.changeLanguage) {
             showChangeLanguageDialog()
         }
 
         return super.onOptionsItemSelected(item)
+    }
+
+    private fun showChangeLanguageDialog(){
+        val adb = AlertDialog.Builder(this)
+        val items = arrayOf<CharSequence>(
+            getString(R.string.language_en),
+            getString(R.string.language_ru)
+        )
+
+        adb.setSingleChoiceItems(items, -1, DialogInterface.OnClickListener { _, arg1 ->
+            if (arg1 == 0)
+                setLanguage("en")
+            else if (arg1 == 1)
+                setLanguage("ru")
+            //add more languages if needed
+        })
+        adb.setPositiveButton("OK", DialogInterface.OnClickListener { _, _ ->
+            //refresh application screen
+            recreate()
+        })
+        adb.setTitle(getString(R.string.language_chooser_title))
+        adb.show()
+
+
     }
 
     private fun setLanguage(newLang: String){
@@ -83,29 +148,6 @@ class MainActivity : AppCompatActivity() {
         editor.apply()
     }
 
-    private fun showChangeLanguageDialog(){
-        val adb = AlertDialog.Builder(this)
-        val items = arrayOf<CharSequence>(
-                getString(R.string.eng_Lang),
-                getString(R.string.ru_Lang))
-
-        adb.setSingleChoiceItems(items, -1, DialogInterface.OnClickListener { arg0, arg1 ->
-            if(arg1 == 0)
-                setLanguage("en")
-            else if (arg1 == 1)
-                setLanguage("ru")
-            //add more languages if needed
-        })
-        adb.setPositiveButton("OK",  DialogInterface.OnClickListener { arg0, arg1 ->
-            //refresh application screen
-            recreate()
-        })
-        adb.setTitle(getString(R.string.language_chooser_title))
-        adb.show()
-
-
-    }
-
     private fun loadLocale() {
         val sharedPreferences = getSharedPreferences("Settings", Context.MODE_PRIVATE)
         val language = sharedPreferences.getString("My_Lang", "en")
@@ -113,59 +155,5 @@ class MainActivity : AppCompatActivity() {
             setLanguage(language)
         }
 
-    }
-
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        loadLocale()
-        setContentView(R.layout.activity_main)
-        isLoggedIn = intent.getBooleanExtra("isLoggedIn", false)
-
-        db = UserDatabase.initDb(this)
-        userDao = db.getUserDao()
-        vaultEntryDao = db.getVaultEntryDao()
-
-
-        var userExists = false
-
-        if (userDao.getAllUsers().isNotEmpty()) {
-            userExists = true
-        }
-
-        //check if user exists
-        //yes -> open Login Activity
-        //no -> open create activity
-
-        Log.d(logTag.LOG_MAIN, "is Logged in = " + isLoggedIn)
-        Log.d(logTag.LOG_MAIN, userDao.getAllUsers().size.toString())
-        if (!isLoggedIn && userExists) {
-            openLoginActivity()
-        }
-
-        if (!isLoggedIn && !userExists) {
-            //create new user and automatically login
-            openCreateActivity()
-        }
-
-        accountAdapter = RecyclerAdapter(mutableListOf())
-
-
-        rvAccounts.adapter = accountAdapter
-        rvAccounts.layoutManager = LinearLayoutManager(this)
-
-        for (entry in vaultEntryDao.allEntrys()) {
-            var acc = account(entry.Name, entry.username)
-            accountAdapter.addAccount(acc)
-        }
-
-        btnAddAccount.setOnClickListener {
-            val logTag = LogTag()
-            Log.d(logTag.LOG_MAIN, "btnAddAccountOK")
-
-            val intentCreateVaultEntry = Intent(this@MainActivity, CreateVaultEntry::class.java)
-            startActivity(intentCreateVaultEntry)
-            finish()
-        }
     }
 }

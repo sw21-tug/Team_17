@@ -1,28 +1,22 @@
 package com.example.loginsesame
 
 import android.content.Context
-import android.view.View
-import android.view.inputmethod.InputMethodManager
 import androidx.test.core.app.ApplicationProvider
-import androidx.test.espresso.Espresso
 import androidx.test.espresso.Espresso.closeSoftKeyboard
 import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.action.ViewActions
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.action.ViewActions.typeText
-import androidx.test.espresso.intent.Intents
 import androidx.test.espresso.matcher.ViewMatchers.withId
-import androidx.test.platform.app.InstrumentationRegistry
+import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import androidx.test.rule.ActivityTestRule
 import com.example.loginsesame.data.UserDao
 import com.example.loginsesame.data.UserDatabase
 import com.example.loginsesame.helper.LogAssert
-import org.junit.*
-
+import org.junit.After
+import org.junit.Before
+import org.junit.Rule
+import org.junit.Test
 import org.junit.runner.RunWith
-
-import org.junit.Assert.*
 
 @RunWith(AndroidJUnit4::class)
 class TestCreateAccount {
@@ -32,10 +26,10 @@ class TestCreateAccount {
 
     @Rule
     @JvmField
-    val rule: ActivityTestRule<CreateStartUp> = ActivityTestRule(CreateStartUp::class.java)
+    val rule: ActivityScenarioRule<CreateNewUserActivity> = ActivityScenarioRule(CreateNewUserActivity::class.java)
 
     @Before
-    fun deleteDB(){
+    fun initDb(){
         val context = ApplicationProvider.getApplicationContext<Context>()
         db = UserDatabase.initDb(context)
         userDao = db.getUserDao()
@@ -51,22 +45,24 @@ class TestCreateAccount {
         userDao.deleteAllUsers()
         //Intents.release()
     }
+
     @Test
-    fun okButtonClickable() {
+    fun testIfOkButtonIsClickable() {
 
         val logAssert = LogAssert()
-        onView(withId(R.id.username)).perform(ViewActions.typeText("randomUsername"))
-        onView(withId(R.id.password)).perform(ViewActions.typeText("randomPassword"))
+        onView(withId(R.id.etUsername)).perform(typeText("randomUsername"))
+        onView(withId(R.id.etPassword)).perform(typeText("randomPassword"))
+
         // for mobile phones like Galaxy Nexus (small screen)
-        Espresso.closeSoftKeyboard()
-        onView(withId(R.id.email)).perform(ViewActions.typeText("randomE-Mail"))
+        closeSoftKeyboard()
+        onView(withId(R.id.etEmail)).perform(typeText("randomE-Mail"))
 
 
         //closing keyboard to press ok Button
-        Espresso.closeSoftKeyboard()
+        closeSoftKeyboard()
         Thread.sleep(1000)
 
-        onView(withId(R.id.okButton)).perform(ViewActions.click())
+        onView(withId(R.id.btnOk)).perform(click())
 
         val assertArr1 = arrayOf("randomUsername")
         val assertArr2 = arrayOf("randomPassword")
@@ -74,14 +70,13 @@ class TestCreateAccount {
         logAssert.assertLogsExist(assertArr1)
         logAssert.assertLogsExist(assertArr2)
         logAssert.assertLogsExist(assertArr3)
-
     }
 
     @Test
-    fun cancelButtonClickable() {
+    fun testIfCancelButtonIsClickable() {
 
         val logAssert = LogAssert()
-        onView(withId(R.id.cancelButton)).perform(ViewActions.click())
+        onView(withId(R.id.btnCancel)).perform(click())
 
         val assertArr = arrayOf("cancelButton")
         logAssert.assertLogsExist(assertArr)
