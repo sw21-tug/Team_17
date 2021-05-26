@@ -4,6 +4,7 @@ package com.example.loginsesame
 import android.app.Activity
 import android.content.Context
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.Espresso
@@ -275,5 +276,5 @@ class TestAccountView {
 
         latch.await(2, TimeUnit.SECONDS)
         return value
-    }}
+    }
 }
