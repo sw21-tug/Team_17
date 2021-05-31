@@ -174,7 +174,25 @@ class TestEditPassword
 
     @Test
     fun testSaveChangesNoPassword(){
-        //warning
+        onView(ViewMatchers.withId(R.id.etInputPassword))
+            .perform(ViewActions.typeText("123456789"))
+
+        closeSoftKeyboard()
+        onView(ViewMatchers.withId(R.id.btnInputPasswordOK)).perform(ViewActions.click())
+
+        onView(ViewMatchers.withText("account_b")).perform(ViewActions.click())
+        Thread.sleep(2000)
+
+        //overwrite data
+        onView(ViewMatchers.withId(R.id.vaultPassword))
+            .perform(ViewActions.clearText())
+
+        //save
+        onView(ViewMatchers.withId(R.id.btnVaultSave)).perform(ViewActions.click())
+
+        //check changed data
+        onView(ViewMatchers.withText(R.string.vault_save_changes_alert)).check(
+            ViewAssertions.matches(ViewMatchers.withText("Please enter a Password to Save the Changes")))
     }
 
     @Test
