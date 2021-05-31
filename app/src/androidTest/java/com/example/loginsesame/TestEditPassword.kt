@@ -72,8 +72,10 @@ class TestEditPassword
     @After
     @Throws(IOException::class)
     fun cleanup() {
+        Intents.release()
         repository.deleteAllEntries()
         repository.deleteAllUsers()
+        currentActivity = null
     }
 
     @Test
@@ -246,14 +248,46 @@ class TestEditPassword
 
     @Test
     fun testCancelWithChangesYes(){
-        //return without changes
-    }
+        onView(ViewMatchers.withId(R.id.etInputPassword))
+            .perform(ViewActions.typeText("123456789"))
 
-    //Todo:
-        //show edit entry on top - DONE
-        //russian support (warnings) - DONE
-        //make passwordoverview nice
-        //write tests
+        closeSoftKeyboard()
+        onView(ViewMatchers.withId(R.id.btnInputPasswordOK)).perform(ViewActions.click())
+
+        onView(ViewMatchers.withText("account_b")).perform(ViewActions.click())
+        Thread.sleep(2000)
+
+        //change data
+        onView(ViewMatchers.withId(R.id.vaultURL))
+            .perform(ViewActions.clearText()).perform(ViewActions.typeText("new URL"))
+
+        //cancel
+        onView(ViewMatchers.withId(R.id.btnVaultCancel)).perform(ViewActions.click())
+
+        //check
+        onView(ViewMatchers.withText(R.string.vault_cancel_changes_alert)).check(
+            ViewAssertions.matches(ViewMatchers.withText("Are you sure you want to discard the changes?")))
+
+        onView(ViewMatchers.withText(R.string.response_positive)).perform(ViewActions.click())
+
+        val currentActivity = getActivityInstance()
+        val currentActivityName = currentActivity?.componentName?.className
+        assert(currentActivityName.toString().equals("com.example.loginsesame.MainActivity"))
+
+        //go back to Main
+        onView(ViewMatchers.withText("account_b")).perform(ViewActions.click())
+        Thread.sleep(1000)
+
+        //check unchanged data
+        onView(ViewMatchers.withId(R.id.vaultURL))
+            .check(ViewAssertions.matches(ViewMatchers.withText("url")))
+        onView(ViewMatchers.withId(R.id.vaultUsername))
+            .check(ViewAssertions.matches(ViewMatchers.withText("user_b")))
+        onView(ViewMatchers.withId(R.id.vaultnameEntry))
+            .check(ViewAssertions.matches(ViewMatchers.withText("account_b")))
+        onView(ViewMatchers.withId(R.id.vaultPassword))
+            .check(ViewAssertions.matches(ViewMatchers.withText("password")))
+    }
 
     private fun getActivityInstance(): Activity? {
         InstrumentationRegistry.getInstrumentation().runOnMainSync {
