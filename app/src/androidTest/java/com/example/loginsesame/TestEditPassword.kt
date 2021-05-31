@@ -289,6 +289,37 @@ class TestEditPassword
             .check(ViewAssertions.matches(ViewMatchers.withText("password")))
     }
 
+    @Test
+    fun testBackWithChangedData(){
+        onView(ViewMatchers.withId(R.id.etInputPassword))
+            .perform(ViewActions.typeText("123456789"))
+
+        closeSoftKeyboard()
+        onView(ViewMatchers.withId(R.id.btnInputPasswordOK)).perform(ViewActions.click())
+
+        onView(ViewMatchers.withText("account_b")).perform(ViewActions.click())
+        Thread.sleep(2000)
+
+        //change data
+        onView(ViewMatchers.withId(R.id.vaultURL))
+            .perform(ViewActions.clearText()).perform(ViewActions.typeText("new URL"))
+
+        //back button
+        closeSoftKeyboard()
+        Thread.sleep(1000)
+        Espresso.pressBack()
+
+        //check
+        onView(ViewMatchers.withText(R.string.vault_cancel_changes_alert)).check(
+            ViewAssertions.matches(ViewMatchers.withText("Are you sure you want to discard the changes?")))
+
+        onView(ViewMatchers.withText(R.string.response_negative)).perform(ViewActions.click())
+
+        val currentActivity = getActivityInstance()
+        val currentActivityName = currentActivity?.componentName?.className
+        assert(currentActivityName.toString().equals("com.example.loginsesame.EditVaultEntry"))
+    }
+
     private fun getActivityInstance(): Activity? {
         InstrumentationRegistry.getInstrumentation().runOnMainSync {
             val resumedActivities: Collection<*> =
