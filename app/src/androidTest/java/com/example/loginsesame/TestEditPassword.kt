@@ -8,6 +8,7 @@ import androidx.test.espresso.Espresso
 import androidx.test.espresso.Espresso.closeSoftKeyboard
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions
+import androidx.test.espresso.assertion.ViewAssertions
 import androidx.test.espresso.intent.Intents
 import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.ext.junit.rules.ActivityScenarioRule
@@ -99,8 +100,75 @@ class TestEditPassword
         val currentActivity = getActivityInstance()
         val currentActivityName = currentActivity?.componentName?.className
         assert(currentActivityName.toString().equals("com.example.loginsesame.EditVaultEntry"))
+    }
+
+    @Test
+    fun testOpenEditorViewData(){
+        val logAssert = LogAssert()
+
+        onView(ViewMatchers.withId(R.id.etUsername))
+            .perform(ViewActions.typeText("randomUsername"))
+        onView(ViewMatchers.withId(R.id.etPassword))
+            .perform(ViewActions.typeText("randomPassword"))
+        // for mobile phones like Galaxy Nexus (small screen)
+        closeSoftKeyboard()
+        onView(ViewMatchers.withId(R.id.etEmail))
+            .perform(ViewActions.typeText("randomE-Mail"))
+
+        //closing keyboard to press ok Button
+        closeSoftKeyboard()
+        Thread.sleep(1000)
+
+        onView(ViewMatchers.withId(R.id.btnOk)).perform(ViewActions.click())
+
+        onView(ViewMatchers.withText("account_b")).perform(ViewActions.click())
+        Thread.sleep(2000)
+        val assertArr = arrayOf("Recycler Pressed Position 1")
+        logAssert.assertLogsExist(assertArr)
+
+
+        val currentActivity = getActivityInstance()
+        val currentActivityName = currentActivity?.componentName?.className
+        assert(currentActivityName.toString().equals("com.example.loginsesame.EditVaultEntry"))
+
+        //check if data is correct
+        onView(ViewMatchers.withId(R.id.vaultURL)).check(ViewAssertions.matches(ViewMatchers.withText("url")))
+        onView(ViewMatchers.withId(R.id.vaultUsername)).check(ViewAssertions.matches(ViewMatchers.withText("user_b")))
+        onView(ViewMatchers.withId(R.id.vaultnameEntry)).check(ViewAssertions.matches(ViewMatchers.withText("account_b")))
+        onView(ViewMatchers.withId(R.id.vaultPassword)).check(ViewAssertions.matches(ViewMatchers.withText("password")))
 
     }
+
+    @Test
+    fun testSaveChanges(){
+        //should be changed
+    }
+
+    @Test
+    fun testSaveChangesNoPassword(){
+        //warning
+    }
+
+    @Test
+    fun testCancelNoChanges(){
+        //return without changes
+    }
+
+    @Test
+    fun testCancelWithChangesNo(){
+        //stay in overview
+    }
+
+    @Test
+    fun testCancelWithChangesYes(){
+        //return without changes
+    }
+
+    //Todo:
+        //show edit entry on top
+        //russian support (warnings)
+        //make passwordoverview nice
+        //write tests
 
     private fun getActivityInstance(): Activity? {
         InstrumentationRegistry.getInstrumentation().runOnMainSync {
