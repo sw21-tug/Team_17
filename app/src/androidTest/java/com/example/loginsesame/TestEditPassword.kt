@@ -17,6 +17,7 @@ import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.rule.ActivityTestRule
 import androidx.test.runner.lifecycle.ActivityLifecycleMonitorRegistry
 import androidx.test.runner.lifecycle.Stage
+import com.example.loginsesame.data.User
 import com.example.loginsesame.data.UserDatabase
 import com.example.loginsesame.data.UserRepository
 import com.example.loginsesame.data.VaultEntry
@@ -52,6 +53,9 @@ class TestEditPassword
         repository.deleteAllEntries()
 
         GlobalScope.launch {
+            val user = User(1, "Max Musterman", "test@mail.com", "123456789")
+            repository.insertUser(user)
+
             val entity1 = VaultEntry(1, "account_a", "user_a", "url", "password")
             repository.insertVaultEntry(entity1)
             val entity2 = VaultEntry(2, "account_b", "user_b", "url", "password")
@@ -76,20 +80,11 @@ class TestEditPassword
     fun testOpenEditor(){
         val logAssert = LogAssert()
 
-        onView(ViewMatchers.withId(R.id.etUsername))
-            .perform(ViewActions.typeText("randomUsername"))
-        onView(ViewMatchers.withId(R.id.etPassword))
-            .perform(ViewActions.typeText("randomPassword"))
-        // for mobile phones like Galaxy Nexus (small screen)
-        closeSoftKeyboard()
-        onView(ViewMatchers.withId(R.id.etEmail))
-            .perform(ViewActions.typeText("randomE-Mail"))
+        onView(ViewMatchers.withId(R.id.etInputPassword))
+            .perform(ViewActions.typeText("123456789"))
 
-        //closing keyboard to press ok Button
         closeSoftKeyboard()
-        Thread.sleep(1000)
-
-        onView(ViewMatchers.withId(R.id.btnOk)).perform(ViewActions.click())
+        onView(ViewMatchers.withId(R.id.btnInputPasswordOK)).perform(ViewActions.click())
 
         onView(ViewMatchers.withText("account_b")).perform(ViewActions.click())
         Thread.sleep(2000)
@@ -106,42 +101,75 @@ class TestEditPassword
     fun testOpenEditorViewData(){
         val logAssert = LogAssert()
 
-        onView(ViewMatchers.withId(R.id.etUsername))
-            .perform(ViewActions.typeText("randomUsername"))
-        onView(ViewMatchers.withId(R.id.etPassword))
-            .perform(ViewActions.typeText("randomPassword"))
-        // for mobile phones like Galaxy Nexus (small screen)
-        closeSoftKeyboard()
-        onView(ViewMatchers.withId(R.id.etEmail))
-            .perform(ViewActions.typeText("randomE-Mail"))
+        onView(ViewMatchers.withId(R.id.etInputPassword))
+            .perform(ViewActions.typeText("123456789"))
 
-        //closing keyboard to press ok Button
         closeSoftKeyboard()
-        Thread.sleep(1000)
-
-        onView(ViewMatchers.withId(R.id.btnOk)).perform(ViewActions.click())
+        onView(ViewMatchers.withId(R.id.btnInputPasswordOK)).perform(ViewActions.click())
 
         onView(ViewMatchers.withText("account_b")).perform(ViewActions.click())
         Thread.sleep(2000)
         val assertArr = arrayOf("Recycler Pressed Position 1")
         logAssert.assertLogsExist(assertArr)
 
-
-        val currentActivity = getActivityInstance()
-        val currentActivityName = currentActivity?.componentName?.className
-        assert(currentActivityName.toString().equals("com.example.loginsesame.EditVaultEntry"))
-
         //check if data is correct
-        onView(ViewMatchers.withId(R.id.vaultURL)).check(ViewAssertions.matches(ViewMatchers.withText("url")))
-        onView(ViewMatchers.withId(R.id.vaultUsername)).check(ViewAssertions.matches(ViewMatchers.withText("user_b")))
-        onView(ViewMatchers.withId(R.id.vaultnameEntry)).check(ViewAssertions.matches(ViewMatchers.withText("account_b")))
-        onView(ViewMatchers.withId(R.id.vaultPassword)).check(ViewAssertions.matches(ViewMatchers.withText("password")))
+        onView(ViewMatchers.withId(R.id.vaultURL))
+            .check(ViewAssertions.matches(ViewMatchers.withText("url")))
+        onView(ViewMatchers.withId(R.id.vaultUsername))
+            .check(ViewAssertions.matches(ViewMatchers.withText("user_b")))
+        onView(ViewMatchers.withId(R.id.vaultnameEntry))
+            .check(ViewAssertions.matches(ViewMatchers.withText("account_b")))
+        onView(ViewMatchers.withId(R.id.vaultPassword))
+            .check(ViewAssertions.matches(ViewMatchers.withText("password")))
 
     }
 
     @Test
     fun testSaveChanges(){
-        //should be changed
+        onView(ViewMatchers.withId(R.id.etInputPassword))
+            .perform(ViewActions.typeText("123456789"))
+
+        closeSoftKeyboard()
+        onView(ViewMatchers.withId(R.id.btnInputPasswordOK)).perform(ViewActions.click())
+
+        onView(ViewMatchers.withText("account_b")).perform(ViewActions.click())
+        Thread.sleep(2000)
+
+        //check if data is correct
+        onView(ViewMatchers.withId(R.id.vaultURL))
+            .check(ViewAssertions.matches(ViewMatchers.withText("url")))
+        onView(ViewMatchers.withId(R.id.vaultUsername))
+            .check(ViewAssertions.matches(ViewMatchers.withText("user_b")))
+        onView(ViewMatchers.withId(R.id.vaultnameEntry))
+            .check(ViewAssertions.matches(ViewMatchers.withText("account_b")))
+        onView(ViewMatchers.withId(R.id.vaultPassword))
+            .check(ViewAssertions.matches(ViewMatchers.withText("password")))
+
+        //overwrite data
+        onView(ViewMatchers.withId(R.id.vaultURL))
+            .perform(ViewActions.clearText()).perform(ViewActions.typeText("new URL"))
+        onView(ViewMatchers.withId(R.id.vaultUsername))
+            .perform(ViewActions.clearText()).perform(ViewActions.typeText("new user name"))
+        onView(ViewMatchers.withId(R.id.vaultnameEntry))
+            .perform(ViewActions.clearText()).perform(ViewActions.typeText("new entry"))
+        onView(ViewMatchers.withId(R.id.vaultPassword))
+            .perform(ViewActions.clearText()).perform(ViewActions.typeText("new password"))
+
+        //save
+        onView(ViewMatchers.withId(R.id.btnVaultSave)).perform(ViewActions.click())
+
+        //go back to Main
+        onView(ViewMatchers.withText("new entry")).perform(ViewActions.click())
+
+        //check changed data
+        onView(ViewMatchers.withId(R.id.vaultURL))
+            .check(ViewAssertions.matches(ViewMatchers.withText("new URL")))
+        onView(ViewMatchers.withId(R.id.vaultUsername))
+            .check(ViewAssertions.matches(ViewMatchers.withText("new user name")))
+        onView(ViewMatchers.withId(R.id.vaultnameEntry))
+            .check(ViewAssertions.matches(ViewMatchers.withText("new entry")))
+        onView(ViewMatchers.withId(R.id.vaultPassword))
+            .check(ViewAssertions.matches(ViewMatchers.withText("new password")))
     }
 
     @Test
