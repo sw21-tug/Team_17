@@ -56,7 +56,7 @@ class RecyclerAdapter(private val accountList: MutableList<Account>) :
 
     private fun openEditActivity(context: Context, accountId: Int) {
         val i = Intent(context, EditVaultEntry::class.java)
-        //i.putExtra("val", accountId);
+        i.putExtra("accountId", accountId)
         context.startActivity(i)
     }
 
