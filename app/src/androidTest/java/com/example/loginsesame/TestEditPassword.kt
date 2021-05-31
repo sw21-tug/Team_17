@@ -197,7 +197,22 @@ class TestEditPassword
 
     @Test
     fun testCancelNoChanges(){
-        //return without changes
+        onView(ViewMatchers.withId(R.id.etInputPassword))
+            .perform(ViewActions.typeText("123456789"))
+
+        closeSoftKeyboard()
+        onView(ViewMatchers.withId(R.id.btnInputPasswordOK)).perform(ViewActions.click())
+
+        onView(ViewMatchers.withText("account_b")).perform(ViewActions.click())
+        Thread.sleep(2000)
+
+        //cancel
+        onView(ViewMatchers.withId(R.id.btnVaultCancel)).perform(ViewActions.click())
+
+        //check
+        val currentActivity = getActivityInstance()
+        val currentActivityName = currentActivity?.componentName?.className
+        assert(currentActivityName.toString().equals("com.example.loginsesame.MainActivity"))
     }
 
     @Test
