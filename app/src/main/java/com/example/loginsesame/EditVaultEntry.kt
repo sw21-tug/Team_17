@@ -7,6 +7,7 @@ import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import com.example.loginsesame.data.User
 import com.example.loginsesame.data.UserDatabase
 import com.example.loginsesame.data.UserRepository
@@ -53,12 +54,27 @@ class EditVaultEntry : AppCompatActivity() {
 
             val newAccount = VaultEntry(Id=accountId, Name=entryName, username=username, url=url, Password=password)
 
-            GlobalScope.launch {
-                vaultEntryDao.updateVaultEntry(newAccount)
+            if (newAccount.Password != "")
+            {
+                GlobalScope.launch {
+                    vaultEntryDao.updateVaultEntry(newAccount)
+                }
+                openMainActivity()
+
+            } else {
+                alertDialogNoPassword()
             }
-            openMainActivity()
 
         }
+    }
+
+    private fun alertDialogNoPassword() {
+        val alert = AlertDialog.Builder(this)
+        alert.setTitle(R.string.vault_save_changes_alert_title)
+        alert.setMessage(R.string.vault_save_changes_alert)
+        Log.d(logTag.LOG_EDIT_VAULT_ENTRY, "No Password entered")
+
+        alert.show()
     }
 
     private fun openMainActivity() {

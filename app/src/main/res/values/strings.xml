@@ -23,4 +23,5 @@
     <string name="error_incorrect_pwd">Incorrect Password</string>
     <string name="pwd_overview_text">TextView</string>
     <string name="vault_save_changes_alert">Please enter a Password to Save the Changes</string>
+    <string name="vault_save_changes_alert_title">No Password</string>
 </resources>
