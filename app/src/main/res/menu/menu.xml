@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <item
-        android:title="@string/language_set_text"
         android:id="@+id/changeLanguage"
-        app:showAsAction="never"
-        />
+        android:title="@string/language_set_text"
+        app:showAsAction="never" />
 
     <item
         android:id="@+id/search_button"
@@ -18,5 +18,4 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/rvAccounts"
         app:showAsAction="ifRoom|collapseActionView" />
-
 </menu>
