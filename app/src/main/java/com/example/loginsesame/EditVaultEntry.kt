@@ -80,6 +80,18 @@ class EditVaultEntry : AppCompatActivity() {
         }
     }
 
+    override fun onBackPressed() {
+
+        Log.d(logTag.LOG_EDIT_VAULT_ENTRY, "backPressed")
+
+        if (checkEntryChanges()) {
+            alertDialogDiscardChanges()
+        }
+        else {
+            openMainActivity()
+        }
+    }
+
     private fun checkEntryChanges(): Boolean {
         val newEntryname = findViewById<EditText>(R.id.vaultnameEntry).text.toString()
         val newUrl = findViewById<EditText>(R.id.vaultURL).text.toString()
