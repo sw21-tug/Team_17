@@ -217,7 +217,31 @@ class TestEditPassword
 
     @Test
     fun testCancelWithChangesNo(){
-        //stay in overview
+        onView(ViewMatchers.withId(R.id.etInputPassword))
+            .perform(ViewActions.typeText("123456789"))
+
+        closeSoftKeyboard()
+        onView(ViewMatchers.withId(R.id.btnInputPasswordOK)).perform(ViewActions.click())
+
+        onView(ViewMatchers.withText("account_b")).perform(ViewActions.click())
+        Thread.sleep(2000)
+
+        //change data
+        onView(ViewMatchers.withId(R.id.vaultURL))
+            .perform(ViewActions.clearText()).perform(ViewActions.typeText("new URL"))
+
+        //cancel
+        onView(ViewMatchers.withId(R.id.btnVaultCancel)).perform(ViewActions.click())
+
+        //check
+        onView(ViewMatchers.withText(R.string.vault_cancel_changes_alert)).check(
+            ViewAssertions.matches(ViewMatchers.withText("Are you sure you want to discard the changes?")))
+
+        onView(ViewMatchers.withText(R.string.response_negative)).perform(ViewActions.click())
+
+        val currentActivity = getActivityInstance()
+        val currentActivityName = currentActivity?.componentName?.className
+        assert(currentActivityName.toString().equals("com.example.loginsesame.EditVaultEntry"))
     }
 
     @Test
@@ -226,8 +250,8 @@ class TestEditPassword
     }
 
     //Todo:
-        //show edit entry on top
-        //russian support (warnings)
+        //show edit entry on top - DONE
+        //russian support (warnings) - DONE
         //make passwordoverview nice
         //write tests
 

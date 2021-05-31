@@ -11,7 +11,7 @@
     <string name="hint_input_password">Please input your password</string>
     <string name="language_set_text">Set App Language</string>
     <string name="language_en">English</string>
-    <string name="language_ru">Russian</string>
+    <string name="language_ru">русский</string>
     <string name="language_chooser_title">Please Choose New Language</string>
     <string name="vault_entry_name">Enter Entry Name</string>
     <string name="vault_url">Enter URL</string>
@@ -24,4 +24,9 @@
     <string name="pwd_overview_text">TextView</string>
     <string name="vault_save_changes_alert">Please enter a Password to Save the Changes</string>
     <string name="vault_save_changes_alert_title">No Password</string>
+    <string name="vault_cancel_changes_alert_title">Warning: Changes not saved!</string>
+    <string name="vault_cancel_changes_alert">Are you sure you want to discard the changes?</string>
+    <string name="response_positive">Yes</string>
+    <string name="response_negative">No</string>
+    <string name="vault_edit_title">Edit Password</string>
 </resources>
