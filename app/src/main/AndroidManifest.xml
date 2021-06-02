@@ -11,6 +11,7 @@
         android:theme="@style/Theme.LoginSesame">
         <activity android:name=".CreateNewUserActivity"></activity>
         <activity android:name=".LoginActivity"></activity>
+        <activity android:name=".EditVaultEntry"></activity>
         <activity android:name=".CreateVaultEntry"></activity>
         <activity android:name=".MainActivity">
             <intent-filter>

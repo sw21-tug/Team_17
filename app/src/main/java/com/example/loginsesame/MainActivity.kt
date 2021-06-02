@@ -17,7 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.loginsesame.data.*
 import com.example.loginsesame.factories.MainViewModelFactory
 import com.example.loginsesame.helper.LogTag
-import com.example.loginsesame.recyclerViewAdapter.RecyclerAdapter
+import com.example.loginsesame.RecyclerViewAdapter.RecyclerAdapter
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.*
 import java.util.*
@@ -58,7 +58,7 @@ class MainActivity : AppCompatActivity() {
 
         viewModel.entries.observe(this, {
             for (entry in it) {
-                var acc = Account(entry.Name, entry.username)
+                var acc = Account(entry.Id, entry.Name, entry.username)
                 accountAdapter.addAccount(acc)
             }
         })
