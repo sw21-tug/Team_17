@@ -47,7 +47,7 @@ class TestCreateVaultEntry
     }
 
     @Test
-    fun clickSaveWithFullData(){
+    fun testSaveWithFullData(){
         val logAssert = LogAssert()
         onView(ViewMatchers.withId(R.id.vaultnameEntry)).perform(ViewActions.typeText("random"))
         onView(ViewMatchers.withId(R.id.vaultURL)).perform(ViewActions.typeText("http://www.example.com/"))
@@ -57,9 +57,6 @@ class TestCreateVaultEntry
         closeSoftKeyboard()
 
         onView(ViewMatchers.withId(R.id.btnVaultSave)).perform(ViewActions.click())
-
-        //val assertButton = arrayOf("createButtonClicked")
-        //logAssert.assertLogsExist(assertButton)
 
         val assertEntryName = arrayOf("randomEntryName")
         logAssert.assertLogsExist(assertEntryName)
@@ -72,7 +69,7 @@ class TestCreateVaultEntry
 
     }
     @Test
-    fun clickSaveWithName(){
+    fun testSaveWithName(){
         val logAssert = LogAssert()
         onView(ViewMatchers.withId(R.id.vaultnameEntry)).perform(ViewActions.typeText("random"))
         onView(ViewMatchers.withId(R.id.vaultUsername)).perform(ViewActions.typeText("randomUser"))
@@ -96,7 +93,7 @@ class TestCreateVaultEntry
     }
 
     @Test
-    fun clickSaveWithUrl(){
+    fun testSaveWithUrl(){
         val logAssert = LogAssert()
         onView(ViewMatchers.withId(R.id.vaultURL)).perform(ViewActions.typeText("http://www.example.com/"))
         onView(ViewMatchers.withId(R.id.vaultUsername)).perform(ViewActions.typeText("randomUser"))
@@ -120,7 +117,7 @@ class TestCreateVaultEntry
     }
 
     @Test
-    fun clickSaveWithIncompleteData(){
+    fun testSaveWithIncompleteData(){
         //incorrectData
         val logAssert = LogAssert()
         onView(ViewMatchers.withId(R.id.vaultUsername)).perform(ViewActions.typeText("randomUser"))
@@ -138,7 +135,7 @@ class TestCreateVaultEntry
     }
 
     @Test
-    fun clickCancel(){
+    fun testCancel(){
         val logAssert = LogAssert()
         onView(ViewMatchers.withId(R.id.btnVaultCancel)).perform(ViewActions.click())
 

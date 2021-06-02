@@ -10,12 +10,14 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SearchView
+import androidx.core.view.MenuItemCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.loginsesame.data.*
 import com.example.loginsesame.factories.MainViewModelFactory
 import com.example.loginsesame.helper.LogTag
-import com.example.loginsesame.recyclerViewAdapter.RecyclerAdapter
+import com.example.loginsesame.RecyclerViewAdapter.RecyclerAdapter
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.*
 import java.util.*
@@ -31,6 +33,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var db: UserDatabase
     private lateinit var userDao: UserDao
     private lateinit var vaultEntryDao: VaultEntryDao
+    private lateinit var mainMenu: Menu
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,7 +58,7 @@ class MainActivity : AppCompatActivity() {
 
         viewModel.entries.observe(this, {
             for (entry in it) {
-                var acc = Account(entry.Name, entry.username)
+                var acc = Account(entry.Id, entry.Name, entry.username)
                 accountAdapter.addAccount(acc)
             }
         })
@@ -74,6 +77,7 @@ class MainActivity : AppCompatActivity() {
             startActivity(intentCreateVaultEntry)
             finish()
         }
+
 
     }
 
@@ -97,7 +101,27 @@ class MainActivity : AppCompatActivity() {
     //create menu
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         val inflater = menuInflater
+
         inflater.inflate(R.menu.menu, menu)
+
+        if (menu != null) {
+            mainMenu = menu
+
+            var searchItem: MenuItem = mainMenu.findItem(R.id.search_button)
+            var searchView: SearchView =  MenuItemCompat.getActionView(searchItem) as SearchView
+
+            searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+                override fun onQueryTextSubmit(query: String?): Boolean {
+                    return false
+                }
+
+                override fun onQueryTextChange(newText: String?): Boolean {
+                    accountAdapter.filter.filter(newText)
+                    return false
+                }
+
+            })
+        }
 
         return super.onCreateOptionsMenu(menu)
     }
@@ -105,10 +129,11 @@ class MainActivity : AppCompatActivity() {
     //create menu buttons
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         val switchLanguage = item.itemId
-
+        Log.d(logTag.LOG_MAIN, "Test")
         if (switchLanguage == R.id.changeLanguage) {
             showChangeLanguageDialog()
         }
+
 
         return super.onOptionsItemSelected(item)
     }
