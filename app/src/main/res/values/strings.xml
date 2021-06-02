@@ -22,4 +22,6 @@
     <string name="error_too_many_users_in_db">Too many Users in Database, check Support for help</string>
     <string name="error_incorrect_pwd">Incorrect Password</string>
     <string name="pwd_overview_text">TextView</string>
+    <string name="sortfromAtoZ">Sort by name A to Z</string>
+    <string name="sortfromZtoA">Sort by name Z to A</string>
 </resources>
