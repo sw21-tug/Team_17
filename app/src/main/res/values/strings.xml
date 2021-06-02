@@ -22,6 +22,7 @@
     <string name="error_too_many_users_in_db">Too many Users in Database, check Support for help</string>
     <string name="error_incorrect_pwd">Incorrect Password</string>
     <string name="pwd_overview_text">TextView</string>
+    <string name="search">Search</string>
     <string name="vault_save_changes_alert">Please enter a Password to Save the Changes</string>
     <string name="vault_save_changes_alert_title">No Password</string>
     <string name="vault_cancel_changes_alert_title">Warning: Changes not saved!</string>
