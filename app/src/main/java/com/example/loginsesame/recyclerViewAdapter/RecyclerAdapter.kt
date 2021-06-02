@@ -1,14 +1,15 @@
 package com.example.loginsesame.recyclerViewAdapter
 
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.recyclerview.widget.RecyclerView
 import com.example.loginsesame.R
 import com.example.loginsesame.Account
 import kotlinx.android.synthetic.main.item_password_overview.view.*
 
-class RecyclerAdapter(private val accountList: MutableList<Account>) :
+class RecyclerAdapter(
+    private val accountList: MutableList<Account>,
+    private val openOptionsMenuListener: OpenOptionsMenu
+) :
     RecyclerView.Adapter<RecyclerAdapter.AccountsViewHolder>() {
 
     class AccountsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
@@ -28,7 +29,7 @@ class RecyclerAdapter(private val accountList: MutableList<Account>) :
         notifyItemInserted(accountList.size - 1)
     }
 
-    fun resetList(){
+    fun resetList() {
         accountList.clear()
         notifyDataSetChanged()
     }
@@ -40,7 +41,14 @@ class RecyclerAdapter(private val accountList: MutableList<Account>) :
         holder.itemView.apply {
             tvAccountName.text = curAccount.accountName
             tvAccountUser.text = curAccount.accountUser
+            btnDots.setOnClickListener{
+                openOptionsMenuListener.onOptionsMenuClicked(position)
+            }
         }
+    }
+
+    interface OpenOptionsMenu {
+        fun onOptionsMenuClicked(position: Int)
     }
 
     override fun getItemCount(): Int {

@@ -3,5 +3,4 @@
     <item
         android:id="@+id/deleteItem"
         android:title="@string/delete" />
-
 </menu>

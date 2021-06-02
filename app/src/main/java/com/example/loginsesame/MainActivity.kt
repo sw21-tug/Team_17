@@ -7,12 +7,15 @@ import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
 import android.util.Log
+import android.view.Gravity
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.PopupMenu
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.loginsesame.data.*
+import com.example.loginsesame.databinding.ActivityMainBinding
 import com.example.loginsesame.factories.MainViewModelFactory
 import com.example.loginsesame.helper.LogTag
 import com.example.loginsesame.recyclerViewAdapter.RecyclerAdapter
@@ -25,23 +28,45 @@ lateinit var accountAdapter: RecyclerAdapter
 
 class MainActivity : AppCompatActivity() {
 
-    private val logTag = LogTag()
-    var isLoggedIn = false //state if user is logged into the app
+    private var _binding: ActivityMainBinding? = null
+    private val binding get() = _binding!!
 
-    private lateinit var db: UserDatabase
-    private lateinit var userDao: UserDao
-    private lateinit var vaultEntryDao: VaultEntryDao
+    private val logTag = LogTag()
+    private var isLoggedIn = false //state if user is logged into the app
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        _binding = ActivityMainBinding.inflate(layoutInflater)
         loadLocale()
-        setContentView(R.layout.activity_main)
+        setContentView(binding.root)
         isLoggedIn = intent.getBooleanExtra("isLoggedIn", false)
 
         val db = UserDatabase.initDb(this)
         val repository = UserRepository(db.getUserDao(), db.getVaultEntryDao())
         val viewModel =
             ViewModelProvider(this, MainViewModelFactory(repository)).get(MainViewModel::class.java)
+
+        binding.rvAccounts.layoutManager = LinearLayoutManager(this)
+        accountAdapter = RecyclerAdapter(mutableListOf(), object : RecyclerAdapter.OpenOptionsMenu {
+            override fun onOptionsMenuClicked(position: Int) {
+                val popupMenu = PopupMenu(applicationContext, binding.rvAccounts.getChildAt(position), Gravity.END)
+                popupMenu.inflate(R.menu.item_menu)
+                popupMenu.setOnMenuItemClickListener {
+                    when(it.itemId){
+                        R.id.deleteItem -> {
+                            val entry = viewModel.entries.value!![position]
+                            viewModel.deleteVaultEntry(entry)
+                            true
+                        }
+                        else -> {
+                            true
+                        }
+                    }
+                }
+                popupMenu.show()
+            }
+        })
+        binding.rvAccounts.adapter = accountAdapter
 
 
         viewModel.users.observe(this, {
@@ -56,16 +81,10 @@ class MainActivity : AppCompatActivity() {
         viewModel.entries.observe(this, {
             accountAdapter.resetList()
             for (entry in it) {
-                var acc = Account(entry.Name, entry.username)
+                var acc = Account(entry.Name, entry.username, entry)
                 accountAdapter.addAccount(acc)
             }
         })
-
-        accountAdapter = RecyclerAdapter(mutableListOf())
-
-
-        rvAccounts.adapter = accountAdapter
-        rvAccounts.layoutManager = LinearLayoutManager(this)
 
         btnAddAccount.setOnClickListener {
             val logTag = LogTag()
@@ -75,7 +94,6 @@ class MainActivity : AppCompatActivity() {
             startActivity(intentCreateVaultEntry)
             finish()
         }
-
     }
 
 
@@ -114,7 +132,7 @@ class MainActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
-    private fun showChangeLanguageDialog(){
+    private fun showChangeLanguageDialog() {
         val adb = AlertDialog.Builder(this)
         val items = arrayOf<CharSequence>(
             getString(R.string.language_en),
@@ -138,7 +156,7 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    private fun setLanguage(newLang: String){
+    private fun setLanguage(newLang: String) {
         val locale = Locale(newLang)
         Locale.setDefault(locale)
         val config = Configuration()
