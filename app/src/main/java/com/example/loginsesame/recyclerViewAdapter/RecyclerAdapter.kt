@@ -28,6 +28,11 @@ class RecyclerAdapter(private val accountList: MutableList<Account>) :
         notifyItemInserted(accountList.size - 1)
     }
 
+    fun resetList(){
+        accountList.clear()
+        notifyDataSetChanged()
+    }
+
 
     override fun onBindViewHolder(holder: AccountsViewHolder, position: Int) {
         val curAccount = accountList[position]

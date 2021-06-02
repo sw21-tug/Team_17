@@ -54,6 +54,7 @@ class MainActivity : AppCompatActivity() {
         })
 
         viewModel.entries.observe(this, {
+            accountAdapter.resetList()
             for (entry in it) {
                 var acc = Account(entry.Name, entry.username)
                 accountAdapter.addAccount(acc)
