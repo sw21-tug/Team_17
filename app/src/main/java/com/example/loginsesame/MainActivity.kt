@@ -34,6 +34,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var userDao: UserDao
     private lateinit var vaultEntryDao: VaultEntryDao
     private lateinit var mainMenu: Menu
+    //private var descending = true
+    //private var ascending = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -129,11 +131,22 @@ class MainActivity : AppCompatActivity() {
     //create menu buttons
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         val switchLanguage = item.itemId
+        //val sortDescending = item.itemId
+        //val sortAscending = item.itemId
         Log.d(logTag.LOG_MAIN, "Test")
         if (switchLanguage == R.id.changeLanguage) {
             showChangeLanguageDialog()
         }
 
+        /*if(sortDescending == R.id.sortfromAtoZ) {
+           sortDataDescending(descending)
+            descending = !descending
+        }
+
+        if(sortAscending == R.id.sortfromZtoA) {
+            sortDataAscending(ascending)
+            ascending = !ascending
+        }*/
 
         return super.onOptionsItemSelected(item)
     }
@@ -181,4 +194,16 @@ class MainActivity : AppCompatActivity() {
         }
 
     }
+
+    /*private fun sortDataDescending(descending: Boolean) {
+        if (descending){
+            accountAdapter.accountFilterList.sortBy {it.accountName}
+        }
+    }
+
+    private fun sortDataAscending(ascending: Boolean) {
+        if (ascending){
+            accountAdapter.accountFilterList.reverse()
+        }
+    }*/
 }
