@@ -54,6 +54,8 @@ class MainActivity : AppCompatActivity() {
                 popupMenu.setOnMenuItemClickListener {
                     when(it.itemId){
                         R.id.deleteItem -> {
+                            Log.d(logTag.LOG_MAIN, "Delete item")
+                            Log.d(logTag.LOG_MAIN, position.toString())
                             val entry = viewModel.entries.value!![position]
                             viewModel.deleteVaultEntry(entry)
                             true
@@ -64,6 +66,7 @@ class MainActivity : AppCompatActivity() {
                     }
                 }
                 popupMenu.show()
+                Log.d(logTag.LOG_MAIN, "Opened popup menu")
             }
         })
         binding.rvAccounts.adapter = accountAdapter

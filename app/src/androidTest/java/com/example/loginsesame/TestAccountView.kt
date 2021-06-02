@@ -3,6 +3,7 @@ package com.example.loginsesame
 
 import android.app.Activity
 import android.content.Context
+import android.view.View
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
@@ -11,7 +12,9 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.Espresso
 import androidx.test.espresso.action.ViewActions
+import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions
+import androidx.test.espresso.contrib.RecyclerViewActions
 import androidx.test.espresso.intent.Intents
 import androidx.test.espresso.matcher.RootMatchers
 import androidx.test.espresso.matcher.ViewMatchers
@@ -22,6 +25,7 @@ import androidx.test.runner.lifecycle.ActivityLifecycleMonitorRegistry
 import androidx.test.runner.lifecycle.Stage
 import com.example.loginsesame.data.*
 import com.example.loginsesame.helper.LogAssert
+import com.example.loginsesame.recyclerViewAdapter.RecyclerAdapter
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.hamcrest.Matchers
