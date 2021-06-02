@@ -3,8 +3,10 @@ package com.example.loginsesame
 
 import android.app.Activity
 import android.content.Context
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
+import androidx.lifecycle.asLiveData
 import androidx.recyclerview.widget.RecyclerView
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.Espresso
@@ -30,6 +32,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
+import kotlin.concurrent.thread
 import kotlin.jvm.Throws
 
 
@@ -46,6 +49,10 @@ class TestAccountView {
 
     @get:Rule
     var rule = ActivityScenarioRule(MainActivity::class.java)
+
+    @Rule
+    @JvmField
+    val executorRule = InstantTaskExecutorRule()
 
     @Before
     fun initDb() {
@@ -220,7 +227,7 @@ class TestAccountView {
 
     @Test
     @Throws(InterruptedException::class)
-    fun testRemovePassword(){
+    fun testRemovePassword() {
         val logAssert = LogAssert()
 
         Espresso.onView(ViewMatchers.withId(R.id.etUsername))
@@ -251,16 +258,18 @@ class TestAccountView {
         val storeItemCount = recyclerView!!.adapter!!.itemCount
         assert(recyclerView?.adapter?.itemCount != 0)
 
-        GlobalScope.launch { vaultEntryDao.deleteVaultEntry(entity2)}
+        GlobalScope.launch { vaultEntryDao.deleteVaultEntry(entity2) }
+        val updatedEntry = repository.entries.asLiveData().blockingObserve()
+
+        Thread.sleep(1000)
 
         print(recyclerView?.adapter?.itemCount)
 
         assert(recyclerView?.adapter?.itemCount == (storeItemCount - 1))
 
-        val updatedEntry = repository.entries.asLiveData().blockingObserve()
-        for (e in updatedEntry){
+        for (e in updatedEntry!!) {
             assert(e != entity2)
-            }
+        }
     }
 
     private fun <T> LiveData<T>.blockingObserve(): T? {
