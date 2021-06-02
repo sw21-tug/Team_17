@@ -23,4 +23,5 @@
     <string name="error_too_many_users_in_db">Слишком много пользователей в базе данных, обратитесь за помощью в службу поддержки</string>
     <string name="error_incorrect_pwd">Неверный пароль</string>
     <string name="pwd_overview_text">текстовый вид</string>
+    <string name="delete">удалить</string>
 </resources>
