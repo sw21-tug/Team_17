@@ -47,7 +47,7 @@ class RecyclerAdapter(private val accountList: MutableList<Account>) :
 
 
     override fun onBindViewHolder(holder: AccountsViewHolder, position: Int) {
-        val curAccount = accountList[position]
+        val curAccount = accountFilterList[position]
         val curFilterAccount = accountFilterList[position]
 
         holder.itemView.apply {
