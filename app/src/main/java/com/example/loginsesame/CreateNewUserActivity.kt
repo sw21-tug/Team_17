@@ -28,7 +28,6 @@ class CreateNewUserActivity : AppCompatActivity() {
         val repo = UserRepository(db.getUserDao(), db.getVaultEntryDao())
 
         val okButton = findViewById<Button>(R.id.btnOk)
-        val cancelButton = findViewById<Button>(R.id.btnCancel)
         val viewModel =
             ViewModelProvider(this, CreateViewModelFactory(repo)).get(CreateViewModel::class.java)
 
@@ -47,12 +46,6 @@ class CreateNewUserActivity : AppCompatActivity() {
 
             val intentMain = Intent(this@CreateNewUserActivity, MainActivity::class.java)
             intentMain.putExtra("isLoggedIn", true)
-            startActivity(intentMain)
-        }
-
-        cancelButton.setOnClickListener {
-            Log.d(logTag.LOG_STARTUP, "cancelButton")
-            val intentMain = Intent(this@CreateNewUserActivity, MainActivity::class.java)
             startActivity(intentMain)
         }
 

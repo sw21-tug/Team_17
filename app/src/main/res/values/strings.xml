@@ -6,6 +6,7 @@
     <string name="registration_choose_username">Choose Username</string>
     <string name="registration_choose_pwd">Choose Password</string>
     <string name="registration_enter_email">Enter your E-mail</string>
+    <string name="btn_login">Login</string>
     <string name="btn_ok">OK</string>
     <string name="btn_cancel">Cancel</string>
     <string name="hint_input_password">Please input your password</string>
