@@ -158,6 +158,7 @@ class TestEditPassword
             .perform(ViewActions.clearText()).perform(ViewActions.typeText("new password"))
 
         //save
+        closeSoftKeyboard()
         onView(ViewMatchers.withId(R.id.btnVaultSave)).perform(ViewActions.click())
 
         //go back to Main
@@ -190,6 +191,7 @@ class TestEditPassword
             .perform(ViewActions.clearText())
 
         //save
+        closeSoftKeyboard()
         onView(ViewMatchers.withId(R.id.btnVaultSave)).perform(ViewActions.click())
 
         //check changed data
@@ -208,7 +210,9 @@ class TestEditPassword
         onView(ViewMatchers.withText("account_b")).perform(ViewActions.click())
         Thread.sleep(2000)
 
+
         //cancel
+        closeSoftKeyboard()
         onView(ViewMatchers.withId(R.id.btnVaultCancel)).perform(ViewActions.click())
 
         //check
@@ -233,6 +237,7 @@ class TestEditPassword
             .perform(ViewActions.clearText()).perform(ViewActions.typeText("new URL"))
 
         //cancel
+        closeSoftKeyboard()
         onView(ViewMatchers.withId(R.id.btnVaultCancel)).perform(ViewActions.click())
 
         //check
@@ -262,6 +267,7 @@ class TestEditPassword
             .perform(ViewActions.clearText()).perform(ViewActions.typeText("new URL"))
 
         //cancel
+        closeSoftKeyboard()
         onView(ViewMatchers.withId(R.id.btnVaultCancel)).perform(ViewActions.click())
 
         //check

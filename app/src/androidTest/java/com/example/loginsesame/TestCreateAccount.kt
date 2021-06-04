@@ -2,6 +2,7 @@ package com.example.loginsesame
 
 import android.content.Context
 import androidx.test.core.app.ApplicationProvider
+import androidx.test.espresso.Espresso
 import androidx.test.espresso.Espresso.closeSoftKeyboard
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
@@ -73,12 +74,15 @@ class TestCreateAccount {
     }
 
     @Test
-    fun testIfCancelButtonIsClickable() {
-
+    fun testBackButtonWithoutAction() {
         val logAssert = LogAssert()
-        onView(withId(R.id.btnCancel)).perform(click())
 
-        val assertArr = arrayOf("cancelButton")
+        //Second pressBack is needed if software keyboard is open, so keyboard needs to be closed before
+        Espresso.closeSoftKeyboard()
+        Thread.sleep(1000)
+        Espresso.pressBack()
+
+        val assertArr = arrayOf("Back-Button Pressed With No Action")
         logAssert.assertLogsExist(assertArr)
 
     }

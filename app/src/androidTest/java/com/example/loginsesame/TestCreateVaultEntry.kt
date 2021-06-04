@@ -6,6 +6,7 @@ import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.Espresso.closeSoftKeyboard
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions
+import androidx.test.espresso.assertion.ViewAssertions
 import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -103,9 +104,6 @@ class TestCreateVaultEntry
 
         onView(ViewMatchers.withId(R.id.btnVaultSave)).perform(ViewActions.click())
 
-        //val assertButton = arrayOf("createButtonClicked")
-        //logAssert.assertLogsExist(assertButton)
-
         val assertEntryName = arrayOf("randomEntryName")
         logAssert.assertLogsExist(assertEntryName)
         val assertUrl = arrayOf("randomUrl")
@@ -127,11 +125,10 @@ class TestCreateVaultEntry
 
         onView(ViewMatchers.withId(R.id.btnVaultSave)).perform(ViewActions.click())
 
-        //val assertButton = arrayOf("createButtonClicked")
-        //logAssert.assertLogsExist(assertButton)
-
         val assertMsg = arrayOf("incorrectData")
         logAssert.assertLogsExist(assertMsg)
+
+
     }
 
     @Test
