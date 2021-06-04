@@ -10,7 +10,6 @@ import androidx.test.espresso.assertion.ViewAssertions
 import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import androidx.test.rule.ActivityTestRule
 import com.example.loginsesame.data.UserDatabase
 import com.example.loginsesame.data.UserRepository
 import com.example.loginsesame.helper.LogAssert
@@ -45,6 +44,7 @@ class TestCreateVaultEntry
     @Throws(IOException::class)
     fun cleanup() {
         repository.deleteAllEntries()
+        repository.deleteAllUsers()
     }
 
     @Test

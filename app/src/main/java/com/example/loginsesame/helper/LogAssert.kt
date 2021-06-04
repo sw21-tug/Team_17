@@ -7,7 +7,7 @@ import java.util.regex.Matcher
 import java.util.regex.Pattern
 
 class LogAssert {
-    private var logText: String? = null
+    private var logText: CharSequence = ""
 
     private val logs: String
         get() {

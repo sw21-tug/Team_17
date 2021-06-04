@@ -17,12 +17,14 @@ import kotlinx.coroutines.*
 
 
 class CreateNewUserActivity : AppCompatActivity() {
+    val logTag = LogTag()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_new_user)
 
-        val logTag = LogTag()
+
 
         val db = UserDatabase.initDb(this)
         val repo = UserRepository(db.getUserDao(), db.getVaultEntryDao())
@@ -49,6 +51,11 @@ class CreateNewUserActivity : AppCompatActivity() {
             startActivity(intentMain)
         }
 
+    }
+
+    //remove back button ability
+    override fun onBackPressed() {
+        Log.d(logTag.LOG_STARTUP, "Back-Button Pressed With No Action")
     }
 
 }

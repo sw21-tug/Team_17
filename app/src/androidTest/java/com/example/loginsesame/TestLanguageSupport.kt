@@ -43,13 +43,13 @@ class TestLanguageSupport {
         db = UserDatabase.initDb(context)
         repository = UserRepository(db.getUserDao(), db.getVaultEntryDao())
 
-        val user = User(null, "Max Musterman", "test@mail.com", "123456789")
         repository.deleteAllUsers()
     }
 
     @After
     fun cleanup() {
         repository.deleteAllUsers()
+        repository.deleteAllEntries()
 
         Intents.release()
     }

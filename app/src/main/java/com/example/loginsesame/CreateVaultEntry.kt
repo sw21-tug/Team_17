@@ -12,7 +12,6 @@ import com.example.loginsesame.data.VaultEntry
 import com.example.loginsesame.helper.LogTag
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import kotlin.math.log
 
 class CreateVaultEntry : AppCompatActivity() {
 
@@ -28,21 +27,21 @@ class CreateVaultEntry : AppCompatActivity() {
             val btnVaultSave = findViewById<Button>(R.id.btnVaultSave)
             btnVaultSave.setOnClickListener {
                 Log.d(logTag.LOG_CREATE_VAULT_ENTRY, "saveButtonClicked")
-                val entryname = findViewById<EditText>(R.id.vaultnameEntry).text.toString()
+                val entryName = findViewById<EditText>(R.id.vaultnameEntry).text.toString()
                 val url = findViewById<EditText>(R.id.vaultURL).text.toString()
                 val username = findViewById<EditText>(R.id.vaultUsername).text.toString()
                 val password = findViewById<EditText>(R.id.vaultPassword).text.toString()
 
-                if (entryname.isEmpty() && url.isEmpty())
+                if (entryName.isEmpty() && url.isEmpty())
                 {
                     Log.d(logTag.LOG_CREATE_VAULT_ENTRY, "incorrectData")
-                    Toast.makeText(this, "Either Entry name or URL must be filled in!", Toast.LENGTH_LONG).show()
+                    Toast.makeText(this, R.string.url_or_entryname, Toast.LENGTH_LONG).show()
                 }
                 else
                 {
-                    val vaultentry = VaultEntry(0, entryname, url, username, password)
+                    val vaultEntry = VaultEntry(0, entryName, url, username, password)
                     GlobalScope.launch {
-                        vaultEntryDao.add(vaultentry)
+                        vaultEntryDao.add(vaultEntry)
                     }
 
                     Log.d(logTag.LOG_CREATE_VAULT_ENTRY, "randomEntryName")
