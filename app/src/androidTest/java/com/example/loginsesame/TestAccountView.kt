@@ -65,7 +65,6 @@ class TestAccountView {
         GlobalScope.launch {
             val entity1 = VaultEntry(1, "account_a", "user_a", "url", "password")
             vaultEntryDao.add(entity1)
-            val entity2 = VaultEntry(2, "account_b", "user_b", "url", "password")
             vaultEntryDao.add(entity2)
             vaultEntryDao.add(entity3)
             val entity4 = VaultEntry(4, "account_d", "user_d", "url", "password")
@@ -246,7 +245,7 @@ class TestAccountView {
         GlobalScope.launch { vaultEntryDao.deleteVaultEntry(entity2) }
         val updatedEntry = repository.entries.asLiveData().blockingObserve()
 
-        Thread.sleep(1000)
+        Thread.sleep(5000)
 
         print(recyclerView?.adapter?.itemCount)
 
