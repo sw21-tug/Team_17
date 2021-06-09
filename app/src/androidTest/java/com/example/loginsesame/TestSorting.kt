@@ -9,16 +9,13 @@ import androidx.test.espresso.action.ViewActions
 import androidx.test.espresso.assertion.ViewAssertions
 import androidx.test.espresso.intent.Intents
 import androidx.test.espresso.matcher.ViewMatchers
-import androidx.test.espresso.matcher.ViewMatchers.withId
-import androidx.test.espresso.matcher.ViewMatchers.withText
+import androidx.test.espresso.contrib.RecyclerViewActions
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.platform.app.InstrumentationRegistry
-import com.example.loginsesame.RecyclerViewAdapter.RecyclerAdapter
 import com.example.loginsesame.data.UserDao
 import com.example.loginsesame.data.UserDatabase
 import com.example.loginsesame.data.VaultEntry
 import com.example.loginsesame.data.VaultEntryDao
-import com.example.loginsesame.helper.LogAssert
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.junit.After
@@ -26,7 +23,7 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import java.lang.Thread.sleep
-import java.util.regex.Pattern.matches
+import java.util.regex.Pattern
 
 class TestSorting {
     private lateinit var vaultEntryDao: VaultEntryDao
@@ -88,12 +85,13 @@ class TestSorting {
 
         sleep(2000)
 
-        //clicks on bernhard which is the 1st entry in descending order
-        onView(ViewMatchers.withText("bernhard")).perform(ViewActions.click())
-        Thread.sleep(2000)
+        Espresso.onView(ViewMatchers.withText("bernhard")).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+        Espresso.onView(ViewMatchers.withText("christina")).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+        Espresso.onView(ViewMatchers.withText("johannes")).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+        Espresso.onView(ViewMatchers.withText("lukas")).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+        Espresso.onView(ViewMatchers.withText("thomas")).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+        Espresso.onView(ViewMatchers.withText("tobias")).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
 
-        Espresso.closeSoftKeyboard()
-        onView(ViewMatchers.withId(R.id.btnVaultCancel)).perform(ViewActions.click())
     }
 
     @Test
@@ -115,14 +113,11 @@ class TestSorting {
 
         sleep(2000)
 
-        // clicks on Tobias which is the 1st entry in ascending order
-        onView(ViewMatchers.withText("tobias")).perform(ViewActions.click())
-        sleep(2000)
-
-        Espresso.closeSoftKeyboard()
-        onView(ViewMatchers.withId(R.id.btnVaultCancel)).perform(ViewActions.click())
-
-        // see that the default list is in alphabetical order
-        sleep(2000)
+        Espresso.onView(ViewMatchers.withText("tobias")).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+        Espresso.onView(ViewMatchers.withText("thomas")).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+        Espresso.onView(ViewMatchers.withText("lukas")).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+        Espresso.onView(ViewMatchers.withText("johannes")).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+        Espresso.onView(ViewMatchers.withText("christina")).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+        Espresso.onView(ViewMatchers.withText("bernhard")).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
     }
 }
