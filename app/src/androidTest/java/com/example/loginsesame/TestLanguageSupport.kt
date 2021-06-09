@@ -59,8 +59,11 @@ class TestLanguageSupport {
 
         //create new account
         Espresso.onView(ViewMatchers.withId(R.id.etUsername)).perform(ViewActions.typeText("randomUsername"))
+        Espresso.closeSoftKeyboard()
         Espresso.onView(ViewMatchers.withId(R.id.etPassword)).perform(ViewActions.typeText("randomPassword"))
+        Espresso.closeSoftKeyboard()
         Espresso.onView(ViewMatchers.withId(R.id.etEmail)).perform(ViewActions.typeText("randomE-Mail"))
+        Espresso.closeSoftKeyboard()
 
         //closing keyboard to press ok Button
         Espresso.closeSoftKeyboard()
@@ -83,10 +86,12 @@ class TestLanguageSupport {
     fun testSwitchToRussian() {
         //create new account
         Espresso.onView(ViewMatchers.withId(R.id.etUsername)).perform(ViewActions.typeText("randomUsername"))
-        Espresso.onView(ViewMatchers.withId(R.id.etPassword)).perform(ViewActions.typeText("randomPassword"))
-        Espresso.onView(ViewMatchers.withId(R.id.etEmail)).perform(ViewActions.typeText("randomE-Mail"))
-
         Espresso.closeSoftKeyboard()
+        Espresso.onView(ViewMatchers.withId(R.id.etPassword)).perform(ViewActions.typeText("randomPassword"))
+        Espresso.closeSoftKeyboard()
+        Espresso.onView(ViewMatchers.withId(R.id.etEmail)).perform(ViewActions.typeText("randomE-Mail"))
+        Espresso.closeSoftKeyboard()
+
         Espresso.onView(ViewMatchers.withId(R.id.btnOk)).perform(ViewActions.click())
 
         //open menu

@@ -52,15 +52,14 @@ class TestCreateAccount {
 
         val logAssert = LogAssert()
         onView(withId(R.id.etUsername)).perform(typeText("randomUsername"))
+        closeSoftKeyboard()
         onView(withId(R.id.etPassword)).perform(typeText("randomPassword"))
-
-        // for mobile phones like Galaxy Nexus (small screen)
         closeSoftKeyboard()
         onView(withId(R.id.etEmail)).perform(typeText("randomE-Mail"))
-
-
-        //closing keyboard to press ok Button
         closeSoftKeyboard()
+
+
+
         Thread.sleep(1000)
 
         onView(withId(R.id.btnOk)).perform(click())
@@ -78,7 +77,7 @@ class TestCreateAccount {
         val logAssert = LogAssert()
 
         //Second pressBack is needed if software keyboard is open, so keyboard needs to be closed before
-        Espresso.closeSoftKeyboard()
+        closeSoftKeyboard()
         Thread.sleep(1000)
         Espresso.pressBack()
 

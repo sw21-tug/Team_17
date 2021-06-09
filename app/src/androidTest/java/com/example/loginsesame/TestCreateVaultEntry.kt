@@ -51,10 +51,12 @@ class TestCreateVaultEntry
     fun testSaveWithFullData(){
         val logAssert = LogAssert()
         onView(ViewMatchers.withId(R.id.vaultnameEntry)).perform(ViewActions.typeText("random"))
+        closeSoftKeyboard()
         onView(ViewMatchers.withId(R.id.vaultURL)).perform(ViewActions.typeText("http://www.example.com/"))
+        closeSoftKeyboard()
         onView(ViewMatchers.withId(R.id.vaultUsername)).perform(ViewActions.typeText("randomUser"))
+        closeSoftKeyboard()
         onView(ViewMatchers.withId(R.id.vaultPassword)).perform(ViewActions.typeText("randomPassword"))
-
         closeSoftKeyboard()
 
         onView(ViewMatchers.withId(R.id.btnVaultSave)).perform(ViewActions.click())
@@ -73,8 +75,11 @@ class TestCreateVaultEntry
     fun testSaveWithName(){
         val logAssert = LogAssert()
         onView(ViewMatchers.withId(R.id.vaultnameEntry)).perform(ViewActions.typeText("random"))
+        closeSoftKeyboard()
         onView(ViewMatchers.withId(R.id.vaultUsername)).perform(ViewActions.typeText("randomUser"))
+        closeSoftKeyboard()
         onView(ViewMatchers.withId(R.id.vaultPassword)).perform(ViewActions.typeText("randomPassword"))
+        closeSoftKeyboard()
 
         closeSoftKeyboard()
 
@@ -97,9 +102,10 @@ class TestCreateVaultEntry
     fun testSaveWithUrl(){
         val logAssert = LogAssert()
         onView(ViewMatchers.withId(R.id.vaultURL)).perform(ViewActions.typeText("http://www.example.com/"))
+        closeSoftKeyboard()
         onView(ViewMatchers.withId(R.id.vaultUsername)).perform(ViewActions.typeText("randomUser"))
+        closeSoftKeyboard()
         onView(ViewMatchers.withId(R.id.vaultPassword)).perform(ViewActions.typeText("randomPassword"))
-
         closeSoftKeyboard()
 
         onView(ViewMatchers.withId(R.id.btnVaultSave)).perform(ViewActions.click())
@@ -119,8 +125,8 @@ class TestCreateVaultEntry
         //incorrectData
         val logAssert = LogAssert()
         onView(ViewMatchers.withId(R.id.vaultUsername)).perform(ViewActions.typeText("randomUser"))
+        closeSoftKeyboard()
         onView(ViewMatchers.withId(R.id.vaultPassword)).perform(ViewActions.typeText("randomPassword"))
-
         closeSoftKeyboard()
 
         onView(ViewMatchers.withId(R.id.btnVaultSave)).perform(ViewActions.click())
