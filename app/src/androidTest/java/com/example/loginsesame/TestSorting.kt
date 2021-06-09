@@ -18,6 +18,7 @@ import com.example.loginsesame.data.UserDao
 import com.example.loginsesame.data.UserDatabase
 import com.example.loginsesame.data.VaultEntry
 import com.example.loginsesame.data.VaultEntryDao
+import com.example.loginsesame.helper.LogAssert
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.junit.After
@@ -85,11 +86,14 @@ class TestSorting {
         //select sort by name from A to Z
         Espresso.onView(ViewMatchers.withText(R.string.sortfromAtoZ)).perform(ViewActions.click())
 
-        sleep(5000)
+        sleep(2000)
 
-        //onView(withId(R.id.rvAccounts)).check(ViewAssertions.matches(atPosition(1, ViewMatchers.withText("bernhard"))))
+        //clicks on bernhard which is the 1st entry in descending order
+        onView(ViewMatchers.withText("bernhard")).perform(ViewActions.click())
+        Thread.sleep(2000)
 
-
+        Espresso.closeSoftKeyboard()
+        onView(ViewMatchers.withId(R.id.btnVaultCancel)).perform(ViewActions.click())
     }
 
     @Test
@@ -109,6 +113,16 @@ class TestSorting {
         //select sort by name from Z to A
         Espresso.onView(ViewMatchers.withText(R.string.sortfromZtoA)).perform(ViewActions.click())
 
-        sleep(5000)
+        sleep(2000)
+
+        // clicks on Tobias which is the 1st entry in ascending order
+        onView(ViewMatchers.withText("tobias")).perform(ViewActions.click())
+        sleep(2000)
+
+        Espresso.closeSoftKeyboard()
+        onView(ViewMatchers.withId(R.id.btnVaultCancel)).perform(ViewActions.click())
+
+        // see that the default list is in alphabetical order
+        sleep(2000)
     }
 }
