@@ -24,6 +24,8 @@
     <string name="error_too_many_users_in_db">Слишком много пользователей в базе данных, обратитесь за помощью в службу поддержки</string>
     <string name="error_incorrect_pwd">Неверный пароль</string>
     <string name="pwd_overview_text">текстовый вид</string>
+    <string name="sortfromAtoZ">Сортировать по названию от А до Я</string>
+    <string name="sortfromZtoA">Сортировать по названию от Я до А</string>
     <string name="delete">удалить</string>
     <string name="search">поиск</string>
     <string name="vault_save_changes_alert">Пожалуйста, введите пароль, чтобы сохранить изменения</string>

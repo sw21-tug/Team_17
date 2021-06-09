@@ -18,4 +18,11 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/rvAccounts"
         app:showAsAction="ifRoom|collapseActionView" />
+
+    <item
+        android:id="@+id/sortfromAtoZ"
+        android:title="@string/sortfromAtoZ" />
+    <item
+        android:id="@+id/sortfromZtoA"
+        android:title="@string/sortfromZtoA" />
 </menu>

@@ -37,6 +37,8 @@ class MainActivity : AppCompatActivity() {
     private var isLoggedIn = false //state if user is logged into the app
 
     private lateinit var mainMenu: Menu
+    private var descending = true
+    private var ascending = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -91,7 +93,11 @@ class MainActivity : AppCompatActivity() {
                 var acc = Account(entry.Id, entry.Name, entry.username, entry)
                 accountAdapter.addAccount(acc)
             }
+            sortDataDescending(true)
         })
+
+        rvAccounts.adapter = accountAdapter
+        rvAccounts.layoutManager = LinearLayoutManager(this)
 
         btnAddAccount.setOnClickListener {
             val logTag = LogTag()
@@ -150,10 +156,20 @@ class MainActivity : AppCompatActivity() {
 
     //create menu buttons
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        val switchLanguage = item.itemId
+        val optionItem = item.itemId
         Log.d(logTag.LOG_MAIN, "Test")
-        if (switchLanguage == R.id.changeLanguage) {
+        if (optionItem == R.id.changeLanguage) {
             showChangeLanguageDialog()
+        }
+
+        if(optionItem == R.id.sortfromAtoZ) {
+            sortDataDescending(descending)
+            descending = !descending
+        }
+
+        if(optionItem == R.id.sortfromZtoA) {
+            sortDataAscending(ascending)
+            ascending = !ascending
         }
 
         return super.onOptionsItemSelected(item)
@@ -211,5 +227,19 @@ class MainActivity : AppCompatActivity() {
             setLanguage(language)
         }
 
+    }
+
+    private fun sortDataDescending(descending: Boolean) {
+        if (descending){
+            accountAdapter.accountFilterList.sortBy {it.accountName}
+            accountAdapter.notifyDataSetChanged()
+        }
+    }
+
+    private fun sortDataAscending(ascending: Boolean) {
+        if (ascending){
+            accountAdapter.accountFilterList.reverse()
+            accountAdapter.notifyDataSetChanged()
+        }
     }
 }
