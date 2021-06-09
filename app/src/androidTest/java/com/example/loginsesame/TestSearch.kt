@@ -174,7 +174,6 @@ class TestSearch {
             .check(ViewAssertions.matches(ViewMatchers.withText("christina")))
         Espresso.onView(ViewMatchers.withId(R.id.vaultPassword))
             .check(ViewAssertions.matches(ViewMatchers.withText("password")))
-
     }
 
 }

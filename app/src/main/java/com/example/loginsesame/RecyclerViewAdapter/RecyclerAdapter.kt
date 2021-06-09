@@ -57,7 +57,7 @@ class RecyclerAdapter(
             tvAccountName.text = curAccount.accountName
             tvAccountUser.text = curAccount.accountUser
             btnDots.setOnClickListener{
-                openOptionsMenuListener.onOptionsMenuClicked(position)
+                openOptionsMenuListener.onOptionsMenuClicked(position, curAccount.accountId)
             }
 
             holder.itemView.setOnClickListener(View.OnClickListener {
@@ -93,7 +93,7 @@ class RecyclerAdapter(
     }
 
     interface OpenOptionsMenu {
-        fun onOptionsMenuClicked(position: Int)
+        fun onOptionsMenuClicked(position: Int, accountId: Int)
     }
 
     override fun getFilter(): Filter {
