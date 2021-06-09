@@ -4,11 +4,16 @@ import android.app.Activity
 import android.content.Context
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.Espresso
+import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions
+import androidx.test.espresso.assertion.ViewAssertions
 import androidx.test.espresso.intent.Intents
 import androidx.test.espresso.matcher.ViewMatchers
+import androidx.test.espresso.matcher.ViewMatchers.withId
+import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.platform.app.InstrumentationRegistry
+import com.example.loginsesame.RecyclerViewAdapter.RecyclerAdapter
 import com.example.loginsesame.data.UserDao
 import com.example.loginsesame.data.UserDatabase
 import com.example.loginsesame.data.VaultEntry
@@ -19,6 +24,8 @@ import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import java.lang.Thread.sleep
+import java.util.regex.Pattern.matches
 
 class TestSorting {
     private lateinit var vaultEntryDao: VaultEntryDao
@@ -77,6 +84,12 @@ class TestSorting {
 
         //select sort by name from A to Z
         Espresso.onView(ViewMatchers.withText(R.string.sortfromAtoZ)).perform(ViewActions.click())
+
+        sleep(5000)
+
+        //onView(withId(R.id.rvAccounts)).check(ViewAssertions.matches(atPosition(1, ViewMatchers.withText("bernhard"))))
+
+
     }
 
     @Test
@@ -95,5 +108,7 @@ class TestSorting {
 
         //select sort by name from Z to A
         Espresso.onView(ViewMatchers.withText(R.string.sortfromZtoA)).perform(ViewActions.click())
+
+        sleep(5000)
     }
 }
