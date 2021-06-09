@@ -17,18 +17,19 @@ import kotlinx.coroutines.*
 
 
 class CreateNewUserActivity : AppCompatActivity() {
+    val logTag = LogTag()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_new_user)
 
-        val logTag = LogTag()
+
 
         val db = UserDatabase.initDb(this)
         val repo = UserRepository(db.getUserDao(), db.getVaultEntryDao())
 
         val okButton = findViewById<Button>(R.id.btnOk)
-        val cancelButton = findViewById<Button>(R.id.btnCancel)
         val viewModel =
             ViewModelProvider(this, CreateViewModelFactory(repo)).get(CreateViewModel::class.java)
 
@@ -50,12 +51,11 @@ class CreateNewUserActivity : AppCompatActivity() {
             startActivity(intentMain)
         }
 
-        cancelButton.setOnClickListener {
-            Log.d(logTag.LOG_STARTUP, "cancelButton")
-            val intentMain = Intent(this@CreateNewUserActivity, MainActivity::class.java)
-            startActivity(intentMain)
-        }
+    }
 
+    //remove back button ability
+    override fun onBackPressed() {
+        Log.d(logTag.LOG_STARTUP, "Back-Button Pressed With No Action")
     }
 
 }

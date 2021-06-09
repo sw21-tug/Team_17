@@ -18,4 +18,3 @@ data class VaultEntry(
     val Password: String
     //@Ignore val UserID: Int
 )
-

@@ -14,7 +14,6 @@ import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
-import androidx.test.rule.ActivityTestRule
 import androidx.test.runner.lifecycle.ActivityLifecycleMonitorRegistry
 import androidx.test.runner.lifecycle.Stage
 import com.example.loginsesame.data.User
@@ -82,10 +81,9 @@ class TestEditPassword
     fun testOpenEditor(){
         val logAssert = LogAssert()
 
-        onView(ViewMatchers.withId(R.id.etInputPassword))
-            .perform(ViewActions.typeText("123456789"))
-
+        onView(ViewMatchers.withId(R.id.etInputPassword)).perform(ViewActions.typeText("123456789"))
         closeSoftKeyboard()
+
         onView(ViewMatchers.withId(R.id.btnInputPasswordOK)).perform(ViewActions.click())
 
         onView(ViewMatchers.withText("account_b")).perform(ViewActions.click())
@@ -103,10 +101,9 @@ class TestEditPassword
     fun testOpenEditorViewData(){
         val logAssert = LogAssert()
 
-        onView(ViewMatchers.withId(R.id.etInputPassword))
-            .perform(ViewActions.typeText("123456789"))
-
+        onView(ViewMatchers.withId(R.id.etInputPassword)).perform(ViewActions.typeText("123456789"))
         closeSoftKeyboard()
+
         onView(ViewMatchers.withId(R.id.btnInputPasswordOK)).perform(ViewActions.click())
 
         onView(ViewMatchers.withText("account_b")).perform(ViewActions.click())
@@ -128,10 +125,9 @@ class TestEditPassword
 
     @Test
     fun testSaveChanges(){
-        onView(ViewMatchers.withId(R.id.etInputPassword))
-            .perform(ViewActions.typeText("123456789"))
-
+        onView(ViewMatchers.withId(R.id.etInputPassword)).perform(ViewActions.typeText("123456789"))
         closeSoftKeyboard()
+
         onView(ViewMatchers.withId(R.id.btnInputPasswordOK)).perform(ViewActions.click())
 
         onView(ViewMatchers.withText("account_b")).perform(ViewActions.click())
@@ -150,12 +146,16 @@ class TestEditPassword
         //overwrite data
         onView(ViewMatchers.withId(R.id.vaultURL))
             .perform(ViewActions.clearText()).perform(ViewActions.typeText("new URL"))
+        closeSoftKeyboard()
         onView(ViewMatchers.withId(R.id.vaultUsername))
             .perform(ViewActions.clearText()).perform(ViewActions.typeText("new user name"))
+        closeSoftKeyboard()
         onView(ViewMatchers.withId(R.id.vaultnameEntry))
             .perform(ViewActions.clearText()).perform(ViewActions.typeText("new entry"))
+        closeSoftKeyboard()
         onView(ViewMatchers.withId(R.id.vaultPassword))
             .perform(ViewActions.clearText()).perform(ViewActions.typeText("new password"))
+        closeSoftKeyboard()
 
         //save
         onView(ViewMatchers.withId(R.id.btnVaultSave)).perform(ViewActions.click())
@@ -176,10 +176,9 @@ class TestEditPassword
 
     @Test
     fun testSaveChangesNoPassword(){
-        onView(ViewMatchers.withId(R.id.etInputPassword))
-            .perform(ViewActions.typeText("123456789"))
-
+        onView(ViewMatchers.withId(R.id.etInputPassword)).perform(ViewActions.typeText("123456789"))
         closeSoftKeyboard()
+
         onView(ViewMatchers.withId(R.id.btnInputPasswordOK)).perform(ViewActions.click())
 
         onView(ViewMatchers.withText("account_b")).perform(ViewActions.click())
@@ -190,6 +189,7 @@ class TestEditPassword
             .perform(ViewActions.clearText())
 
         //save
+        closeSoftKeyboard()
         onView(ViewMatchers.withId(R.id.btnVaultSave)).perform(ViewActions.click())
 
         //check changed data
@@ -199,16 +199,17 @@ class TestEditPassword
 
     @Test
     fun testCancelNoChanges(){
-        onView(ViewMatchers.withId(R.id.etInputPassword))
-            .perform(ViewActions.typeText("123456789"))
-
+        onView(ViewMatchers.withId(R.id.etInputPassword)).perform(ViewActions.typeText("123456789"))
         closeSoftKeyboard()
+
         onView(ViewMatchers.withId(R.id.btnInputPasswordOK)).perform(ViewActions.click())
 
         onView(ViewMatchers.withText("account_b")).perform(ViewActions.click())
         Thread.sleep(2000)
 
+
         //cancel
+        closeSoftKeyboard()
         onView(ViewMatchers.withId(R.id.btnVaultCancel)).perform(ViewActions.click())
 
         //check
@@ -219,10 +220,9 @@ class TestEditPassword
 
     @Test
     fun testCancelWithChangesNo(){
-        onView(ViewMatchers.withId(R.id.etInputPassword))
-            .perform(ViewActions.typeText("123456789"))
-
+        onView(ViewMatchers.withId(R.id.etInputPassword)).perform(ViewActions.typeText("123456789"))
         closeSoftKeyboard()
+
         onView(ViewMatchers.withId(R.id.btnInputPasswordOK)).perform(ViewActions.click())
 
         onView(ViewMatchers.withText("account_b")).perform(ViewActions.click())
@@ -233,6 +233,7 @@ class TestEditPassword
             .perform(ViewActions.clearText()).perform(ViewActions.typeText("new URL"))
 
         //cancel
+        closeSoftKeyboard()
         onView(ViewMatchers.withId(R.id.btnVaultCancel)).perform(ViewActions.click())
 
         //check
@@ -248,10 +249,9 @@ class TestEditPassword
 
     @Test
     fun testCancelWithChangesYes(){
-        onView(ViewMatchers.withId(R.id.etInputPassword))
-            .perform(ViewActions.typeText("123456789"))
-
+        onView(ViewMatchers.withId(R.id.etInputPassword)).perform(ViewActions.typeText("123456789"))
         closeSoftKeyboard()
+
         onView(ViewMatchers.withId(R.id.btnInputPasswordOK)).perform(ViewActions.click())
 
         onView(ViewMatchers.withText("account_b")).perform(ViewActions.click())
@@ -262,6 +262,7 @@ class TestEditPassword
             .perform(ViewActions.clearText()).perform(ViewActions.typeText("new URL"))
 
         //cancel
+        closeSoftKeyboard()
         onView(ViewMatchers.withId(R.id.btnVaultCancel)).perform(ViewActions.click())
 
         //check
@@ -291,10 +292,9 @@ class TestEditPassword
 
     @Test
     fun testBackWithChangedData(){
-        onView(ViewMatchers.withId(R.id.etInputPassword))
-            .perform(ViewActions.typeText("123456789"))
-
+        onView(ViewMatchers.withId(R.id.etInputPassword)).perform(ViewActions.typeText("123456789"))
         closeSoftKeyboard()
+
         onView(ViewMatchers.withId(R.id.btnInputPasswordOK)).perform(ViewActions.click())
 
         onView(ViewMatchers.withText("account_b")).perform(ViewActions.click())

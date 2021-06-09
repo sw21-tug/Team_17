@@ -46,6 +46,7 @@ class TestDatabaseVaultEntries {
     @Throws(IOException::class)
     fun cleanup() {
         repository.deleteAllEntries()
+        repository.deleteAllUsers()
     }
 
 
@@ -77,6 +78,7 @@ class TestDatabaseVaultEntries {
         repository.entries.asLiveData().blockingObserve()
         GlobalScope.launch {
             repository.deleteAllEntries()
+            repository.deleteAllUsers()
         }
         val entries = repository.entries.asLiveData().blockingObserve()
 
