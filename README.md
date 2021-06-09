@@ -47,4 +47,11 @@ would connect and the user could automatically sync the vault over multiple devi
 | LS-007-A       |    Login Activity UI                      |
 | LS-007-B       |    Link Login Activity with user database |
 | _**LS-027**_   |    _**Russian language support**_         |
+| _**LS-002**_   |    _**Passwords overview**_               |
+| _**LS-003**_   |    _**Create vault entry**_               |
+| _**LS-004**_   |    _**Edit password**_                    |
+| _**LS-005**_   |    _**Remove password**_                  |
+| _**LS-020**_   |    _**Vault search function**_            |
+| _**LS-021**_   |    _**Vault Overview sorting**_           |
+| _**LS-031**_   |    _**Application icon**_                 |
 
