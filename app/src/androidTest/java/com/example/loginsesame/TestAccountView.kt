@@ -3,7 +3,6 @@ package com.example.loginsesame
 
 import android.app.Activity
 import android.content.Context
-import android.view.View
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
@@ -12,9 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.Espresso
 import androidx.test.espresso.action.ViewActions
-import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions
-import androidx.test.espresso.contrib.RecyclerViewActions
 import androidx.test.espresso.intent.Intents
 import androidx.test.espresso.matcher.RootMatchers
 import androidx.test.espresso.matcher.ViewMatchers
@@ -25,7 +22,6 @@ import androidx.test.runner.lifecycle.ActivityLifecycleMonitorRegistry
 import androidx.test.runner.lifecycle.Stage
 import com.example.loginsesame.data.*
 import com.example.loginsesame.helper.LogAssert
-import com.example.loginsesame.recyclerViewAdapter.RecyclerAdapter
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.hamcrest.Matchers
@@ -36,7 +32,6 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
-import kotlin.concurrent.thread
 import kotlin.jvm.Throws
 
 
@@ -70,7 +65,7 @@ class TestAccountView {
         GlobalScope.launch {
             val entity1 = VaultEntry(1, "account_a", "user_a", "url", "password")
             vaultEntryDao.add(entity1)
-            // init before
+            val entity2 = VaultEntry(2, "account_b", "user_b", "url", "password")
             vaultEntryDao.add(entity2)
             vaultEntryDao.add(entity3)
             val entity4 = VaultEntry(4, "account_d", "user_d", "url", "password")
@@ -93,18 +88,13 @@ class TestAccountView {
     fun testRecyclerViewVisibility() {
 
         val logAssert = LogAssert()
-        Espresso.onView(ViewMatchers.withId(R.id.etUsername))
-            .perform(ViewActions.typeText("randomUsername"))
-        Espresso.onView(ViewMatchers.withId(R.id.etPassword))
-            .perform(ViewActions.typeText("randomPassword"))
-
-        // for mobile phones like Galaxy Nexus (small screen)
+        Espresso.onView(ViewMatchers.withId(R.id.etUsername)).perform(ViewActions.typeText("randomUsername"))
         Espresso.closeSoftKeyboard()
-        Espresso.onView(ViewMatchers.withId(R.id.etEmail))
-            .perform(ViewActions.typeText("randomE-Mail"))
-
-        //closing keyboard to press ok Button
+        Espresso.onView(ViewMatchers.withId(R.id.etPassword)).perform(ViewActions.typeText("randomPassword"))
         Espresso.closeSoftKeyboard()
+        Espresso.onView(ViewMatchers.withId(R.id.etEmail)).perform(ViewActions.typeText("randomE-Mail"))
+        Espresso.closeSoftKeyboard()
+
         Thread.sleep(1000)
 
         Espresso.onView(ViewMatchers.withId(R.id.btnOk)).perform(ViewActions.click())
@@ -137,17 +127,13 @@ class TestAccountView {
     fun testAddAccountButton() {
 
         val logAssert = LogAssert()
-        Espresso.onView(ViewMatchers.withId(R.id.etUsername))
-            .perform(ViewActions.typeText("randomUsername"))
-        Espresso.onView(ViewMatchers.withId(R.id.etPassword))
-            .perform(ViewActions.typeText("randomPassword"))
-        // for mobile phones like Galaxy Nexus (small screen)
+        Espresso.onView(ViewMatchers.withId(R.id.etUsername)).perform(ViewActions.typeText("randomUsername"))
         Espresso.closeSoftKeyboard()
-        Espresso.onView(ViewMatchers.withId(R.id.etEmail))
-            .perform(ViewActions.typeText("randomE-Mail"))
+        Espresso.onView(ViewMatchers.withId(R.id.etPassword)).perform(ViewActions.typeText("randomPassword"))
+        Espresso.closeSoftKeyboard()
+        Espresso.onView(ViewMatchers.withId(R.id.etEmail)).perform(ViewActions.typeText("randomE-Mail"))
+        Espresso.closeSoftKeyboard()
 
-        //closing keyboard to press ok Button
-        Espresso.closeSoftKeyboard()
         Thread.sleep(1000)
 
         Espresso.onView(ViewMatchers.withId(R.id.btnOk)).perform(ViewActions.click())
@@ -188,16 +174,11 @@ class TestAccountView {
     fun testInsertion() {
 
         val logAssert = LogAssert()
-        Espresso.onView(ViewMatchers.withId(R.id.etUsername))
-            .perform(ViewActions.typeText("randomUsername"))
-        Espresso.onView(ViewMatchers.withId(R.id.etPassword))
-            .perform(ViewActions.typeText("randomPassword"))
-        // for mobile phones like Galaxy Nexus (small screen)
+        Espresso.onView(ViewMatchers.withId(R.id.etUsername)).perform(ViewActions.typeText("randomUsername"))
         Espresso.closeSoftKeyboard()
-        Espresso.onView(ViewMatchers.withId(R.id.etEmail))
-            .perform(ViewActions.typeText("randomE-Mail"))
-
-        //closing keyboard to press ok Button
+        Espresso.onView(ViewMatchers.withId(R.id.etPassword)).perform(ViewActions.typeText("randomPassword"))
+        Espresso.closeSoftKeyboard()
+        Espresso.onView(ViewMatchers.withId(R.id.etEmail)).perform(ViewActions.typeText("randomE-Mail"))
         Espresso.closeSoftKeyboard()
         Thread.sleep(1000)
 

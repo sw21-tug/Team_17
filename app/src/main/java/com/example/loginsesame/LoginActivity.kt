@@ -27,7 +27,6 @@ class LoginActivity : AppCompatActivity() {
         // setOnClickListeners for the Buttons
         val etInputPassword = findViewById<EditText>(R.id.etInputPassword)
         val btnInputPasswordOK = findViewById<Button>(R.id.btnInputPasswordOK)
-        val btnInputPasswordCancel = findViewById<Button>(R.id.btnInputPasswordCancel)
         val logTag = LogTag()
 
         viewModel.users.observe(this, {
@@ -66,10 +65,6 @@ class LoginActivity : AppCompatActivity() {
                     etInputPassword.text.clear()
                 }
             }
-        }
-
-        btnInputPasswordCancel.setOnClickListener {
-            Log.d(logTag.LOG_LOGIN, "btnInputPasswordCancel")
         }
     }
 

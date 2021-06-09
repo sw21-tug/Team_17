@@ -20,8 +20,11 @@ interface VaultEntryDao {
     @Query("SELECT * FROM VaultEntry WHERE name = :askedName")
     fun getEntity(askedName : String): Flow<VaultEntry>
 
+    @Query("SELECT * FROM VaultEntry WHERE Id = :accountId")
+    fun getVaultData(accountId : Int): VaultEntry
+
     @Update
     suspend fun updateVaultEntry(vararg updated_entity: VaultEntry)
 
-
 }
+

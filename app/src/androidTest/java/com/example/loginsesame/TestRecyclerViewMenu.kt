@@ -23,7 +23,7 @@ import androidx.test.runner.lifecycle.ActivityLifecycleMonitorRegistry
 import androidx.test.runner.lifecycle.Stage
 import com.example.loginsesame.data.*
 import com.example.loginsesame.helper.LogAssert
-import com.example.loginsesame.recyclerViewAdapter.RecyclerAdapter
+import com.example.loginsesame.RecyclerViewAdapter.RecyclerAdapter
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.junit.After

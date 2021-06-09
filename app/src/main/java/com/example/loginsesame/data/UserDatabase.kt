@@ -6,7 +6,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 
 
-@Database(version = 2, entities = [User::class, VaultEntry::class])
+@Database(version = 2, entities = [User::class, VaultEntry::class], exportSchema = false)
 
 abstract class UserDatabase : RoomDatabase() {
 
@@ -29,6 +29,7 @@ abstract class UserDatabase : RoomDatabase() {
                     "user_database.db"
                 ).fallbackToDestructiveMigration().allowMainThreadQueries().build()
                 INSTANCE = db
+
                 return db
             }
         }

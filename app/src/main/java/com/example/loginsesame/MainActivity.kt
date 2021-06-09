@@ -12,13 +12,15 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.PopupMenu
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SearchView
+import androidx.core.view.MenuItemCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.loginsesame.data.*
 import com.example.loginsesame.databinding.ActivityMainBinding
 import com.example.loginsesame.factories.MainViewModelFactory
 import com.example.loginsesame.helper.LogTag
-import com.example.loginsesame.recyclerViewAdapter.RecyclerAdapter
+import com.example.loginsesame.RecyclerViewAdapter.RecyclerAdapter
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.*
 import java.util.*
@@ -33,6 +35,8 @@ class MainActivity : AppCompatActivity() {
 
     private val logTag = LogTag()
     private var isLoggedIn = false //state if user is logged into the app
+
+    private lateinit var mainMenu: Menu
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -84,7 +88,7 @@ class MainActivity : AppCompatActivity() {
         viewModel.entries.observe(this, {
             accountAdapter.resetList()
             for (entry in it) {
-                var acc = Account(entry.Name, entry.username, entry)
+                var acc = Account(entry.Id, entry.Name, entry.username, entry)
                 accountAdapter.addAccount(acc)
             }
         })
@@ -119,7 +123,27 @@ class MainActivity : AppCompatActivity() {
     //create menu
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         val inflater = menuInflater
+
         inflater.inflate(R.menu.menu, menu)
+
+        if (menu != null) {
+            mainMenu = menu
+
+            var searchItem: MenuItem = mainMenu.findItem(R.id.search_button)
+            var searchView: SearchView =  MenuItemCompat.getActionView(searchItem) as SearchView
+
+            searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+                override fun onQueryTextSubmit(query: String?): Boolean {
+                    return false
+                }
+
+                override fun onQueryTextChange(newText: String?): Boolean {
+                    accountAdapter.filter.filter(newText)
+                    return false
+                }
+
+            })
+        }
 
         return super.onCreateOptionsMenu(menu)
     }
@@ -127,7 +151,7 @@ class MainActivity : AppCompatActivity() {
     //create menu buttons
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         val switchLanguage = item.itemId
-
+        Log.d(logTag.LOG_MAIN, "Test")
         if (switchLanguage == R.id.changeLanguage) {
             showChangeLanguageDialog()
         }
@@ -142,7 +166,17 @@ class MainActivity : AppCompatActivity() {
             getString(R.string.language_ru)
         )
 
-        adb.setSingleChoiceItems(items, -1, DialogInterface.OnClickListener { _, arg1 ->
+        val sharedPreferences = getSharedPreferences("Settings", Context.MODE_PRIVATE)
+        val language = sharedPreferences.getString("My_Lang", "en")
+        var checkedLanguageItem = -1
+        if (language.equals("en")){
+            checkedLanguageItem = 0
+        } else if (language.equals("ru")){
+            checkedLanguageItem = 1
+        }
+
+
+        adb.setSingleChoiceItems(items, checkedLanguageItem, DialogInterface.OnClickListener { _, arg1 ->
             if (arg1 == 0)
                 setLanguage("en")
             else if (arg1 == 1)
