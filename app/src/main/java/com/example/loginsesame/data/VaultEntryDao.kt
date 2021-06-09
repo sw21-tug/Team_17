@@ -26,5 +26,5 @@ interface VaultEntryDao {
     @Update
     suspend fun updateVaultEntry(vararg updated_entity: VaultEntry)
 
-
 }
+

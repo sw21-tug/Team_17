@@ -1,25 +1,23 @@
-package com.example.loginsesame
+package com.example.loginsesame.main
 
 import android.app.Activity
 import android.content.Context
-import android.util.Log
 import androidx.test.core.app.ApplicationProvider
-import androidx.test.espresso.intent.Intents
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.platform.app.InstrumentationRegistry.getInstrumentation
 import androidx.test.runner.lifecycle.ActivityLifecycleMonitorRegistry
 import androidx.test.runner.lifecycle.Stage
+import com.example.loginsesame.MainActivity
 import com.example.loginsesame.data.User
 import com.example.loginsesame.data.UserDao
 import com.example.loginsesame.data.UserDatabase
-import org.junit.After
-import org.junit.Before
-import org.junit.Rule
-import org.junit.Test
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import org.junit.*
 import java.io.IOException
 
 
-class TestMain {
+class TestMainLogin {
     private lateinit var userDao: UserDao
     private lateinit var db: UserDatabase
     private var currentActivity: Activity? = null
@@ -33,6 +31,13 @@ class TestMain {
         val context = ApplicationProvider.getApplicationContext<Context>()
         db = UserDatabase.initDb(context)
         userDao = db.getUserDao()
+
+        val user = User(null, "Max Musterman", "test@mail.com", "123456789")
+        userDao.deleteAllUsers()
+        GlobalScope.launch {
+            userDao.insertUser(user)
+        }
+
         Thread.sleep(1000)
     }
 
@@ -44,13 +49,15 @@ class TestMain {
 
     @Test
     @Throws(Exception::class)
-    fun testOpenCreateUserWhenEmptyDb(){
+    fun testOpenLoginWhenDbSet(){
 
         val currentActivity = getActivityInstance()
         val currentActivityName = currentActivity?.componentName?.className
-
-        assert(currentActivityName.toString().equals("com.example.loginsesame.CreateNewUserActivity"))
+        userDao.deleteAllUsers()
+        assert(currentActivityName.toString().equals("com.example.loginsesame.LoginActivity"))
     }
+
+
 
     private fun getActivityInstance(): Activity? {
         getInstrumentation().runOnMainSync {

@@ -145,7 +145,17 @@ class MainActivity : AppCompatActivity() {
             getString(R.string.language_ru)
         )
 
-        adb.setSingleChoiceItems(items, -1, DialogInterface.OnClickListener { _, arg1 ->
+        val sharedPreferences = getSharedPreferences("Settings", Context.MODE_PRIVATE)
+        val language = sharedPreferences.getString("My_Lang", "en")
+        var checkedLanguageItem = -1
+        if (language.equals("en")){
+            checkedLanguageItem = 0
+        } else if (language.equals("ru")){
+            checkedLanguageItem = 1
+        }
+
+
+        adb.setSingleChoiceItems(items, checkedLanguageItem, DialogInterface.OnClickListener { _, arg1 ->
             if (arg1 == 0)
                 setLanguage("en")
             else if (arg1 == 1)
