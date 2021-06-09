@@ -21,16 +21,16 @@ would connect and the user could automatically sync the vault over multiple devi
 
 ### Team members
 
-| Role             | Name                  | 
-| :---             |    :----:             |
-| **Product Owner**|   Alexandru Agape     |
-| **Scrum Master** |   Darja Bistrova      |
-| **Developer**    | Johannes Becker       |
-| **Developer**    | Christina Sophie Knes |
-| **Developer**    | Bernhard Paul Lippe   |
-| **Developer**    | Tobias Pichler        |
-| **Developer**    | Lukas Preitler        |
-| **Developer**    | Thomas Reith          |
+| Role                    | Name                  | 
+| :---                    |    :----:             |
+| **Product Owner**       |   Alexandru Agape     |
+| **Scrum Master**        |   Darja Bistrova      |
+| **Senior Developer**    | Thomas Reith          |
+| **Developer**           | Johannes Becker       |
+| **Developer**           | Christina Sophie Knes |
+| **Developer**           | Bernhard Paul Lippe   |
+| **Developer**           | Tobias Pichler        |
+| **Developer**           | Lukas Preitler        |
 
 ----
 
