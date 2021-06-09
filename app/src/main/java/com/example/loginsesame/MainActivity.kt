@@ -54,7 +54,7 @@ class MainActivity : AppCompatActivity() {
 
         binding.rvAccounts.layoutManager = LinearLayoutManager(this)
         accountAdapter = RecyclerAdapter(mutableListOf(), object : RecyclerAdapter.OpenOptionsMenu {
-            override fun onOptionsMenuClicked(position: Int) {
+            override fun onOptionsMenuClicked(position: Int, accountId: Int) {
                 val popupMenu = PopupMenu(applicationContext, binding.rvAccounts.getChildAt(position), Gravity.END)
                 popupMenu.inflate(R.menu.item_menu)
                 popupMenu.setOnMenuItemClickListener {
@@ -62,8 +62,13 @@ class MainActivity : AppCompatActivity() {
                         R.id.deleteItem -> {
                             Log.d(logTag.LOG_MAIN, "Delete item")
                             Log.d(logTag.LOG_MAIN, position.toString())
-                            val entry = viewModel.entries.value!![position]
-                            viewModel.deleteVaultEntry(entry)
+                            var entry: VaultEntry
+                            for(e in viewModel.entries.value!!)
+                            {
+                                if(e.Id == accountId){
+                                    viewModel.deleteVaultEntry(e)
+                                }
+                            }
                             true
                         }
                         else -> {
