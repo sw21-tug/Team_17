@@ -96,9 +96,6 @@ class MainActivity : AppCompatActivity() {
             sortDataDescending(true)
         })
 
-        accountAdapter = RecyclerAdapter(mutableListOf())
-
-
         rvAccounts.adapter = accountAdapter
         rvAccounts.layoutManager = LinearLayoutManager(this)
 
@@ -175,6 +172,7 @@ class MainActivity : AppCompatActivity() {
             ascending = !ascending
         }
 
+        return super.onOptionsItemSelected(item)
     }
 
     private fun showChangeLanguageDialog() {
