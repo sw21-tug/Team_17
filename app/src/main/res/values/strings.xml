@@ -25,6 +25,7 @@
     <string name="pwd_overview_text">TextView</string>
     <string name="sortfromAtoZ">Sort by name A to Z</string>
     <string name="sortfromZtoA">Sort by name Z to A</string>
+    <string name="delete">Delete</string>
     <string name="search">Search</string>
     <string name="vault_save_changes_alert">Please enter a Password to Save the Changes</string>
     <string name="vault_save_changes_alert_title">No Password</string>

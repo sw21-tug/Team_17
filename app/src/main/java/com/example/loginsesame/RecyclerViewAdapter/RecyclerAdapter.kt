@@ -17,7 +17,10 @@ import kotlinx.android.synthetic.main.item_password_overview.view.*
 import java.util.*
 import kotlin.collections.ArrayList
 
-class RecyclerAdapter(private val accountList: MutableList<Account>) :
+class RecyclerAdapter(
+    private val accountList: MutableList<Account>,
+    private val openOptionsMenuListener: OpenOptionsMenu
+) :
     RecyclerView.Adapter<RecyclerAdapter.AccountsViewHolder>(), Filterable {
 
     var accountFilterList = ArrayList<Account>()
@@ -53,6 +56,9 @@ class RecyclerAdapter(private val accountList: MutableList<Account>) :
         holder.itemView.apply {
             tvAccountName.text = curAccount.accountName
             tvAccountUser.text = curAccount.accountUser
+            btnDots.setOnClickListener{
+                openOptionsMenuListener.onOptionsMenuClicked(position)
+            }
 
             holder.itemView.setOnClickListener(View.OnClickListener {
 
@@ -77,8 +83,17 @@ class RecyclerAdapter(private val accountList: MutableList<Account>) :
         context.startActivity(i)
     }
 
+    fun resetList() {
+        accountList.clear()
+        notifyDataSetChanged()
+    }
+
     override fun getItemCount(): Int {
         return accountFilterList.size
+    }
+
+    interface OpenOptionsMenu {
+        fun onOptionsMenuClicked(position: Int)
     }
 
     override fun getFilter(): Filter {
@@ -94,8 +109,7 @@ class RecyclerAdapter(private val accountList: MutableList<Account>) :
                                 .contains(charSearch.toLowerCase(Locale.ROOT))
                         ) {
                             resultList.add(row)
-                        }
-                        else if (row.accountUser.toLowerCase(Locale.ROOT)
+                        } else if (row.accountUser.toLowerCase(Locale.ROOT)
                                 .contains(charSearch.toLowerCase(Locale.ROOT))
                         ) {
                             resultList.add(row)
