@@ -1,11 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <item
-        android:title="@string/setLanguage"
         android:id="@+id/changeLanguage"
-        app:showAsAction="never"
-        />
+        android:title="@string/language_set_text"
+        app:showAsAction="never" />
 
+    <item
+        android:id="@+id/search_button"
+        android:icon="@drawable/ic_search"
+        android:title="@string/search"
+        app:actionViewClass="androidx.appcompat.widget.SearchView"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/rvAccounts"
+        app:showAsAction="ifRoom|collapseActionView" />
+
+    <item
+        android:id="@+id/sortfromAtoZ"
+        android:title="@string/sortfromAtoZ" />
+    <item
+        android:id="@+id/sortfromZtoA"
+        android:title="@string/sortfromZtoA" />
 </menu>

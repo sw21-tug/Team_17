@@ -14,7 +14,7 @@ data class VaultEntry(
     @PrimaryKey(autoGenerate = true) val Id : Int,
     val Name : String,
     val username: String,
+    val url: String,
     val Password: String
     //@Ignore val UserID: Int
 )
-

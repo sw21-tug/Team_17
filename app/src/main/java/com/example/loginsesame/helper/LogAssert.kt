@@ -1,20 +1,16 @@
 package com.example.loginsesame.helper
 
-import android.content.Context
-import android.view.View
-import android.view.inputmethod.InputMethodManager
 import java.io.BufferedReader
 import java.io.IOException
 import java.io.InputStreamReader
 import java.util.regex.Matcher
 import java.util.regex.Pattern
-import kotlin.jvm.Throws
 
 class LogAssert {
-    private var logText: String? = null
+    private var logText: CharSequence = ""
 
     private val logs: String
-        private get() {
+        get() {
             val logcat: Process
             val log = StringBuilder()
             try {
@@ -47,7 +43,7 @@ class LogAssert {
 
     private fun clearLog() {
         try {
-            val process = ProcessBuilder()
+            ProcessBuilder()
                     .command("logcat", "-c")
                     .redirectErrorStream(true)
                     .start()

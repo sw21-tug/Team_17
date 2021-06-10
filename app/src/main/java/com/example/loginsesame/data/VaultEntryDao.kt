@@ -1,26 +1,30 @@
 package com.example.loginsesame.data
 
 import androidx.room.*
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface VaultEntryDao {
     @Insert
-    fun add(newVaultEntry: VaultEntry)
+    suspend fun add(newVaultEntry: VaultEntry)
 
     @Delete
-    fun deleteVaultEntry(vaultEntry: VaultEntry)
+    suspend fun deleteVaultEntry(vaultEntry: VaultEntry)
 
     @Query ("DELETE FROM VaultEntry")
-    fun deleteAllEntrys()
+    fun deleteAllEntries()
 
     @Query("SELECT * FROM VaultEntry")
-    fun allEntrys(): List<VaultEntry>
+    fun allEntries(): Flow<List<VaultEntry>>
 
-    @Query("SELECT * FROM VaultEntry WHERE name = :asked_name")
-    fun getEntity(asked_name : String): VaultEntry
+    @Query("SELECT * FROM VaultEntry WHERE name = :askedName")
+    fun getEntity(askedName : String): Flow<VaultEntry>
+
+    @Query("SELECT * FROM VaultEntry WHERE Id = :accountId")
+    fun getVaultData(accountId : Int): VaultEntry
 
     @Update
-    fun updateVaultEntry(vararg updated_entity: VaultEntry)
-
+    suspend fun updateVaultEntry(vararg updated_entity: VaultEntry)
 
 }
+
